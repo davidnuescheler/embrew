@@ -1,24 +1,3 @@
-<script>
-
-window.embrew.catalog={};
-
-function indexCatalog(data) {
-    const cat=window.embrew.catalog;
-    cat.byId=[];
-    data.forEach((obj) => {
-        cat.byId[obj.id]=obj;
-    })
-}
-
-async function loadCatalog() {
-    const resp=await fetch("https://thinktanked.org/catalog.json?v=2");
-    const data=await resp.json();
-    indexCatalog(data);
-    return (data);
-}
-
-loadCatalog();
-
-</script>
+<script src='/order.js'></script>
 
 order form

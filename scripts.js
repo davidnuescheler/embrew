@@ -16,13 +16,6 @@ function wrapDivs() {
     });
 }
 
-function addToCart(itemId) {
-    const cat=window.embrew.catalog;
-    console.log(itemId);
-    const item=cat.byId[itemId];
-    console.log(item.item_data.name);
-
-}
 
 function decorateSquareLinks() {
     document.querySelectorAll('main a[href^="https://squareup.com/dashboard/items/library/"]').forEach(($a) => {
