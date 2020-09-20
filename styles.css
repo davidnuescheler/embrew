@@ -1,3 +1,452 @@
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Mulish:wght@386&display=swap');
+:root {
+  --text-color: 10,10,10;
+  --background-color: 255,255,255;
+  --highlight-color: 67,68,69;
+  --font: 'Libre Baskerville';
+  --font-alt: 'Mulish';
+}
+
+body {
+  text-align: center;
+  font-size: 1rem;
+  margin: 0;
+  font-family: var(--font);
+  font-weight: 400;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  width: 100%;
+  line-height: 2em;
+}
+
+body.noscroll {
+  overflow: hidden;
+}
+
+
+a, button {
+  background-color: rgb(var(--highlight-color));
+  color: rgb(var(--background-color));
+  font-family: var(--font-alt);
+  padding: 5px 30px;
+  border-radius: 30px;
+  text-transform: uppercase;
+  margin: 10px;
+  display: inline-block;
+  user-select: none;
+  cursor: pointer;
+  border: 0;
+  font-size: 1em;
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 0.1em;
+}
+
+img {
+    max-width: 100%;
+}
 main {
-    text-align: center;
+  margin-bottom: 100px;
+}
+
+main h1 {
+    margin-top: 2em;
+    font-size: 2rem;
+}
+
+main .icon-embrew {
+  margin-top: 10vh;
+}
+
+main .stamp {
+  color: rgb(var(--highlight-color));
+  border: 1rem double rgb(var(--highlight-color));
+  transform: rotate(3deg);
+  font-size: 1.6rem;
+  padding: 16px;
+  transform: rotate(12deg);
+  font-weight: 700;
+  text-transform: uppercase;
+  border-radius: 1rem;
+  font-family: 'Courier';
+  mix-blend-mode: multiply;
+  max-width: 400px;
+  margin: 80px auto 160px auto;
+  -webkit-mask-image: url(/imgs/grunge.png);
+  -webkit-mask-size: 200px 128px;
+  -webkit-mask-position: 2rem 3rem;
+  mix-blend-mode: multiply;
+  line-height: 0.8em;
+}
+
+main .section-wrapper>div {
+  max-width: 700px;
+  margin: auto;
+}
+
+main .section-wrapper {
+  padding: 0 32px;
+  margin-bottom: 128px;
+}
+
+main .section-wrapper.image-only {
+  padding: 0;
+  margin: 0;
+}
+
+main .section-wrapper.image-only>div {
+  max-width: 100%;
+
+} 
+
+main h2, main h3, main h4 {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  line-height: 1.1em;
+}
+
+main h3 {
+  margin-top: 4em;
+  font-size: 1.6rem;
+  font-weight: 400;
+}
+
+main h4 {
+  margin-bottom: 0.5em;
+  margin-top: 3em;
+  line-height: 1.5em;
+}
+
+main p {
+    line-height: 2em;
+}
+
+
+main .section-wrapper.bg-image {
+  background-size: cover;
+  align-items: center;
+  justify-content: center;
+  background-attachment: fixed;
+  background-position: center;
+  display: flex;
+  min-height: 300px;
+}
+
+main .section-wrapper.bg-image>div h2 {
+  font-size: 2.5em;
+  line-height: 1em;
+  background-color: rgba(var(--background-color),0.6);
+  padding: 16px 16px;
+  color: rgb(var(--text-color),0.7)
+}
+
+input, select{
+  font-family: var(--font);
+  padding: 16px;
+  display: block;
+  font-size: 1.2rem;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 16px 0;
+  border: 0;
+  border-bottom: 1px dashed rgb(var(--highlight-color));
+}
+
+input[type='checkbox'] {
+  display: inline-block;
+  margin: 10px;
+  width: auto;
+}
+
+.overlay .checkbox {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  user-select: none;
+  padding-right: 10px;
+  min-width: 40%;
+  text-align: left;
+}
+
+.overlay .checkbox input[type='checkbox'] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0; 
+  width: 0;
+}
+.overlay .checkbox .checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+}
+
+.overlay .checkbox:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.overlay .checkbox input:checked ~ .checkmark {
+  background-color: rgb(var(--background-color));
+}
+
+.overlay .checkbox .checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.overlay .checkbox input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.overlay .checkbox .checkmark:after {
+  left: 9px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid rgb(var(--highlight-color));
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+
+.overlay .checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.overlay select {
+  border-radius: 6px;
+  border: none;
+  font-family: var(--font-alt);
+  padding: 16px 16px;
+}
+
+
+.overlay a, .overlay button {
+  color: rgb(var(--highlight-color));
+  background-color: rgb(var(--background-color));
+}
+
+.overlay .icon {
+  width: 1em;
+  height: 1em;
+  top: .1em;
+  position: relative;
+}
+
+
+footer #cart {
+  background-color: rgb(var(--highlight-color));
+  color: rgb(var(--background-color));
+  bottom: 0;
+  width: 100%;
+  box-sizing: border-box;
+  position: fixed;
+}
+
+footer #cart .compact {
+  height: 80px;
+  padding: 25px;
+  box-sizing: border-box;
+  cursor: pointer;
+  user-select: none;
+}
+
+footer #cart .full {
+  height: 100vh;
+  box-sizing: border-box;
+  overflow-y: scroll;
+}
+
+footer .overlay .close {
+  text-align: right;
+  margin-bottom: 64px;
+}
+
+footer .overlay .full-inner {
+  max-width: 500px;
+  margin: auto;
+  padding: 30px;
+}
+
+footer #cart .full .line {
+  display: flex;
+  justify-content: space-between;
+  user-select: none;
+  padding: 16px 0;
+  border-top: 0.5px dashed rgb(var(--background-color));
+}
+
+footer #cart .full .line>div {
+  padding: 2px;
+  box-sizing: border-box;
+}
+
+footer #cart .full .quantity {
+  width: 85px;
+  text-align: left;
+}
+
+footer #cart .full .remove {
+  width: 50px;
+  text-align: right;
+}
+
+footer #cart .full .price {
+  width: 75px;
+  text-align: right;
+}
+
+footer #cart .full .description {
+  flex: auto;
+  text-align: left;
+  width: 100%;
+}
+
+footer #cart .full .description .modifiers {
+  font-size: 0.8em;
+}
+
+footer #cart .full .line.tip.hidden {
+  display: none;
+}
+
+footer #cart .full .line.total {
+  font-weight: 700;
+}
+
+footer #cart .full .line .control {
+  display: inline-block;
+}
+
+footer #item-config {
+  background-color: rgb(var(--highlight-color));
+  color: rgb(var(--background-color));
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  position: fixed;
+  overflow-y: scroll;
+}
+
+footer #item-config>div {
+  max-width: 500px;
+  margin: auto;
+  padding: 30px;
+}
+
+.hidden {
+  display: none;
+}
+
+.spinner {
+  margin: 100px auto 0;
+  width: 70px;
+  text-align: center;
+}
+
+.spinner>div {
+  width: 18px;
+  height: 18px;
+  background-color: currentColor;
+  border-radius: 100%;
+  display: inline-block;
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.spinner .bounce1 {
+  animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+  animation-delay: -0.16s;
+}
+
+/*
+* Square Payment Form
+*/
+
+#form-container fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  }
+
+#form-container {
+  position: relative;
+  width: 100%;
+  margin: 20px auto;
+  box-sizing: border-box;
+  }
+
+#form-container .third {
+  float: left;
+  width: calc((100% - 32px) / 3);
+  padding: 0;
+  margin: 0 16px 16px 0;
+  }
+
+#form-container .third:last-of-type {
+  margin-right: 0;
+  }
+
+.sq-input {
+  height: 56px;
+  box-sizing: border-box;
+  border: 0;
+  background-color: rgb(var(--background-color));
+  border-radius: 6px;
+  display: inline-block;
+  transition: border-color .2s ease-in-out;
+  }
+
+.sq-input--focus {
+  border: 1px solid #4A90E2;
+  }
+
+.sq-input--error {
+  border: 1px solid #E02F2F;
+  }
+
+#sq-card-number {
+  margin-bottom: 10px;
+  }
+
+
+@keyframes sk-bouncedelay {
+  0%,
+  80%,
+  100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1.0);
+  }
+}
+
+@media (min-width: 600px) {
+  main h1 {
+      font-size: 3rem;
+  }
+  main h3 {
+      font-size: 2.2rem;
+  }
+  main h4 {
+      font-size: 1.5rem;
+  }
+  main p {
+      font-size: 1.3rem;
+  }
+
+  main h4 a {
+    font-size: 0.5em;
+  }  
 }
