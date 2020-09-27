@@ -16,6 +16,15 @@
     overflow: hidden;
 }
 
+#threads>div>div {
+    display: flex;
+    justify-content: space-between;
+}
+
+#threads>div>div>span {
+    font-size: 0.8em;
+}
+
 #threads h4 {
     margin: 0;
     text-transform: none;
@@ -67,17 +76,26 @@
     flex: 1;
 }
 
+#thread p.timestamp {
+    font-size: 0.8em;
+    text-align: center;
+    margin: 0.2em;
+}
+
 #thread p.message {
     line-height: 1.15em;
     border-radius: 32px 32px 32px 0;
     background-color: #eee;
     padding: 24px;
+    margin-right: 48px;
 }
 
 #thread p.me {
     border-radius: 32px 32px 0 32px;
     background-color: #0B5FFD;
     color: white;
+    margin-left: 48px;
+    margin-right: 0;
 }
 
 #messages {
@@ -93,14 +111,18 @@
     letter-spacing: 0.2em;
     text-transform: uppercase;
 }
-
 #messages .messages-header {
+    padding: 0 48px;
 }
 
 #messages .messages-body {
     flex: 1;
     overflow: auto;
 
+}
+
+.sending button#send-message {
+    background-color: #ccc;
 }
 
 body, main, html , main div.section-wrapper {
