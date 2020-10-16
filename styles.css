@@ -69,8 +69,8 @@ main .stamp {
   color: rgb(var(--highlight-color));
   border: 1rem double rgb(var(--highlight-color));
   transform: rotate(3deg);
-  font-size: 2.6rem;
   padding: 16px;
+  font-size: 2.6rem;
   transform: rotate(12deg);
   font-weight: 700;
   text-transform: uppercase;
@@ -88,6 +88,7 @@ main .stamp {
 
 main .stamp p {
   margin: 0;
+  font-size: 2.6rem;
 }
 
 
