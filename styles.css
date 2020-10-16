@@ -89,6 +89,7 @@ main .stamp {
 main .stamp p {
   margin: 0;
   font-size: 2.6rem;
+  line-height: 0.8em;
 }
 
 
