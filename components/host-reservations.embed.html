@@ -1,0 +1,58 @@
+<link rel="stylesheet" href="/components/host-reservations.css"/>
+
+
+<div id="reservations">
+<div class="reservations-header">
+</div>
+<div class="reservations-body">
+    <div id="upcoming">
+
+    </div>
+</div>
+<button id="archive" onclick="toggleArchive()">Reservation Archive</button>
+</div>
+
+<div id="reservation-details" class="popup hidden">
+    <div class="inner">
+        <div class="close"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-close"><use href="/icons.svg#close"></use></svg></div>
+        <div class="details">
+            <p class="message-text"></p>
+            <form>
+                <p><input name="ID" type="hidden"></p>
+                <p><input name="Name" type="text"></p>
+                <p><input name="Date" type="text"></p>
+                <p><input name="Time" type="text"></p>
+                <p><input name="Cell" type="text"></p>
+                <p><select name="Party"></select></p>
+                </form>
+                <p>
+                    <a class="tel" href="#">Call</a>
+                    <a class="sms" target="_blank" href="#">Send Message</a>
+                </p>
+                <p class="update">
+                    <button>Update Reservation</button>
+                </p>
+                <p class="cancel">
+                    <button>Cancel Reservation</button>
+                </p>        
+        </div>
+        <div class="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+
+    </div>    
+</div>
+
+<div id="reservation-message" class="popup hidden">
+    <div class="inner">
+        <div class="close"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-close"><use href="/icons.svg#close"></use></svg></div>
+        <div class="message-text"></div>
+    </div>
+</div>
+
+
+<script src='/components/host-reservations.js'></script>
+<script src='/components/google-signin.js'></script>
+<script src="https://apis.google.com/js/platform.js" async defer></script>

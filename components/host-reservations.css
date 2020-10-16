@@ -1,0 +1,182 @@
+
+body, main, html , main div.section-wrapper {
+    margin: 0;
+    padding: 0;
+}
+
+#reservations .row {
+    display: flex;
+    margin: 10px;
+    box-sizing: border-box;
+    font-size: 0.8em;
+    line-height: 1.2em;
+    align-items: center;
+    border: 5px solid rgb(var(--background-color));
+}
+
+#reservations .row.seated, #reservations .row.cancelled {
+  opacity: 0.3;
+}
+
+#reservations .row.cancelled .description{
+  text-decoration: line-through;
+}
+
+#reservations .row.arrived {
+  border: 5px solid rgb(var(--highlight-color));
+}
+
+#reservations #upcoming>div {
+    background-color: rgba(var(--highlight-color), 0.07);
+}
+
+#reservations #upcoming>div:nth-of-type(2n+1) {
+    background-color: rgba(var(--highlight-color), 0.14);
+}
+
+#reservations .row .status .spinner {
+  margin: 0;
+  width: 100%;
+  transform: scale(0.5, 0.5);
+}
+
+#reservations .row .status {
+    flex: 0 0 4em;
+    background-color: rgb(var(--highlight-color));
+    color: rgb(var(--background-color));
+    padding: 10px;
+    min-height: 4em;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#reservations .row .description {
+    text-align: left;
+    padding-left: 20px;
+    flex: 1;
+}
+
+#reservations .row .description .date {
+    font-size: 0.8em;
+}
+
+#reservations .row .description .name {
+    font-weight: 700;
+}
+
+#reservations .row.archive {
+  display: none;
+}
+
+#reservations.archive .row.archive {
+  display: flex;
+}
+
+#reservations .row .description .message {
+    font-size: 0.3em;
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 8px;
+    animation: heartbeat 3s ease-in-out infinite both;
+}
+
+.message-text {
+  text-align: left;
+  border: 1px dashed rgb(var(--background-color));
+  padding: 16px;
+  border-radius: 16px;
+  font-size: 1.4em;
+}
+
+.message-text::before {
+  content: 'Reservation Message';
+  font-size: 0.6em;
+  display: block;
+}
+
+#reservation-details .message-text:empty {
+  display: none;
+}
+
+@keyframes heartbeat {
+    from {
+      transform: scale(1);
+      transform-origin: center center;
+      animation-timing-function: ease-out;
+    }
+    5% {
+      transform: scale(0.81);
+      animation-timing-function: ease-in;
+    }
+    10% {
+      transform: scale(0.98);
+      animation-timing-function: ease-out;
+    }
+    16% {
+      transform: scale(0.6);
+      animation-timing-function: ease-in;
+    }
+    25% {
+      transform: scale(1);
+      animation-timing-function: ease-out;
+    }
+  }
+
+.popup {
+    background-color: rgb(var(--highlight-color));
+    color: rgb(var(--background-color));
+    top: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    position: fixed;
+    height: 100vh;
+    overflow-y: scroll;
+  }
+  
+.popup .close {
+    text-align: right;
+    margin-bottom: 64px;
+    margin-top: 32px;
+  }
+  
+.popup .inner {
+    max-width: 500px;
+    margin: auto;
+    padding: 30px;
+  }
+
+.popup .icon {
+    width: 1em;
+    height: 1em;
+    top: .1em;
+    position: relative;
+}
+
+.popup .cancel>button{
+  background-color: rgb(var(--highlight-color));
+  color: rgb(var(--background-color));
+  border: 2px solid rgb(var(--background-color));
+}
+
+.popup a, .popup button {
+  color: rgb(var(--highlight-color));
+  background-color: rgb(var(--background-color));
+}
+
+#reservations #archive::before {
+  content: 'Show ';
+}
+  
+#reservations.archive #archive::before {
+  content: 'Hide ';
+}
+  
+
+@media (min-width: 600px) {
+    #reservations .row {
+        font-size: 1em;
+    
+    }
+}

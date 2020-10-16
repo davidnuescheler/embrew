@@ -10,9 +10,11 @@ function createTag(name, attrs) {
   
 function wrapSections(element) {
     document.querySelectorAll(element).forEach(($div) => {
-        const $wrapper=createTag('div', { class: 'section-wrapper'});
-        $div.parentNode.appendChild($wrapper);
-        $wrapper.appendChild($div);
+        if (!$div.id) {
+            const $wrapper=createTag('div', { class: 'section-wrapper'});
+            $div.parentNode.appendChild($wrapper);
+            $wrapper.appendChild($div);    
+        }
     });
 }
 
@@ -40,6 +42,30 @@ function stashForm($form, ids) {
         const value=document.getElementById(id).value;
         localStorage.setItem(id, value);
     });
+}
+
+function getOpeningHours(section) {
+    const weekdays=['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', `Friday`, 'Saturday'];
+    const openingHours=weekdays.map((day) => {
+        const usTime=section[day];
+        const ampms=usTime.split('-');
+        [from, to]=ampms.map((ampm) => {
+            let plus=0;
+            if(ampm.includes('pm')) plus=12;
+            return (+ampm.replace(/\D+/g, '')+plus)
+        })
+        return ({from, to});
+    });
+    return openingHours;
+}
+
+function generateId () {
+    let id="";
+    const chars="123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    for (let i=0;i<5;i++) {
+        id+=chars.substr(Math.floor(Math.random()*chars.length),1);
+    }
+    return id;
 }
 
 function populateForm($form) {

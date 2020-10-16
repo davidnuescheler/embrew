@@ -74,21 +74,6 @@ async function initCart() {
     updateCart();
 }
 
-function getOpeningHours(section) {
-    const weekdays=['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', `Friday`, 'Saturday'];
-    const openingHours=weekdays.map((day) => {
-        const usTime=section[day];
-        const ampms=usTime.split('-');
-        [from, to]=ampms.map((ampm) => {
-            let plus=0;
-            if(ampm.includes('pm')) plus=12;
-            return (+ampm.replace(/\D+/g, '')+plus)
-        })
-        return ({from, to});
-    });
-    return openingHours;
-}
-
 async function setPickupTimes(date) {
     const $time=document.getElementById('time');
     $time.innerHTML='';
@@ -140,15 +125,6 @@ async function initOrderForm() {
         $date.firstElementChild.remove();
         setPickupTimes($date.value);
     }
-}
-
-function generateId () {
-    let id="";
-    const chars="123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    for (let i=0;i<5;i++) {
-        id+=chars.substr(Math.floor(Math.random()*chars.length),1);
-    }
-    return id;
 }
 
 async function submitOrder() {

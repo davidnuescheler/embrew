@@ -40,6 +40,13 @@ a, button {
   font-weight: 600;
   text-decoration: none;
   letter-spacing: 0.1em;
+  line-height: 2rem;
+}
+
+.inverted a, .inverted button{
+  color: rgb(var(--highlight-color));
+  background-color: rgb(var(--background-color));
+
 }
 
 img {
@@ -140,7 +147,7 @@ main .section-wrapper.bg-image>div h2 {
   color: rgb(var(--text-color),0.7)
 }
 
-input, select{
+input, select, textarea {
   font-family: var(--font);
   padding: 16px;
   display: block;
@@ -241,6 +248,26 @@ input[type='checkbox'] {
   position: relative;
 }
 
+main #reservation-confirmation {
+  background-color: rgb(var(--highlight-color));
+  color: rgb(var(--background-color));
+  min-height: 80vh;
+  box-sizing: border-box;
+  padding: 5rem 32px;
+  transition: all 1s ease;
+}
+
+main #reservation-confirmation h3 {
+  margin: auto;
+}
+
+main #reservation-confirmation.collapsed {
+  background-color: rgb(var(--background-color));
+  min-height: 0;
+  height: 0;
+  overflow: hidden;
+  padding: 0;
+}
 
 footer #cart {
   background-color: rgb(var(--highlight-color));
