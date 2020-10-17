@@ -146,8 +146,10 @@ function checkForUpcomingReservation() {
         const tomorrow = new Date(today);
         tomorrow.setDate(tomorrow.getDate() + 1);
         tomorrow.setHours(0,0,0,0);
+
+        const upcomingDate=getDate(upcoming.Date, '11 PM')
     
-        if (new Date(upcoming.Date)<tomorrow) {
+        if (upcomingDate<tomorrow) {
             localStorage.removeItem('upcoming-reservation');
         } else {
             displayReservation({ID: upcoming.ID});

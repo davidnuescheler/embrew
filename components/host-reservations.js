@@ -190,22 +190,6 @@ async function displayReservations() {
     
 }
 
-function getDate(date, time) {
-    const months=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const dateSegs=date.split(' ');
-    const timeSegs=time.split(' ');
-    const hoursMins=timeSegs[0].split(':');
-
-    const hour=+hoursMins[0]+(timeSegs[1]=='PM'?12:0);
-    const mins=+hoursMins[1];
-
-    const dateAndTime=new Date(+dateSegs[3], months.indexOf(dateSegs[1]), +dateSegs[2], hour, mins);
-    console.log(dateAndTime, date+'->'+time);
-
-    return (dateAndTime);
-
-}
-
 async function fetchReservations() {
     const resp=await fetch(`${endpoint}?FetchAs=${window.googleUser.email}`);
     const data=await resp.json();
