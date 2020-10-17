@@ -78,6 +78,7 @@ main div.section-wrapper.bg-image.hero {
   color: rgb(var(--background-color));
   height: 100vh;
   background-position: 15%;
+  background-size: cover;
 }
 
 main .stamp {
