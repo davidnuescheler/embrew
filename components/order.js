@@ -161,7 +161,6 @@ async function submitOrder() {
     displayPayment(sqOrder);
 
     showCartState(['order','payment']);
-    displayThanks();
 
 }
 function showItemConfig(item) {
