@@ -91,6 +91,9 @@ async function editReservation(res) {
         hide('#reservation-details .details')
         show('#reservation-details .spinner')
         const conf=await updateStatus(res, 'Cancelled');
+        for (let name in conf.reservation) {
+            res[name]=conf.reservation[name];
+        }
         $details.classList.add('hidden');
         document.body.classList.remove('noscroll');
         displayReservations();
@@ -156,6 +159,7 @@ async function displayReservations() {
                 <span class="name">${r.Name}</span>
                 <span class="party">(Party of ${r.Party})</span>
                 <span class="message">${r.Message?'&#11044;':''}</span><br>
+                <span class="seating">${r.Seating=='No Preference'?'':r.Seating}</span>
                 <span class="date">${today?'Today':r.Date} ${r.Time}</span>
             </div>
             `;

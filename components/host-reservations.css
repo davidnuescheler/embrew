@@ -61,6 +61,11 @@ body, main, html , main div.section-wrapper {
     font-size: 0.8em;
 }
 
+#reservations .row .description .seating {
+  font-size: 0.8em;
+}
+
+
 #reservations .row .description .name {
     font-weight: 700;
 }

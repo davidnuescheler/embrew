@@ -496,7 +496,7 @@ function updateCart() {
     $order.querySelector('button').addEventListener('click', (evt) => {
         if ($form.reportValidity()) {
             showCartState(['spinner']);        
-            stashForm($form, ['name', 'cell', 'vehicle']);
+            stashForm(['name', 'cell', 'vehicle']);
             submitOrder();
         } else {
             c.$full.classList.add('hidden');

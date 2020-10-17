@@ -37,7 +37,7 @@ function decorateImageOnlySections() {
     });
 }
 
-function stashForm($form, ids) {
+function stashForm(ids) {
     ids.forEach((id) => {
         const value=document.getElementById(id).value;
         localStorage.setItem(id, value);

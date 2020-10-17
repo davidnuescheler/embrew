@@ -121,13 +121,16 @@ async function fetchReservation(reservation) {
 async function submitReservation() {
     
     const reservation={};
-    reservation.Time=document.getElementById("time").value;
-    reservation.Date=document.getElementById("date").value;
-    reservation.Name=document.getElementById("name").value;
-    reservation.Cell=document.getElementById("cell").value;
-    reservation.Party=document.getElementById("party").value;
-    reservation.Message=document.getElementById("message").value;
-    
+    reservation.Time=document.getElementById('time').value;
+    reservation.Date=document.getElementById('date').value;
+    reservation.Name=document.getElementById('name').value;
+    reservation.Cell=document.getElementById('cell').value;
+    reservation.Party=document.getElementById('party').value;
+    reservation.Message=document.getElementById('message').value;
+    reservation.Seating=document.getElementById('seating').value;
+
+    stashForm(['name','cell']);
+
     displayReservation(reservation);
 
 }
