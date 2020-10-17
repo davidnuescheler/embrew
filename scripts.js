@@ -26,8 +26,11 @@ function decorateBackgroundSections() {
             $wrapper.style.backgroundImage=`url(${src})`;
             $headerImg.parentNode.remove();
             $wrapper.classList.add('bg-image');
-        }      
+        }    
     });
+
+    $hero=document.querySelector('main>div.section-wrapper');
+    if ($hero.classList.contains('bg-image')) $hero.classList.add('hero');
 }
 
 function decorateImageOnlySections() {

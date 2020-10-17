@@ -63,6 +63,21 @@ main h1 {
 
 main .icon-embrew {
   margin-top: 10vh;
+  background-color: rgba(var(--text-color),0.6);
+  padding: 16px 64px;
+  box-sizing: border-box;
+  max-width: 95vw;
+}
+
+main .icon {
+  stroke: currentColor;
+  fill: currentColor;
+}
+
+main div.section-wrapper.bg-image.hero {
+  color: rgb(var(--background-color));
+  height: 100vh;
+  background-position: 15%;
 }
 
 main .stamp {
