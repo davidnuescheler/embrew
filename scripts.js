@@ -140,7 +140,7 @@ function decorateSquareLinks() {
 }
 
 function hideTitle() {
-    if (window.location.pathname=='/') {
+    if (window.location.pathname=='/' || window.location.pathname=='/index.html') {
         document.querySelector('main h1').remove();
     }
 }
