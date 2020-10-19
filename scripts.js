@@ -180,8 +180,22 @@ function getDate(date, time) {
 
 }
 
-function checkPreview() {
-    console.log(document.referrer);
+async function checkPreview() {
+    if (document.referrer == 'https://docs.google.com/' || window.location.search=='?fresh') {
+        const hostname='embrew--davidnuescheler.hlx.page';
+        const pathname=window.location.pathname;
+        const resp=await fetch(`https://adobeioruntime.net/api/v1/web/helix/helix-services/purge@v1?host=${hostname}&path=${encodeURIComponent(pathname)}`, {
+            method: 'POST'
+        });
+    
+        const json=await resp.json();
+        console.log(JSON.stringify(json));
+
+        const newurl=window.location.protocol+'//'+window.location.host+pathname;
+        await fetch(newurl, {cache: 'reload', mode: 'no-cors'});
+        console.log(`busted browser cache for: ${newurl}`);
+        window.location.href=newurl;
+    }
 }
 
 async function getConfig() {
