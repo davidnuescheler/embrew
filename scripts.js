@@ -180,6 +180,9 @@ function getDate(date, time) {
 
 }
 
+function checkPreview() {
+    console.log(document.referrer);
+}
 
 async function getConfig() {
     if (!window.embrew.config) {
@@ -217,3 +220,5 @@ window.embrew={};
 document.addEventListener('DOMContentLoaded', (evt) => {
     decoratePage();
 })
+
+checkPreview();
