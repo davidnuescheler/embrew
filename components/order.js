@@ -19,7 +19,7 @@ function indexCatalog(data) {
 }
 
 async function loadCatalog() {
-    const resp=await fetch("https://thinktanked.org/catalog.json?v=3");
+    const resp=await fetch("https://new.emigrationbrewing.com/catalog.json");
     const data=await resp.json();
     indexCatalog(data);
     return (data);

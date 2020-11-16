@@ -1,0 +1,57 @@
+<button id="purge" onclick="purge()">Start Purge</button>
+
+<style>
+    .purge-section p a {
+        overflow: hidden ;
+        width: 100%;
+    }
+
+    a.working {
+        background-color: #aaa;
+        border: 2px solid currentColor;
+    }
+
+    a.done {
+        background-color: white;
+        border: 2px solid #333;
+        color: #333;
+    }
+
+
+</style>
+<script>
+    $div=document.getElementById('purge').closest('div');
+    $div.classList.add('purge-section');
+
+    async function sendPurge(path) {
+        const resp=await fetch(`https://adobeioruntime.net/api/v1/web/helix/helix-services/purge@v1?host=embrew-davidnuescheler.hlx.page&path=${path}`, {
+            method: 'POST'
+        });
+        const json=await resp.json();
+        console.log(JSON.stringify(json));
+    return(json);
+}
+
+
+async function purge() {
+        const $as=Array.from(document.querySelectorAll('.purge-section a'));
+        for (let i=0; i<$as.length; i++) {
+            const $a=$as[i];
+            const urlString=$a.getAttribute('href');
+            const url=new URL(urlString);
+            $a.classList.add('working');
+            if (url.host.includes('emigrationbrewing.com')) {
+                let path=url.pathname;
+                if (path.endsWith('/')) path+='index';
+                if (!path.includes('.')) path+='.html';
+                await sendPurge(path+url.search);
+            } else {
+                const resp=await fetch(urlString);
+                const json=await resp.json();
+                console.log(JSON.stringify(json));
+            }
+            $a.classList.remove('working');            
+            $a.classList.add('done');            
+        }
+    }
+</script>

@@ -10,6 +10,7 @@ async function initReservationForm() {
     const $party=document.getElementById('party');
     const $date=document.getElementById('date');
     const $time=document.getElementById('time');
+    const $seating=document.getElementById('seating');
     const weekdays=['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', `Friday`, 'Saturday'];
 
     for (let daysOut=0;daysOut<10;daysOut++) {
@@ -43,6 +44,39 @@ async function initReservationForm() {
     $party.innerHTML=html;
 }
 
+async function getReservations() {
+    const resp=await fetch('/reservations.json');
+    const json=await resp.json();
+    if (json.data) {
+        return (json.data);
+    } else {
+        return (json);
+    }
+}
+
+async function filterReservationsByDate(reservations, date) {
+    const filterDate=new Date(date);
+    reservations.filter(r => {
+        const resDate=getDate(r.Date, r.Time);
+        return (isSameDate(resDate, filterDate));
+   })
+}
+
+function isSameDate(date1, date2) {
+    return (date1.getDate()==date2.getDate() && 
+        date1.getFullYear()==date2.getFullYear() &&
+        date1.getMonth()==date2.getMonth())
+}
+
+async function checkReservationTimesAvailability(date, $time, partySize, preference) {
+    const config=await getConfig();
+    const reservations=await getReservations();
+    const daysRes=filterReservationsByDate(reservations, date);
+    $time.options.forEach(($o) => {
+        console.log($o.value);
+    })
+} 
+
 async function setReservationTimes(date) {
     const $time=document.getElementById('time');
     $time.innerHTML='';
@@ -63,6 +97,10 @@ async function setReservationTimes(date) {
             }
         }
     }
+    const $party=document.getElementById('party');
+    const $seating=document.getElementById('seating');
+
+    checkReservationTimesAvailability(date, $time, $party.value, $seating.value)
 }
 
 async function displayReservation(reservation) {
