@@ -1,20 +1,16 @@
-<button id="purge" onclick="purge()">Start Purge</button>
+<button id="purge" onclick="purge()">Publish Website</button>
 
 <style>
-    .purge-section p a {
-        overflow: hidden ;
+    
+    .purge-section p {
+        display: none;
         width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
-    a.working {
-        background-color: #aaa;
-        border: 2px solid currentColor;
-    }
-
-    a.done {
-        background-color: white;
-        border: 2px solid #333;
-        color: #333;
+    p.working {
+        display: block;
     }
 
 
@@ -37,9 +33,10 @@ async function purge() {
         const $as=Array.from(document.querySelectorAll('.purge-section a'));
         for (let i=0; i<$as.length; i++) {
             const $a=$as[i];
+            const $p=$a.closest('p');
             const urlString=$a.getAttribute('href');
             const url=new URL(urlString);
-            $a.classList.add('working');
+            $p.classList.add('working');
             if (url.host.includes('emigrationbrewing.com')) {
                 let path=url.pathname;
                 if (path.endsWith('/')) path+='index';
@@ -50,8 +47,8 @@ async function purge() {
                 const json=await resp.json();
                 console.log(JSON.stringify(json));
             }
-            $a.classList.remove('working');            
-            $a.classList.add('done');            
+            $p.classList.remove('working');            
+            $p.classList.add('done');            
         }
     }
 </script>
