@@ -627,4 +627,5 @@ window.embrew.cart={
 document.addEventListener('DOMContentLoaded', (evt) => {
     initOrderForm();
     initCart();
+    document.body.classList.add('order');
 })

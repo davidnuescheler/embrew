@@ -23,6 +23,13 @@ body.noscroll {
   overflow: hidden;
 }
 
+.add-to-order {
+  display: none;
+}
+
+body.order .add-to-order {
+  display: inline-block;
+}
 
 a, button {
   background-color: rgb(var(--highlight-color));
@@ -61,12 +68,13 @@ main h1 {
     font-size: 2rem;
 }
 
-main .icon-embrew {
+main .icon-embrew, main .hero h1 {
   margin-top: 10vh;
   background-color: rgba(var(--text-color),0.6);
   padding: 16px 64px;
   box-sizing: border-box;
   max-width: 95vw;
+  line-height: 1.15em;
 }
 
 main .icon {
