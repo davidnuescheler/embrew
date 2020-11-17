@@ -20,7 +20,7 @@
     $div.classList.add('purge-section');
 
     async function sendPurge(path) {
-        const resp=await fetch(`https://adobeioruntime.net/api/v1/web/helix/helix-services/purge@v1?host=embrew-davidnuescheler.hlx.page&path=${path}`, {
+        const resp=await fetch(`https://adobeioruntime.net/api/v1/web/helix/helix-services/purge@v1?host=embrew--davidnuescheler.hlx.page&path=${path}`, {
             method: 'POST'
         });
         const json=await resp.json();
