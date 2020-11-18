@@ -144,13 +144,15 @@ const isToday = (someDate) => {
 async function displayReservations() {
     const $upcoming=document.getElementById('upcoming');
     $upcoming.innerHTML='';
+    const now=new Date();
     window.embrew.reservations.forEach((r) => {
         if (r.Name) {
             if (!r.Status) r.Status='Not Arrived Yet';
             const status=r.Status;
             const statusClass=status.toLowerCase().replace(' ','-');
             const today=isToday(getDate(r.Date,r.Time));
-            $row=createTag('div', { class: `row ${statusClass} ${today?'today':'archive'}`, id: `res-${r.ID}`});
+            const future=(today||getDate(r.Date,r.Time)>now)?true:false;
+            $row=createTag('div', { class: `row ${statusClass} ${future?'future':'archive'}`, id: `res-${r.ID}`});
             $row.innerHTML=`
             <div class="status">
                 ${status}
