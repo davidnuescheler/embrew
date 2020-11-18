@@ -187,6 +187,7 @@ input, select, textarea {
   border: 0;
   border-bottom: 1px dashed rgb(var(--highlight-color));
   -webkit-appearance: none;
+  background-color: rgb(var(--background-color));
 }
 
 input[type='checkbox'] {
