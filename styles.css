@@ -65,7 +65,7 @@ header .banner {
   animation: bounce-in-top 1s linear both;
   overflow: hidden;
   height: 64px;
-  position: relative;
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
