@@ -21,7 +21,7 @@ async function initReservationForm() {
         if (daysOut==1) prefix='Tomorrow';
         $option=createTag('option',{value: `${day.toDateString()}`});
         $option.innerHTML=`${prefix} ${weekdays[day.getDay()].substr(0,3)} ${day.toLocaleDateString()}`;
-        $date.appendChild($option);
+        if (!await areWeClosed(day)) $date.appendChild($option);
     }
     $date.addEventListener('change', (evt) => {
         setReservationTimes($date.value);
@@ -62,12 +62,6 @@ async function filterReservationsByDate(reservations, date) {
    })
 }
 
-function isSameDate(date1, date2) {
-    return (date1.getDate()==date2.getDate() && 
-        date1.getFullYear()==date2.getFullYear() &&
-        date1.getMonth()==date2.getMonth())
-}
-
 async function checkReservationTimesAvailability(date, $time, partySize, preference) {
     const config=await getConfig();
     const reservations=await getReservations();
@@ -100,7 +94,7 @@ async function setReservationTimes(date) {
     const $party=document.getElementById('party');
     const $seating=document.getElementById('seating');
 
-    checkReservationTimesAvailability(date, $time, $party.value, $seating.value)
+    //checkReservationTimesAvailability(date, $time, $party.value, $seating.value)
 }
 
 async function displayReservation(reservation) {

@@ -115,15 +115,19 @@ async function initOrderForm() {
         if (daysOut==1) prefix='Tomorrow';
         $option=createTag('option',{value: `${day.toDateString()}`});
         $option.innerHTML=`${prefix} ${weekdays[day.getDay()].substr(0,3)} ${day.toLocaleDateString()}`;
-        $date.appendChild($option);
+        const closed=await areWeClosed(day);
+        if (!closed) {
+            $date.appendChild($option);
+        }
     }
     $date.addEventListener('change', (evt) => {
         setPickupTimes($date.value);
+        console.log('date change');
     })
     await setPickupTimes($date.value);
     if ($time.options.length==0) {
         $date.firstElementChild.remove();
-        setPickupTimes($date.value);
+        await setPickupTimes($date.value);
     }
 }
 

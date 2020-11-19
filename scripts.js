@@ -152,6 +152,29 @@ function decoratePhoneLinks() {
         })
     })
 }
+async function addBanner() {
+    const l=window.location.pathname;
+    if (l.endsWith('/') || l.endsWith('order')|| l.endsWith('reservation')) {
+        const config=await getConfig();
+        const today=new Date();
+        const upcomingClosed=[];
+        for (let daysOut=0;daysOut<10;daysOut++) {
+            const day=new Date();
+            day.setDate(day.getDate()+daysOut);
+            let prefix='';
+            if (daysOut==0) prefix='Today';
+            if (daysOut==1) prefix='Tomorrow';
+            const closedOn=await areWeClosed(day); 
+            if (closedOn) upcomingClosed.push((prefix?prefix+' ':'')+closedOn);
+        }
+        const $header=document.querySelector('header');
+        const $banner=createTag('div', {class: 'banner'});
+        const bannerTemplate=config['Banner Templates']['Closed'];
+        $banner.innerHTML=bannerTemplate.replace('...',upcomingClosed.join(' & '));
+        $header.append($banner);
+        setTimeout((e)=> {$banner.classList.add('appear')}, 100);    
+    }
+}
 
 function decoratePage() {
     wrapSections('main>div');
@@ -161,23 +184,38 @@ function decoratePage() {
     decorateTables();
     decoratePhoneLinks();
     hideTitle();
+    addBanner();
 }
 
+function isSameDate(date1, date2) {
+    return (date1.getDate()==date2.getDate() && 
+        date1.getFullYear()==date2.getFullYear() &&
+        date1.getMonth()==date2.getMonth())
+}
 
 function getDate(date, time) {
-    const months=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const dateSegs=date.split(' ');
-    const timeSegs=time.split(' ');
-    const hoursMins=timeSegs[0].split(':');
+    if (isNaN(date)) {
+        const months=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const dateSegs=date.split(' ');
+        const timeSegs=time.split(' ');
+        const hoursMins=timeSegs[0].split(':');
+    
+        const hour=+hoursMins[0]+(timeSegs[1]=='PM'?12:0);
+        const mins=+hoursMins[1];
+    
+        const dateAndTime=new Date(+dateSegs[3], months.indexOf(dateSegs[1]), +dateSegs[2], hour, mins);
+        console.log(dateAndTime, date+'->'+time);
+    
+        return (dateAndTime);    
 
-    const hour=+hoursMins[0]+(timeSegs[1]=='PM'?12:0);
-    const mins=+hoursMins[1];
-
-    const dateAndTime=new Date(+dateSegs[3], months.indexOf(dateSegs[1]), +dateSegs[2], hour, mins);
-    console.log(dateAndTime, date+'->'+time);
-
-    return (dateAndTime);
-
+    } else {
+        const serial=date;
+        const utc_days  = Math.floor(serial - 25569) +1; //hack for negative UTC
+        const utc_value = utc_days * 86400; 
+        const date_info = new Date(utc_value * 1000);
+     
+        return new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate());
+    }
 }
 
 async function checkPreview() {
@@ -196,6 +234,19 @@ async function checkPreview() {
         console.log(`busted browser cache for: ${newurl}`);
         window.location.href=newurl;
     }
+}
+
+async function areWeClosed(someDate) {
+    const config=await getConfig();
+    const closedOn=config['Closed on'];
+    const days=Object.keys(closedOn);
+    let closed='';
+    days.forEach(day => {
+        const closedDate=getDate(closedOn[day]);
+        if (isSameDate(someDate, closedDate)) closed=day;
+    })
+    // console.log(closed);
+    return closed;
 }
 
 async function getConfig() {
@@ -235,14 +286,14 @@ function fixImages() {
     const width=fitting[fitting.length-1]*2;
     console.log(width)
     const observer = new MutationObserver(mutations => {
-        console.log('mutation');
+        //console.log('mutation');
         mutations.forEach(mutation => {
             mutation.addedNodes.forEach(node => {
                 // only handle images with src=/hlx_*
-                console.log(node.tagName +':'+node.src);
+                // console.log(node.tagName +':'+node.src);
                 if (node.tagName === 'IMG' && node.src.includes('/hlx_') && !node.src.includes('?')) {
                     node.setAttribute('src', `${node.src}?width=${width}&auto=web&format=pjpg&optimize=medium`);
-                    console.log('src:'+node.src)
+                    //console.log('src:'+node.src)
                 }
             });
         });
