@@ -167,12 +167,14 @@ async function addBanner() {
             const closedOn=await areWeClosed(day); 
             if (closedOn) upcomingClosed.push((prefix?prefix+' ':'')+closedOn);
         }
-        const $header=document.querySelector('header');
-        const $banner=createTag('div', {class: 'banner'});
-        const bannerTemplate=config['Banner Templates']['Closed'];
-        $banner.innerHTML=bannerTemplate.replace('...',upcomingClosed.join(' & '));
-        $header.append($banner);
-        setTimeout((e)=> {$banner.classList.add('appear')}, 100);    
+        if (upcomingClosed.length) {
+            const $header=document.querySelector('header');
+            const $banner=createTag('div', {class: 'banner'});
+            const bannerTemplate=config['Banner Templates']['Closed'];
+            $banner.innerHTML=bannerTemplate.replace('...',upcomingClosed.join(' & '));
+            $header.append($banner);
+            setTimeout((e)=> {$banner.classList.add('appear')}, 100);        
+        }
     }
 }
 
