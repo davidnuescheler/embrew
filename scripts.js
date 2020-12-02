@@ -282,6 +282,4 @@ async function getConfig() {
     return (window.embrew.config);
 }
 
-window.embrew={};
-
 decoratePage();

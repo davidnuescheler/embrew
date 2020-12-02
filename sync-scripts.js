@@ -26,3 +26,5 @@ function fixImages() {
 }
 
 fixImages();
+
+window.embrew={};
