@@ -284,6 +284,4 @@ async function getConfig() {
 
 window.embrew={};
 
-document.addEventListener('DOMContentLoaded', (evt) => {
-    decoratePage();
-})
+decoratePage();
