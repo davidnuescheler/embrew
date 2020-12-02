@@ -3,9 +3,7 @@ function fixImages() {
     const imgSizes=[375, 768, 1000];
     const fitting=imgSizes.filter(s => s<=screenWidth);
     const width=fitting.length?fitting[fitting.length-1]*2:imgSizes[0]*2;
-    console.log(width);
     const observer = new MutationObserver(mutations => {
-        //console.log('mutation');
         mutations.forEach(mutation => {
             mutation.addedNodes.forEach(node => {
                 // only handle images with src=/hlx_*
@@ -16,6 +14,9 @@ function fixImages() {
                 }
             });
         });
+        if (document.readyState=='interactive' || document.readyState=='complete') {
+            observer.disconnect();
+        }
     });
     observer.observe(document, { childList: true, subtree: true });
 }
