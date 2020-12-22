@@ -156,7 +156,7 @@ function decoratePhoneLinks() {
 }
 async function addBanner() {
     const l=window.location.pathname;
-    if (l.endsWith('/') || l.endsWith('order')|| l.endsWith('reservation')) {
+    if ((l.endsWith('/') || l.endsWith('order')|| l.endsWith('reservation')) && !window.location.search) {
         const config=await getConfig();
         const today=new Date();
         const upcomingClosed=[];
