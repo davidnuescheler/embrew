@@ -129,6 +129,7 @@ main {
 }
 
 main.appear {
+  display: block;
   opacity: 1;
 }
 
