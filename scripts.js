@@ -26,6 +26,7 @@ function decorateBackgroundSections() {
             $wrapper.style.backgroundImage=`url(${src})`;
             $headerImg.parentNode.remove();
             $wrapper.classList.add('bg-image');
+            stamp(`background: ${src}`)
         }    
     });
 
