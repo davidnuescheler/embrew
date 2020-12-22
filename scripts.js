@@ -21,7 +21,8 @@ function wrapSections(element) {
 function decorateBackgroundSections() {
     document.querySelectorAll('main div.section-wrapper>div>:first-child>img').forEach(($headerImg) => {
         if ($headerImg) {
-            const src=$headerImg.getAttribute('src');
+            const src=$headerImg.currentSrc?$headerImg.currentSrc:$headerImg.src;
+            console.log('background decoration :'+src);
             $wrapper=$headerImg.closest('.section-wrapper');
             $wrapper.style.backgroundImage=`url(${src})`;
             $headerImg.parentNode.remove();
