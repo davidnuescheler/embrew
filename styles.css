@@ -1,23 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Mulish:wght@386&display=swap');
-:root {
-  --text-color: 10,10,10;
-  --background-color: 255,255,255;
-  --highlight-color: 67,68,69;
-  --font: 'Libre Baskerville';
-  --font-alt: 'Mulish';
-}
-
-body {
-  text-align: center;
-  font-size: 1rem;
-  margin: 0;
-  font-family: var(--font);
-  font-weight: 400;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  width: 100%;
-  line-height: 2em;
-}
 
 body.noscroll {
   overflow: hidden;
@@ -55,11 +36,6 @@ a, button {
   background-color: rgb(var(--background-color));
 
 }
-
-img {
-    max-width: 100%;
-}
-
 
 header .banner {
   animation: bounce-in-top 1s linear both;
@@ -122,11 +98,6 @@ header .banner {
       height: 64px;
     }
   }
-
-main {
-  margin-bottom: 100px;
-  transition: opacity 0.1s ease;
-}
 
 main div.section-wrapper .icon {
   stroke: currentColor;
@@ -514,20 +485,20 @@ footer #item-config>div {
 }
 
 @media (min-width: 600px) {
-  main h1 {
+  main .section-wrapper h1 {
       font-size: 3rem;
   }
-  main h3 {
+  main .section-wrapper h3 {
       font-size: 2.2rem;
   }
-  main h4 {
+  main .section-wrapper h4 {
       font-size: 1.5rem;
   }
-  main p {
+  main .section-wrapper p {
       font-size: 1.3rem;
   }
 
-  main h4 a {
+  main .section-wrapper h4 a {
     font-size: 0.5em;
   }  
 }

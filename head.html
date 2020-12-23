@@ -7,9 +7,24 @@
 <!-- above the fold styling -->
 <style>
 
+    :root {
+        --text-color: 10,10,10;
+        --background-color: 255,255,255;
+        --highlight-color: 67,68,69;
+        --font: 'Libre Baskerville';
+        --font-alt: 'Mulish';
+    }
+
     body {
+        text-align: center;
+        font-size: 1rem;
         margin: 0;
-        padding: 0;
+        font-family: var(--font);
+        font-weight: 400;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        width: 100%;
+        line-height: 2em;
     }
     
     main>div:first-child {
@@ -58,9 +73,12 @@
         padding: 0px 30px;
     }
 
+    img {
+        max-width: 100%;
+    }
+
+
 </style>
 
 <script src="/scripts.js" defer></script>
-<!--
 <link rel="stylesheet" href="/styles.css" media="print" onload="this.media='all'">
--->
