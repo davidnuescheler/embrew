@@ -35,7 +35,7 @@ function decorateBackgroundSections() {
 }
 
 function decorateImageOnlySections() {
-    document.querySelectorAll('main div.section-wrapper>div>img').forEach(($img) => {
+    document.querySelectorAll('main div.section-wrapper>div>picture, main div.section-wrapper>div>img').forEach(($img) => {
         $wrapper=$img.closest('.section-wrapper');
         $wrapper.classList.add('image-only');
     });
@@ -179,7 +179,20 @@ async function addBanner() {
     }
 }
 
+function decoratePictures() {
+    if (!document.querySelector('picture')) {
+        const helixImages=document.querySelectorAll('main>div:nth-of-type(n+2) img[src^="/hlx_"');
+        helixImages.forEach($img => {
+            const $pic=createTag('picture');
+            const $parent=$img.parentNode;
+            $pic.appendChild($img);
+            $parent.appendChild($pic);
+        })
+    }
+}
+
 function decoratePage() {
+    decoratePictures();
     wrapSections('main>div:nth-of-type(n+2)');
     decorateBackgroundSections();
     decorateImageOnlySections();
