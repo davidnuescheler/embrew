@@ -87,12 +87,19 @@
 
     try {
   
-  const po = new PerformanceObserver((entryList) => {
+  const polcp = new PerformanceObserver((entryList) => {
     const entries = entryList.getEntries();
     stamp(JSON.stringify(entries));
   });
 
-  po.observe({type: 'largest-contentful-paint', buffered: true});
+  polcp.observe({type: 'largest-contentful-paint', buffered: true});
+
+  const pores = new PerformanceObserver((entryList) => {
+    const entries = entryList.getEntries();
+    stamp('resource loaded:'+entries[0].name);
+  });
+
+  pores.observe({type: 'resource', buffered: true});
 } catch (e) {
 
 }
@@ -101,4 +108,4 @@
 
 <script src="/scripts.js" defer></script>
 
-<link rel="stylesheet" href="/styles.css" media="print" onload="stamp('css loaded');this.media='all'">
+<link rel="stylesheet" href="/styles.css" media="print">
