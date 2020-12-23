@@ -192,6 +192,7 @@ function decoratePictures() {
 }
 
 function decoratePage() {
+    stamp('decoratePage start');
     decoratePictures();
     wrapSections('main>div:nth-of-type(n+2)');
     decorateBackgroundSections();
@@ -201,6 +202,7 @@ function decoratePage() {
     decoratePhoneLinks();
     //hideTitle();
     //addBanner();
+    stamp('decoratePage end');
 }
 
 function isSameDate(date1, date2) {

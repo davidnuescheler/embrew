@@ -78,7 +78,27 @@
 
 
 </style>
+<script>
+    function stamp(message) {
+        console.log(new Date-performance.timing.navigationStart+":"+message);
+    }
+
+    stamp ('start');
+
+    try {
+  
+  const po = new PerformanceObserver((entryList) => {
+    const entries = entryList.getEntries();
+    stamp(JSON.stringify(entries));
+  });
+
+  po.observe({type: 'largest-contentful-paint', buffered: true});
+} catch (e) {
+
+}
+
+</script>
 
 <script src="/scripts.js" defer></script>
 
-<link rel="stylesheet" href="/styles.css" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="/styles.css" media="print" onload="stamp('css loaded');this.media='all'">
