@@ -28,6 +28,19 @@
         object-position: center center;
     }
 
+    main>div:first-child del {
+        display: none;
+    }
+
+    main>div:first-child h1 {
+        position: absolute;
+        top: calc(50% - 50px);
+        left: 0;
+        right: 0;
+        margin: auto;
+        color: white;
+    }
+
     main>div:first-child .icon-embrew {
         position: absolute;
         background-color: rgba(0,0,0,0.6);
@@ -42,3 +55,4 @@
 </style>
 
 <script src="/scripts.js" defer></script>
+<link rel="stylesheet" href="/styles.css" media="print" onload="this.media='all'">
