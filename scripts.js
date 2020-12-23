@@ -1,3 +1,13 @@
+/* performance logging helper */
+
+function stamp(message) {
+    console.log(new Date-performance.timing.navigationStart+":"+message);
+}
+
+
+stamp ('start');
+
+
 function createTag(name, attrs) {
     const el = document.createElement(name);
     if (typeof attrs === 'object') {
@@ -191,7 +201,31 @@ function decoratePictures() {
     }
 }
 
+/**
+ * Loads a CSS file.
+ * @param {string} href The path to the CSS file
+ */
+function loadCSS(href) {
+    const link = document.createElement('link');
+    link.setAttribute('rel', 'stylesheet');
+    link.setAttribute('href', href);
+    document.head.appendChild(link);
+};
+
+function checkLCPProxy() {
+    const $heroImage=document.querySelector('img');
+    if ($heroImage.complete) {
+        loadCSS('/styles.css');
+        stamp('loading CSS')
+    } else {
+        $heroImage.addEventListener('load', checkLCPProxy);
+        stamp('registered LCP Proxy listener')
+    }
+
+}
+
 function decoratePage() {
+    checkLCPProxy();
     stamp('decoratePage start');
     decoratePictures();
     wrapSections('main>div:nth-of-type(n+2)');
@@ -297,6 +331,8 @@ async function getConfig() {
 
     return (window.embrew.config);
 }
+
+
 
 window.embrew={};
 

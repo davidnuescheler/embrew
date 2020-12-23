@@ -74,57 +74,5 @@
 
 
 </style>
-<script>
-
-
-/* delay CSS loading post LCP */
-
-/* performance logging helper */
-
-function stamp(message) {
-    console.log(new Date-performance.timing.navigationStart+":"+message);
-}
-
-
-stamp ('start');
-
-/**
- * Loads a CSS file.
- * @param {string} href The path to the CSS file
- */
- function loadCSS(href) {
-    const link = document.createElement('link');
-    link.setAttribute('rel', 'stylesheet');
-    link.setAttribute('href', href);
-    document.head.appendChild(link);
-};
-
-try {
-    const polcp = new PerformanceObserver((entryList) => {
-        const entries = entryList.getEntries();
-        stamp(JSON.stringify(entries));
-        loadCSS('/styles.css');
-    });
-    
-    polcp.observe({type: 'largest-contentful-paint', buffered: true});
-
-    const pores = new PerformanceObserver((entryList) => {
-    const entries = entryList.getEntries();
-    
-    entries.forEach((entry) => {
-        stamp(`resource loaded: ${entry.name} - [${Math.round(entry.startTime+entry.duration)}]`);
-        if (entry.name.indexOf('dd76df9c9b121fec5f1b6bc39481247a1f756139')>0) {
-            loadCSS('/styles.css'); 
-        }
-        });
-    });
-
-    pores.observe({type: 'resource', buffered: true});
-
-    } catch (e) {
-        loadCSS('/styles.css'); 
-    }
-
-</script>
 
 <script src="/scripts.js" defer></script>
