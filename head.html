@@ -110,7 +110,9 @@ function loadCSS(href) {
 
   const pores = new PerformanceObserver((entryList) => {
     const entries = entryList.getEntries();
-    stamp('resource loaded:'+entries[0].name);
+    entries.forEach((entry) => {
+        stamp(`resource loaded: ${entry.name} - [${Math.round(entry.startTime+entry.duration)}]`);
+    });
   });
 
   pores.observe({type: 'resource', buffered: true});
