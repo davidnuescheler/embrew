@@ -79,46 +79,51 @@
 
 </style>
 <script>
-    function stamp(message) {
-        console.log(new Date-performance.timing.navigationStart+":"+message);
-    }
 
-    stamp ('start');
+function stamp(message) {
+    console.log(new Date-performance.timing.navigationStart+":"+message);
+}
 
-    /**
+
+stamp ('start');
+
+
+/* delay CSS loading post LCP */
+
+/**
  * Loads a CSS file.
  * @param {string} href The path to the CSS file
  */
-function loadCSS(href) {
+ function loadCSS(href) {
     const link = document.createElement('link');
     link.setAttribute('rel', 'stylesheet');
     link.setAttribute('href', href);
     document.head.appendChild(link);
-  };
+};
   
 
+try {
+    const polcp = new PerformanceObserver((entryList) => {
+        const entries = entryList.getEntries();
+        stamp(JSON.stringify(entries));
+        loadCSS('/styles.css');
+    });
+    
+    polcp.observe({type: 'largest-contentful-paint', buffered: true});
 
-    try {
-  
-  const polcp = new PerformanceObserver((entryList) => {
+    const pores = new PerformanceObserver((entryList) => {
     const entries = entryList.getEntries();
-    stamp(JSON.stringify(entries));
-    loadCSS('/styles.css');
-  });
-
-  polcp.observe({type: 'largest-contentful-paint', buffered: true});
-
-  const pores = new PerformanceObserver((entryList) => {
-    const entries = entryList.getEntries();
+    
     entries.forEach((entry) => {
         stamp(`resource loaded: ${entry.name} - [${Math.round(entry.startTime+entry.duration)}]`);
+        });
     });
-  });
 
-  pores.observe({type: 'resource', buffered: true});
-} catch (e) {
+    pores.observe({type: 'resource', buffered: true});
 
-}
+    } catch (e) {
+        loadCSS('/styles.css'); 
+    }
 
 </script>
 
