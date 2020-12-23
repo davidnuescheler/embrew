@@ -27,7 +27,6 @@ function decorateBackgroundSections() {
             $wrapper.style.backgroundImage=`url(${src})`;
             $headerImg.parentNode.remove();
             $wrapper.classList.add('bg-image');
-            stamp(`background: ${src}`)
         }    
     });
 
@@ -181,14 +180,14 @@ async function addBanner() {
 }
 
 function decoratePage() {
-    wrapSections('main>div');
+    wrapSections('main>div:nth-of-type(n+2)');
     decorateBackgroundSections();
     decorateImageOnlySections();
     decorateSquareLinks();
     decorateTables();
     decoratePhoneLinks();
-    hideTitle();
-    addBanner();
+    //hideTitle();
+    //addBanner();
 }
 
 function isSameDate(date1, date2) {
@@ -283,5 +282,7 @@ async function getConfig() {
 
     return (window.embrew.config);
 }
+
+window.embrew={};
 
 decoratePage();
