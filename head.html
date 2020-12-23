@@ -80,15 +80,17 @@
 </style>
 <script>
 
+
+/* delay CSS loading post LCP */
+
+/* performance logging helper */
+
 function stamp(message) {
     console.log(new Date-performance.timing.navigationStart+":"+message);
 }
 
 
 stamp ('start');
-
-
-/* delay CSS loading post LCP */
 
 /**
  * Loads a CSS file.
@@ -100,7 +102,6 @@ stamp ('start');
     link.setAttribute('href', href);
     document.head.appendChild(link);
 };
-  
 
 try {
     const polcp = new PerformanceObserver((entryList) => {
@@ -116,6 +117,9 @@ try {
     
     entries.forEach((entry) => {
         stamp(`resource loaded: ${entry.name} - [${Math.round(entry.startTime+entry.duration)}]`);
+        if (entry.name.indexOf('dd76df9c9b121fec5f1b6bc39481247a1f756139')>0) {
+            loadCSS('/styles.css'); 
+        }
         });
     });
 
