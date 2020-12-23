@@ -7,6 +7,10 @@
         margin: 0;
         padding: 0;
     }
+    
+    main>div:first-child {
+        position: relative;
+    }
 
     main>div:first-child>p:first-child {
         margin: 0;
@@ -19,4 +23,16 @@
         object-fit: cover;
         object-position: center center;
     }
+
+    main>div:first-child .icon-embrew {
+        position: absolute;
+        background-color: rgba(0,0,0,0.6);
+        top: calc(50% - 100px);
+        left: 0;
+        right: 0;
+        margin: auto;
+        fill: white;
+        padding: 0px 30px;
+    }
+
 </style>
