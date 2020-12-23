@@ -1,22 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Mulish:wght@386&display=swap');
 
-body.noscroll {
+#exclude body.noscroll {
   overflow: hidden;
 }
 
-body .section-wrapper {
+#exclude body .section-wrapper {
   font-family: var(--font);
 }
 
-.add-to-order {
+#exclude .add-to-order {
   display: none;
 }
 
-body.order .add-to-order {
+#exclude body.order .add-to-order {
   display: inline-block;
 }
 
-a, button {
+#exclude a, button {
   background-color: rgb(var(--highlight-color));
   color: rgb(var(--background-color));
   font-family: var(--font-alt);
@@ -35,13 +35,13 @@ a, button {
   line-height: 2rem;
 }
 
-.inverted a, .inverted button{
+#exclude .inverted a, .inverted button{
   color: rgb(var(--highlight-color));
   background-color: rgb(var(--background-color));
 
 }
 
-header .banner {
+#exclude header .banner {
   animation: bounce-in-top 1s linear both;
   overflow: hidden;
   height: 64px;
@@ -103,61 +103,61 @@ header .banner {
     }
   }
 
-main div.section-wrapper .icon {
+#exclude main div.section-wrapper .icon {
   stroke: currentColor;
   fill: currentColor;
 }
 
-main div.section-wrapper.bg-image.hero {
+#exclude main div.section-wrapper.bg-image.hero {
   color: rgb(var(--background-color));
   height: 100vh;
   background-position: 32%;
 }
 
-main .section-wrapper>div {
+#exclude main .section-wrapper>div {
   max-width: 700px;
   margin: auto;
 }
 
-main .section-wrapper {
+#exclude main .section-wrapper {
   padding: 0 32px;
   margin-bottom: 128px;
 }
 
-main .section-wrapper.image-only {
+#exclude main .section-wrapper.image-only {
   padding: 0;
   margin: 0;
 }
 
-main .section-wrapper.image-only>div {
+#exclude main .section-wrapper.image-only>div {
   max-width: 100%;
 
 } 
 
-main .section-wrapper h2, main .section-wrapper h3, main .section-wrapper h4 {
+#exclude main .section-wrapper h2, main .section-wrapper h3, main .section-wrapper h4 {
   text-transform: uppercase;
   letter-spacing: 0.2em;
   line-height: 1.1em;
 }
 
-main .section-wrapper h3 {
+#exclude main .section-wrapper h3 {
   margin-top: 4em;
   font-size: 1.6rem;
   font-weight: 400;
 }
 
-main .section-wrapper h4 {
+#exclude main .section-wrapper h4 {
   margin-bottom: 0.5em;
   margin-top: 3em;
   line-height: 1.5em;
 }
 
-main .section-wrapper p {
+#exclude main .section-wrapper p {
     line-height: 2em;
 }
 
 
-main .section-wrapper.bg-image {
+#exclude main .section-wrapper.bg-image {
   background-size: cover;
   align-items: center;
   justify-content: center;
@@ -166,7 +166,7 @@ main .section-wrapper.bg-image {
   min-height: 300px;
 }
 
-main .section-wrapper.bg-image>div h2 {
+#exclude main .section-wrapper.bg-image>div h2 {
   font-size: 2.5em;
   line-height: 1em;
   background-color: rgba(var(--background-color),0.6);
@@ -174,7 +174,7 @@ main .section-wrapper.bg-image>div h2 {
   color: rgb(var(--text-color),0.7)
 }
 
-input, select, textarea {
+#exclude input, select, textarea {
   font-family: var(--font);
   padding: 16px;
   display: block;
@@ -188,13 +188,13 @@ input, select, textarea {
   background-color: rgb(var(--background-color));
 }
 
-input[type='checkbox'] {
+#exclude input[type='checkbox'] {
   display: inline-block;
   margin: 10px;
   width: auto;
 }
 
-.overlay .checkbox {
+#exclude .overlay .checkbox {
   display: block;
   position: relative;
   padding-left: 35px;
@@ -206,14 +206,14 @@ input[type='checkbox'] {
   text-align: left;
 }
 
-.overlay .checkbox input[type='checkbox'] {
+#exclude .overlay .checkbox input[type='checkbox'] {
   position: absolute;
   opacity: 0;
   cursor: pointer;
   height: 0; 
   width: 0;
 }
-.overlay .checkbox .checkmark {
+#exclude .overlay .checkbox .checkmark {
   position: absolute;
   top: 0;
   left: 0;
@@ -222,26 +222,26 @@ input[type='checkbox'] {
   background-color: #eee;
 }
 
-.overlay .checkbox:hover input ~ .checkmark {
+#exclude .overlay .checkbox:hover input ~ .checkmark {
   background-color: #ccc;
 }
 
 /* When the checkbox is checked, add a blue background */
-.overlay .checkbox input:checked ~ .checkmark {
+#exclude .overlay .checkbox input:checked ~ .checkmark {
   background-color: rgb(var(--background-color));
 }
 
-.overlay .checkbox .checkmark:after {
+#exclude .overlay .checkbox .checkmark:after {
   content: "";
   position: absolute;
   display: none;
 }
 
-.overlay .checkbox input:checked ~ .checkmark:after {
+#exclude .overlay .checkbox input:checked ~ .checkmark:after {
   display: block;
 }
 
-.overlay .checkbox .checkmark:after {
+#exclude .overlay .checkbox .checkmark:after {
   left: 9px;
   top: 5px;
   width: 5px;
@@ -252,12 +252,12 @@ input[type='checkbox'] {
 }
 
 
-.overlay .checkboxes {
+#exclude .overlay .checkboxes {
   display: flex;
   flex-wrap: wrap;
 }
 
-.overlay select {
+#exclude .overlay select {
   border-radius: 6px;
   border: none;
   font-family: var(--font-alt);
@@ -265,19 +265,19 @@ input[type='checkbox'] {
 }
 
 
-.overlay a, .overlay button {
+#exclude .overlay a, .overlay button {
   color: rgb(var(--highlight-color));
   background-color: rgb(var(--background-color));
 }
 
-.overlay .icon {
+#exclude .overlay .icon {
   width: 1em;
   height: 1em;
   top: .1em;
   position: relative;
 }
 
-main #reservation-confirmation {
+#exclude main #reservation-confirmation {
   background-color: rgb(var(--highlight-color));
   color: rgb(var(--background-color));
   min-height: 80vh;
@@ -286,11 +286,11 @@ main #reservation-confirmation {
   transition: all 1s ease;
 }
 
-main #reservation-confirmation h3 {
+#exclude main #reservation-confirmation h3 {
   margin: auto;
 }
 
-main #reservation-confirmation.collapsed {
+#exclude main #reservation-confirmation.collapsed {
   background-color: rgb(var(--background-color));
   min-height: 0;
   height: 0;
@@ -298,7 +298,7 @@ main #reservation-confirmation.collapsed {
   padding: 0;
 }
 
-footer #cart {
+#exclude footer #cart {
   background-color: rgb(var(--highlight-color));
   color: rgb(var(--background-color));
   bottom: 0;
@@ -307,7 +307,7 @@ footer #cart {
   position: fixed;
 }
 
-footer #cart .compact {
+#exclude footer #cart .compact {
   height: 80px;
   padding: 25px;
   box-sizing: border-box;
@@ -315,24 +315,24 @@ footer #cart .compact {
   user-select: none;
 }
 
-footer #cart .full {
+#exclude footer #cart .full {
   height: 100vh;
   box-sizing: border-box;
   overflow-y: scroll;
 }
 
-footer .overlay .close {
+#exclude footer .overlay .close {
   text-align: right;
   margin-bottom: 64px;
 }
 
-footer .overlay .full-inner {
+#exclude footer .overlay .full-inner {
   max-width: 500px;
   margin: auto;
   padding: 30px;
 }
 
-footer #cart .full .line {
+#exclude footer #cart .full .line {
   display: flex;
   justify-content: space-between;
   user-select: none;
@@ -340,49 +340,49 @@ footer #cart .full .line {
   border-top: 0.5px dashed rgb(var(--background-color));
 }
 
-footer #cart .full .line>div {
+#exclude footer #cart .full .line>div {
   padding: 2px;
   box-sizing: border-box;
 }
 
-footer #cart .full .quantity {
+#exclude footer #cart .full .quantity {
   width: 85px;
   text-align: left;
 }
 
-footer #cart .full .remove {
+#exclude footer #cart .full .remove {
   width: 50px;
   text-align: right;
 }
 
-footer #cart .full .price {
+#exclude footer #cart .full .price {
   width: 75px;
   text-align: right;
 }
 
-footer #cart .full .description {
+#exclude footer #cart .full .description {
   flex: auto;
   text-align: left;
   width: 100%;
 }
 
-footer #cart .full .description .modifiers {
+#exclude footer #cart .full .description .modifiers {
   font-size: 0.8em;
 }
 
-footer #cart .full .line.tip.hidden {
+#exclude footer #cart .full .line.tip.hidden {
   display: none;
 }
 
-footer #cart .full .line.total {
+#exclude footer #cart .full .line.total {
   font-weight: 700;
 }
 
-footer #cart .full .line .control {
+#exclude footer #cart .full .line .control {
   display: inline-block;
 }
 
-footer #item-config {
+#exclude footer #item-config {
   background-color: rgb(var(--highlight-color));
   color: rgb(var(--background-color));
   bottom: 0;
@@ -393,23 +393,23 @@ footer #item-config {
   overflow-y: scroll;
 }
 
-footer #item-config>div {
+#exclude footer #item-config>div {
   max-width: 500px;
   margin: auto;
   padding: 30px;
 }
 
-.hidden {
+#exclude .hidden {
   display: none;
 }
 
-.spinner {
+#exclude .spinner {
   margin: 100px auto 0;
   width: 70px;
   text-align: center;
 }
 
-.spinner>div {
+#exclude .spinner>div {
   width: 18px;
   height: 18px;
   background-color: currentColor;
@@ -418,11 +418,11 @@ footer #item-config>div {
   animation: sk-bouncedelay 1.4s infinite ease-in-out both;
 }
 
-.spinner .bounce1 {
+#exclude .spinner .bounce1 {
   animation-delay: -0.32s;
 }
 
-.spinner .bounce2 {
+#exclude .spinner .bounce2 {
   animation-delay: -0.16s;
 }
 
@@ -430,31 +430,31 @@ footer #item-config>div {
 * Square Payment Form
 */
 
-#form-container fieldset {
+#exclude #form-container fieldset {
   margin: 0;
   padding: 0;
   border: 0;
   }
 
-#form-container {
+#exclude #form-container {
   position: relative;
   width: 100%;
   margin: 20px auto;
   box-sizing: border-box;
   }
 
-#form-container .third {
+#exclude #form-container .third {
   float: left;
   width: calc((100% - 32px) / 3);
   padding: 0;
   margin: 0 16px 16px 0;
   }
 
-#form-container .third:last-of-type {
+#exclude #form-container .third:last-of-type {
   margin-right: 0;
   }
 
-.sq-input {
+#exclude .sq-input {
   height: 56px;
   box-sizing: border-box;
   border: 0;
@@ -464,15 +464,15 @@ footer #item-config>div {
   transition: border-color .2s ease-in-out;
   }
 
-.sq-input--focus {
+#exclude .sq-input--focus {
   border: 1px solid #4A90E2;
   }
 
-.sq-input--error {
+#exclude .sq-input--error {
   border: 1px solid #E02F2F;
   }
 
-#sq-card-number {
+#exclude #sq-card-number {
   margin-bottom: 10px;
   }
   
@@ -489,20 +489,20 @@ footer #item-config>div {
 }
 
 @media (min-width: 600px) {
-  main .section-wrapper h1 {
+  #exclude main .section-wrapper h1 {
       font-size: 3rem;
   }
-  main .section-wrapper h3 {
+  #exclude main .section-wrapper h3 {
       font-size: 2.2rem;
   }
-  main .section-wrapper h4 {
+  #exclude main .section-wrapper h4 {
       font-size: 1.5rem;
   }
-  main .section-wrapper p {
+  #exclude main .section-wrapper p {
       font-size: 1.3rem;
   }
 
-  main .section-wrapper h4 a {
+  #exclude main .section-wrapper h4 a {
     font-size: 0.5em;
   }  
 }
