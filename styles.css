@@ -125,12 +125,6 @@ header .banner {
 
 main {
   margin-bottom: 100px;
-  transition: opacity 0.1s ease;
-}
-
-main.appear {
-  display: block;
-  opacity: 1;
 }
 
 main h1 {
