@@ -215,7 +215,7 @@ function loadCSS(href) {
 function checkLCPProxy() {
     const $heroImage=document.querySelector('img');
     if ($heroImage.complete) {
-        loadCSS('/styles.css');
+        loadCSS('/lazy-styles.css');
         stamp('loading CSS')
     } else {
         $heroImage.addEventListener('load', checkLCPProxy);
