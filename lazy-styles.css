@@ -16,6 +16,18 @@ body.order .add-to-order {
   display: inline-block;
 }
 
+main>div.section-wrapper.text-only-header {
+  color: unset;
+}
+main>div.section-wrapper.text-only-header h1 {
+  background-color: rgb(var(--background-color));
+  color: rgb(var(--text-color));
+  width: 100%;
+  position: relative;
+  left: unset;
+  margin: unset;
+}
+
 a, button {
   background-color: rgb(var(--highlight-color));
   color: rgb(var(--background-color));

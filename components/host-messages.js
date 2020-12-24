@@ -177,6 +177,9 @@ function signedIn() {
     updateThreads();
 }
 
+wrapSections('main>div:first-of-type');
+document.querySelector('main>div:first-of-type').classList.add('section-wrapper', 'text-only-header');
+
 $h1=document.querySelector('h1');
 document.querySelector('#messages .messages-header').appendChild($h1);
 $h1.addEventListener(('click'), (e) => {

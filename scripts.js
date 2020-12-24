@@ -40,8 +40,8 @@ function decorateBackgroundSections() {
         }    
     });
 
-    $hero=document.querySelector('main>div.section-wrapper');
-    if ($hero.classList.contains('bg-image')) $hero.classList.add('hero');
+    const $hero=document.querySelector('main>div.section-wrapper');
+    if ($hero && $hero.classList.contains('bg-image')) $hero.classList.add('hero');
 }
 
 function decorateImageOnlySections() {
@@ -214,7 +214,7 @@ function loadCSS(href) {
 
 function checkLCPProxy() {
     const $heroImage=document.querySelector('img');
-    if ($heroImage.complete) {
+    if (!$heroImage || $heroImage.complete) {
         loadCSS('/lazy-styles.css');
         stamp('loading CSS')
     } else {

@@ -5,6 +5,7 @@ async function initReservationForm() {
     const $form = document.getElementById('reservation-form');
     populateForm($form);
 
+    wrapSections('main>div:first-of-type');
 
     // init reservation days
     const $party=document.getElementById('party');
