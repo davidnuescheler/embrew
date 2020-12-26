@@ -234,8 +234,8 @@ function decoratePage() {
     decorateSquareLinks();
     decorateTables();
     decoratePhoneLinks();
-    //hideTitle();
-    //addBanner();
+    hideTitle();
+    addBanner();
     stamp('decoratePage end');
 }
 

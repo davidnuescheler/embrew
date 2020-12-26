@@ -53,8 +53,13 @@ a, button {
 
 }
 
+header .banner.appear {
+  animation: bounce-in-top 0.3s ease-out both;
+  display: flex;
+}
+
 header .banner {
-  animation: bounce-in-top 1s linear both;
+  display: none;
   overflow: hidden;
   height: 64px;
   position: absolute;
@@ -63,55 +68,21 @@ header .banner {
   right: 0;
   background-color: rgb(var(--highlight-color));
   color: rgb(var(--background-color));
-  display: flex;
   justify-content: center;
   align-items: center;
   line-height: 1.2em;
   padding: 10px;
+  z-index: 1;
 }
 
 @keyframes bounce-in-top {
     0% {
-      transform: translateY(-500px);
-      animation-timing-function: ease-in;
       opacity: 0;
       height: 0;
     }
-    38% {
-      transform: translateY(0);
-      animation-timing-function: ease-out;
-      opacity: 1;
-      height: 64px;
-    }
-    55% {
-      transform: translateY(-65px);
-      animation-timing-function: ease-in;
-      height: 0px;
-    }
-    72% {
-      transform: translateY(0);
-      animation-timing-function: ease-out;
-      height: 64px;
-    }
-    81% {
-      transform: translateY(-28px);
-      animation-timing-function: ease-in;
-      height: 32px;
-    }
-    90% {
-      transform: translateY(0);
-      animation-timing-function: ease-out;
-      height: 64px;
-    }
-    95% {
-      transform: translateY(-8px);
-      animation-timing-function: ease-in;
-      height: 48px;
-    }
     100% {
-      transform: translateY(0);
-      animation-timing-function: ease-out;
       height: 64px;
+      opacity: 1;
     }
   }
 
