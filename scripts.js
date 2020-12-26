@@ -29,10 +29,9 @@ function wrapSections(element) {
 }
 
 function decorateBackgroundSections() {
-    document.querySelectorAll('main div.section-wrapper>div>p:first-child>img').forEach(($headerImg) => {
+    document.querySelectorAll('main div.section-wrapper>div>:first-child>img').forEach(($headerImg) => {
         if ($headerImg) {
-            const src=$headerImg.src;
-            console.log('background decoration :'+src);
+            const src=$headerImg.getAttribute('src');
             $wrapper=$headerImg.closest('.section-wrapper');
             $wrapper.style.backgroundImage=`url(${src})`;
             $headerImg.parentNode.remove();
@@ -165,7 +164,7 @@ function decoratePhoneLinks() {
 }
 async function addBanner() {
     const l=window.location.pathname;
-    if ((l.endsWith('/') || l.endsWith('order')|| l.endsWith('reservation')) && !window.location.search) {
+    if (l.endsWith('/') || l.endsWith('order')|| l.endsWith('reservation')) {
         const config=await getConfig();
         const today=new Date();
         const upcomingClosed=[];

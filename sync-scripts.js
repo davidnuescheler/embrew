@@ -1,6 +1,4 @@
 function fixImages() {
-    stamp('fix Images');
-
     const screenWidth=window.screen.availWidth;
     const imgSizes=[375, 768, 1000];
     const fitting=imgSizes.filter(s => s<=screenWidth);
@@ -16,7 +14,7 @@ function fixImages() {
                     heroProcessed=true;
                     node.setAttribute('src', `${node.src}?width=${width}&auto=webp&format=pjpg&optimize=medium`);
                     node.setAttribute('loading', loading);
-                    stamp('img src:'+node.src)
+                    //console.log('src:'+node.src)
                 }
             });
         });
@@ -26,25 +24,6 @@ function fixImages() {
     });
     observer.observe(document, { childList: true, subtree: true });
 }
-
-// Catch errors since some browsers throw when using the new `type` option.
-// https://bugs.webkit.org/show_bug.cgi?id=209216
-try {
-    let lcp;
-  
-    const po = new PerformanceObserver((entryList) => {
-      const entries = entryList.getEntries();
-  
-      stamp('LCP events');
-    });
-  
-    po.observe({type: 'largest-contentful-paint', buffered: true});
-  
-  } catch (e) {
-    // Do nothing if the browser doesn't support this API.
-    console.log('error');
-  }
-
 
 fixImages();
 
