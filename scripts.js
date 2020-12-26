@@ -1,3 +1,13 @@
+/* performance logging helper */
+
+function stamp(message) {
+    console.log(new Date-performance.timing.navigationStart+":"+message);
+}
+
+
+stamp ('start');
+
+
 function createTag(name, attrs) {
     const el = document.createElement(name);
     if (typeof attrs === 'object') {
@@ -29,12 +39,12 @@ function decorateBackgroundSections() {
         }    
     });
 
-    $hero=document.querySelector('main>div.section-wrapper');
-    if ($hero.classList.contains('bg-image')) $hero.classList.add('hero');
+    const $hero=document.querySelector('main>div.section-wrapper');
+    if ($hero && $hero.classList.contains('bg-image')) $hero.classList.add('hero');
 }
 
 function decorateImageOnlySections() {
-    document.querySelectorAll('main div.section-wrapper>div>img').forEach(($img) => {
+    document.querySelectorAll('main div.section-wrapper>div>picture, main div.section-wrapper>div>img').forEach(($img) => {
         $wrapper=$img.closest('.section-wrapper');
         $wrapper.classList.add('image-only');
     });
@@ -178,8 +188,46 @@ async function addBanner() {
     }
 }
 
+function decoratePictures() {
+    if (!document.querySelector('picture')) {
+        const helixImages=document.querySelectorAll('main>div:nth-of-type(n+2) img[src^="/hlx_"');
+        helixImages.forEach($img => {
+            const $pic=createTag('picture');
+            const $parent=$img.parentNode;
+            $pic.appendChild($img);
+            $parent.appendChild($pic);
+        })
+    }
+}
+
+/**
+ * Loads a CSS file.
+ * @param {string} href The path to the CSS file
+ */
+function loadCSS(href) {
+    const link = document.createElement('link');
+    link.setAttribute('rel', 'stylesheet');
+    link.setAttribute('href', href);
+    document.head.appendChild(link);
+};
+
+function checkLCPProxy() {
+    const $heroImage=document.querySelector('img');
+    if (!$heroImage || $heroImage.complete) {
+        loadCSS('/lazy-styles.css');
+        stamp('loading CSS')
+    } else {
+        $heroImage.addEventListener('load', checkLCPProxy);
+        stamp('registered LCP Proxy listener')
+    }
+
+}
+
 function decoratePage() {
-    wrapSections('main>div');
+    checkLCPProxy();
+    stamp('decoratePage start');
+    decoratePictures();
+    wrapSections('main>div:nth-of-type(n+2)');
     decorateBackgroundSections();
     decorateImageOnlySections();
     decorateSquareLinks();
@@ -187,6 +235,7 @@ function decoratePage() {
     decoratePhoneLinks();
     hideTitle();
     addBanner();
+    stamp('decoratePage end');
 }
 
 function isSameDate(date1, date2) {
@@ -281,5 +330,9 @@ async function getConfig() {
 
     return (window.embrew.config);
 }
+
+
+
+window.embrew={};
 
 decoratePage();

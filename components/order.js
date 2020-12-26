@@ -98,8 +98,10 @@ async function setPickupTimes(date) {
 
 async function initOrderForm() {
 
+    document.querySelector('main>div:first-of-type').classList.add('section-wrapper', 'text-only-header');
     const $form = document.getElementById('order-form');
     populateForm($form);
+
 
 
     // init pickup days

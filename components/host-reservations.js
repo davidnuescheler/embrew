@@ -197,6 +197,9 @@ async function displayReservations() {
 }
 
 async function fetchReservations() {
+    wrapSections('main>div:first-of-type');
+    document.querySelector('main>div:first-of-type').classList.add('section-wrapper', 'text-only-header');
+
     const resp=await fetch(`${endpoint}?FetchAs=${window.googleUser.email}`);
     const data=await resp.json();
     data.actions.sort((a,b) => getDate(a.Date,a.Time)-getDate(b.Date,b.Time))
