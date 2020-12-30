@@ -78,4 +78,33 @@
     }
 </style>
 
+<script>
+
+function stamp(message) {
+    console.log(new Date-performance.timing.navigationStart+":"+message);
+}
+
+try {
+  
+  const polcp = new PerformanceObserver((entryList) => {
+    const entries = entryList.getEntries();
+    stamp(JSON.stringify(entries));
+  });
+
+  polcp.observe({type: 'largest-contentful-paint', buffered: true});
+
+  const pores = new PerformanceObserver((entryList) => {
+    const entries = entryList.getEntries();
+    entries.forEach((entry) => {
+        stamp(`resource loaded: ${entry.name} - [${Math.round(entry.startTime+entry.duration)}]`);
+    });
+  });
+
+  pores.observe({type: 'resource', buffered: true});
+} catch (e) {
+
+}
+
+</script>
+
 <script src="/scripts.js" defer></script>
