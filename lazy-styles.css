@@ -8,6 +8,10 @@ body .section-wrapper {
   font-family: var(--font);
 }
 
+picture {
+  display: block;
+}
+
 .add-to-order {
   display: none;
 }
