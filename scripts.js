@@ -228,7 +228,7 @@ function decoratePage() {
     stamp('decoratePage start');
     decoratePictures();
     wrapSections('main>div:nth-of-type(n+2)');
-    decorateBackgroundSections();
+    //decorateBackgroundSections();
     decorateImageOnlySections();
     decorateSquareLinks();
     decorateTables();
