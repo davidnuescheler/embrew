@@ -423,7 +423,7 @@ function displayPayment (sqOrder) {
                 const resp=await fetch('https://script.google.com/macros/s/AKfycbz1QJwACgsIlWwOXVAhD6ckgNSdKqJeJ7Y9OANkdRk7JIeWPYU1/exec?'+qs);
                 const json=await resp.json();
 
-                if (typeof json.errors == "undefined") {
+                if ((typeof json.errors == "undefined") && (json.payment.status == 'COMPLETED')) {
                     displayThanks(json.payment);
                 } else {
                     alert('Payment failed to complete!\nCheck card details');
