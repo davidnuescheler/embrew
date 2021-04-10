@@ -11,7 +11,7 @@
  */
 /* global document, fetch, populateForm, wrapSections, getDate,
 areWeClosed, createTag, isSameDate, getConfig, getOpeningHours, window,
-localStorage, stashForm  */
+localStorage, stashForm, timeToHours  */
 
 async function fetchReservation(reservation) {
   let qs = '?';
@@ -39,24 +39,68 @@ async function getReservations() {
   return (json);
 }
 
-async function filterReservationsByDate(reservations, date) {
+function filterReservationsByDate(reservations, date) {
   const filterDate = new Date(date);
-  reservations.filter((r) => {
+  return reservations.filter((r) => {
     const resDate = getDate(r.Date, r.Time);
     return (isSameDate(resDate, filterDate));
   });
 }
 
+async function fetchReservationSchedule() {
+  const currentHour = new Date().getHours;
+  const resp = await fetch(`/reservation-schedule.json?ck=${currentHour}`);
+  const json = await resp.json();
+  return (json.data);
+}
 // eslint-disable-next-line no-unused-vars
-async function checkReservationTimesAvailability(date, $time, partySize, preference) {
+async function checkReservationTimesAvailability(date, $time, partySize) {
   // eslint-disable-next-line no-unused-vars
   const config = await getConfig();
   const reservations = await getReservations();
   // eslint-disable-next-line no-unused-vars
   const daysRes = filterReservationsByDate(reservations, date);
-  $time.options.forEach(($o) => {
+
+  const sched = await fetchReservationSchedule();
+
+  const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const weekday = weekdays[new Date(date).getDay()];
+  const slots = [];
+  for (let i = 0; i < 48; i += 1) {
+    slots.push({ hours: i / 2, seats: 0 });
+  }
+  sched.forEach((slot) => {
+    const hours = slot.Time * 24;
+    const index = Math.round(hours * 2);
+    const seats = slot[weekday];
+    if (seats) {
+      slots[index].seats = seats;
+      console.log(`slots ${hours}:${index}:${seats}`);
+    }
+  });
+
+  console.log(slots);
+
+  // removing reservations from slots
+  daysRes.forEach((res) => {
+    const hours = timeToHours(res.Time);
+    const index = Math.floor(hours * 2);
+    // console.log(res);
+    // console.log(index);
+    slots[index].seats -= res.Party;
+    slots[index + 1].seats -= res.Party;
+  });
+
+  console.log(slots);
+
+  [...$time.options].forEach(($o) => {
     // eslint-disable-next-line no-console
-    console.log($o.value);
+    const index = Math.floor(+$o.getAttribute('data-hours') * 2);
+    console.log(`capacity ${slots[index].seats} @ ${$o.value} - ${partySize}`);
+    if (slots[index].seats < partySize || slots[index + 1].seats < partySize) {
+      console.log(`removing ${$o.value}`);
+      $o.remove();
+    }
   });
 }
 
@@ -69,12 +113,13 @@ async function setReservationTimes(date) {
   const now = new Date();
   const { from, to } = reservationHours[day.getDay()];
   for (let hour = from; hour < (to - (+config.Reservations['Last Seating'])); hour += 1) {
+    console.log(hour, config.Reservations['Last Seating'], to);
     for (let mins = 0; mins <= 45; mins += 15) {
       const time = new Date(day);
       time.setHours(hour, mins, 0);
       if (time.valueOf() > now.valueOf()) {
         const timeStr = time.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-        const $option = createTag('option', { value: timeStr });
+        const $option = createTag('option', { value: timeStr, 'data-hours': hour + (mins / 60)});
         $option.innerHTML = `${timeStr}`;
         $time.appendChild($option);
       }
@@ -113,11 +158,6 @@ async function initReservationForm() {
   $date.addEventListener('change', () => {
     setReservationTimes($date.value);
   });
-  await setReservationTimes($date.value);
-  if ($time.options.length === 0) {
-    $date.firstElementChild.remove();
-    setReservationTimes($date.value);
-  }
 
   const config = await getConfig();
   const minParty = +config.Reservations['Minimum Party Size'];
@@ -129,6 +169,15 @@ async function initReservationForm() {
     html += `<option value="${i}" ${i === defaultParty ? 'selected' : ''}>Party of ${i}</option>`;
   }
   $party.innerHTML = html;
+  $party.addEventListener('change', () => {
+    setReservationTimes($date.value);
+  });
+
+  await setReservationTimes($date.value);
+  if ($time.options.length === 0) {
+    $date.firstElementChild.remove();
+    setReservationTimes($date.value);
+  }
 }
 
 async function displayReservation(reservation) {
