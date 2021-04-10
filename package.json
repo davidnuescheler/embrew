@@ -1,0 +1,14 @@
+{
+    "name": "@embrew/website",
+    "version": "0.0.1",
+    "description": "Embrew Website",
+    "devDependencies": {
+        "@babel/core": "7.13.10",
+        "@babel/eslint-parser": "7.13.10",
+        "chai": "4.2.0",
+        "eslint": "7.15.0",
+        "eslint-config-airbnb": "^18.2.1",
+        "eslint-plugin-header": "3.1.0",
+        "eslint-plugin-import": "2.22.1"
+    }
+}
