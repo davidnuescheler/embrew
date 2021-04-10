@@ -31,7 +31,8 @@ async function fetchReservation(reservation) {
 }
 
 async function getReservations() {
-  const resp = await fetch('/reservations.json');
+  const currentHour = new Date().getHours();
+  const resp = await fetch(`/reservations.json?ck=${currentHour}`);
   const json = await resp.json();
   if (json.data) {
     return (json.data);
@@ -48,8 +49,7 @@ function filterReservationsByDate(reservations, date) {
 }
 
 async function fetchReservationSchedule() {
-  const currentHour = new Date().getHours;
-  const resp = await fetch(`/reservation-schedule.json?ck=${currentHour}`);
+  const resp = await fetch('/reservation-schedule.json');
   const json = await resp.json();
   return (json.data);
 }
