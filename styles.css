@@ -20,6 +20,8 @@
     main>div:first-child {
         position: relative;
         color: white;
+        background-color: #333;
+        min-height: 400px;
     }
 
     main>div:first-child>p:first-child {
