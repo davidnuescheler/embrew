@@ -4,6 +4,7 @@ body, main, html , main div.section-wrapper {
     padding: 0;
 }
 
+
 #reservations .row {
     display: flex;
     margin: 10px;
