@@ -9,6 +9,7 @@
  * OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+/* eslint-disable no-console */
 /* global document, fetch, populateForm, wrapSections, getDate,
 areWeClosed, createTag, isSameDate, getConfig, getOpeningHours, window,
 localStorage, stashForm, timeToHours  */
@@ -75,30 +76,38 @@ async function checkReservationTimesAvailability(date, $time, partySize) {
     const seats = slot[weekday];
     if (seats) {
       slots[index].seats = seats;
-      console.log(`slots ${hours}:${index}:${seats}`);
+      if (window.name.includes('debug')) {
+        console.log(`slots ${hours}:${index}:${seats}`);
+      }
     }
   });
 
-  console.log(slots);
+  if (window.name.includes('debug')) {
+    console.log(slots);
+  }
 
   // removing reservations from slots
   daysRes.forEach((res) => {
     const hours = timeToHours(res.Time);
     const index = Math.floor(hours * 2);
-    // console.log(res);
-    // console.log(index);
     slots[index].seats -= res.Party;
     slots[index + 1].seats -= res.Party;
   });
 
-  console.log(slots);
+  if (window.name.includes('debug')) {
+    console.log(slots);
+  }
 
   [...$time.options].forEach(($o) => {
     // eslint-disable-next-line no-console
     const index = Math.floor(+$o.getAttribute('data-hours') * 2);
-    console.log(`capacity ${slots[index].seats} @ ${$o.value} - ${partySize}`);
+    if (window.name.includes('debug')) {
+      console.log(`capacity ${slots[index].seats} @ ${$o.value} - ${partySize}`);
+    }
     if (slots[index].seats < partySize || slots[index + 1].seats < partySize) {
-      console.log(`removing ${$o.value}`);
+      if (window.name.includes('debug')) {
+        console.log(`removing ${$o.value}`);
+      }
       $o.remove();
     }
   });
@@ -119,7 +128,7 @@ async function setReservationTimes(date) {
       time.setHours(hour, mins, 0);
       if (time.valueOf() > now.valueOf()) {
         const timeStr = time.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-        const $option = createTag('option', { value: timeStr, 'data-hours': hour + (mins / 60)});
+        const $option = createTag('option', { value: timeStr, 'data-hours': hour + (mins / 60) });
         $option.innerHTML = `${timeStr}`;
         $time.appendChild($option);
       }
