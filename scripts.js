@@ -117,6 +117,10 @@ async function areWeClosed(someDate) {
   const config = await getConfig();
   const closedOn = config['Closed on'];
   const days = Object.keys(closedOn);
+  const stop = config.Stop['Orders and Reservations for Today'];
+  if (stop && isSameDate(someDate, new Date())) {
+    return ('Today');
+  }
   let closed = '';
   days.forEach((day) => {
     const closedDate = getDate(closedOn[day]);
