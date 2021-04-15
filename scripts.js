@@ -11,7 +11,7 @@
  */
 
 /* eslint-disable no-console */
-/* global window performance fetch document localStorage */
+/* global isNan window performance fetch document localStorage */
 
 function stamp(message) {
   if (window.name.includes('performance')) {
@@ -90,7 +90,8 @@ function timeToHours(time) {
 }
 
 function getDate(date, time) {
-  if (Number.isNaN(date)) {
+  // eslint-disable-next-line no-restricted-globals
+  if (isNaN(date)) {
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const dateSegs = date.split(' ');
     const timeSegs = time.split(' ');
