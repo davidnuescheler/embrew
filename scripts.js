@@ -11,7 +11,7 @@
  */
 
 /* eslint-disable no-console */
-/* global isNan window performance fetch document localStorage */
+/* global window performance fetch document localStorage */
 
 function stamp(message) {
   if (window.name.includes('performance')) {

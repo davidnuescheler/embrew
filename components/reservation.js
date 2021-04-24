@@ -137,7 +137,7 @@ async function setReservationTimes(date) {
   const $party = document.getElementById('party');
   const $seating = document.getElementById('seating');
 
-  checkReservationTimesAvailability(date, $time, $party.value, $seating.value);
+  await checkReservationTimesAvailability(date, $time, $party.value, $seating.value);
 }
 async function initReservationForm() {
   const $form = document.getElementById('reservation-form');
@@ -183,6 +183,7 @@ async function initReservationForm() {
   });
 
   await setReservationTimes($date.value);
+  console.log(`options: ${[...$time.options].length}`);
   if ($time.options.length === 0) {
     $date.firstElementChild.remove();
     setReservationTimes($date.value);
