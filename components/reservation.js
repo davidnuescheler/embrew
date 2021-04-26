@@ -153,7 +153,7 @@ async function initReservationForm() {
   const $seating = document.getElementById('seating');
   const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-  for (let daysOut = 0; daysOut < 10; daysOut += 1) {
+  for (let daysOut = 0; daysOut < 30; daysOut += 1) {
     const day = new Date();
     day.setDate(day.getDate() + daysOut);
     let prefix = '';
