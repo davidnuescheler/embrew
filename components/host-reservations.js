@@ -105,9 +105,16 @@ async function displayReservations() {
       if (!r.Status) r.Status = 'Not Arrived Yet';
       const status = r.Status;
       const statusClass = status.toLowerCase().replace(' ', '-');
+      let timeStr = r.Time;
+      let error = false;
+      if (!r.Time) {
+        error = 'error-time';
+        timeStr = 'Error: No time set, please confirm';
+        r.Time = '01:23 AM';
+      }
       const today = isToday(getDate(r.Date, r.Time));
       const future = !!((today || getDate(r.Date, r.Time) > now));
-      const $row = createTag('div', { class: `row ${statusClass} ${future ? 'future' : 'archive'}`, id: `res-${r.ID}` });
+      const $row = createTag('div', { class: `row ${statusClass} ${error} ${future ? 'future' : 'archive'}`, id: `res-${r.ID}` });
       $row.innerHTML = `
             <div class="status">
                 ${status}
@@ -117,7 +124,7 @@ async function displayReservations() {
                 <span class="party">(Party of ${r.Party})</span>
                 <span class="message">${r.Message ? '&#11044;' : ''}</span><br>
                 <span class="seating">${r.Seating === 'No Preference' ? '' : r.Seating}</span>
-                <span class="date">${today ? 'Today' : r.Date} ${r.Time}</span>
+                <span class="date">${today ? 'Today' : r.Date} ${timeStr} </span>
             </div>
             `;
       $row.querySelector('.description').addEventListener('click', () => {

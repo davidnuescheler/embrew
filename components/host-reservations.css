@@ -27,6 +27,11 @@ body, main, html , main div.section-wrapper {
   border: 5px solid rgb(var(--highlight-color));
 }
 
+#reservations .row.error-time {
+  border-color: orange;
+}
+
+
 #reservations #upcoming>div {
     background-color: rgba(var(--highlight-color), 0.07);
 }
