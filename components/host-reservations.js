@@ -57,7 +57,11 @@ async function fetchReservations() {
 
   const resp = await fetch(`${endpoint}?FetchAs=${window.googleUser.email}`);
   const data = await resp.json();
-  data.actions.sort((a, b) => getDate(a.Date, a.Time) - getDate(b.Date, b.Time));
+  data.actions.sort((a, b) => {
+    if (!a.Time) return (-1);
+    if (!b.Time) return (1);
+    return getDate(a.Date, a.Time) - getDate(b.Date, b.Time);
+  });
   return (data.actions);
 }
 
