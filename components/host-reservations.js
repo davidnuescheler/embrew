@@ -203,7 +203,7 @@ async function editReservation(res) {
     show('#reservation-details .spinner');
 
     const conf = await updateReservation($form);
-    const resNames = Object(conf.reservation);
+    const resNames = Object.keys(conf.reservation);
     resNames.forEach((name) => {
       res[name] = conf.reservation[name];
     });
