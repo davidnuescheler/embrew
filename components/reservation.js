@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 /* eslint-disable no-console */
-/* global document, fetch, populateForm, wrapSections, getDate,
+/* global alert, document, fetch, populateForm, wrapSections, getDate,
 areWeClosed, createTag, isSameDate, getConfig, getOpeningHours, window,
 localStorage, stashForm, timeToHours  */
 
@@ -44,6 +44,7 @@ async function getReservations() {
 function filterReservationsByDate(reservations, date) {
   const filterDate = new Date(date);
   return reservations.filter((r) => {
+    if (!r.Time) r.Time = '7:00 PM';
     const resDate = getDate(r.Date, r.Time);
     return (isSameDate(resDate, filterDate));
   });
@@ -232,6 +233,12 @@ async function submitReservation() {
   reservation.Party = document.getElementById('party').value;
   reservation.Message = document.getElementById('message').value;
   reservation.Seating = document.getElementById('seating').value;
+
+  if (!reservation.Time) {
+    // eslint-disable-next-line no-alert
+    alert("Something went wrong. We are sorry but we couldn't find a timeslot on that day. Please call or text us");
+    return;
+  }
 
   stashForm(['name', 'cell']);
 

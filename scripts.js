@@ -102,7 +102,7 @@ function getDate(date, time) {
 
     const dateAndTime = new Date(+dateSegs[3], months.indexOf(dateSegs[1]),
       +dateSegs[2], hour, mins);
-    console.log(dateAndTime, `${date}->${time}`);
+    // console.log(dateAndTime, `${date}->${time}`);
 
     return (dateAndTime);
   }
