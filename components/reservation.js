@@ -206,14 +206,39 @@ async function displayReservation(reservation) {
   const confRes = await fetchReservation(reservation);
   if (confRes.reservation) {
     const r = confRes.reservation;
+    window.location.hash = r.ID;
     const humanPhone = config.Location['Phone Number'];
     const phone = config.Location['Phone Number'].replace(/\D/g, '');
-    $confirmation.innerHTML = `<div><h3>Confirmed</h3>
-            <p>We got your reservation for a party of ${r.Party} on <nobr>${r.Date}</nobr> at <nobr>${r.Time}</nobr> under <nobr>${r.Name}</nobr></p>
-            <p>Please give us a <a href="tel:${phone}">call</a> or <a href="sms:${phone}">text</a> us at <nobr>${humanPhone}</nobr> if you want to make changes or need to cancel.</p>
-            </div>`;
-
-    localStorage.setItem('upcoming-reservation', JSON.stringify({ ID: r.ID, Date: r.Date }));
+    if (r.Status === 'Cancelled') {
+      $confirmation.innerHTML = `<div><h3>Cancelled</h3>
+      <p>This reservation has been cancelled, feel free to make a new reservation or 
+      give us a <a href="tel:${phone}">call</a> or <a href="sms:${phone}">text</a> us at <nobr>${humanPhone}</nobr> if you have any questions.</p>
+      </div>`;
+      localStorage.removeItem('upcoming-reservation');
+    } else {
+      $confirmation.innerHTML = `<div><h3>Confirmed</h3>
+      <p>We got your reservation for a party of ${r.Party} on <nobr>${r.Date}</nobr> at <nobr>${r.Time}</nobr> under <nobr>${r.Name}</nobr></p>
+      <p><button>Cancel this Reservation</button></p>
+      <p>Please give us a <a href="tel:${phone}">call</a> or <a href="sms:${phone}">text</a> us at <nobr>${humanPhone}</nobr> if you have any questions.</p>
+      </div>`;
+      const $cancel = $confirmation.querySelector('button');
+      $cancel.addEventListener('click', async () => {
+        $confirmation.innerHTML = `
+      <div class="spinner">
+          <div class="bounce1"></div>
+          <div class="bounce2"></div>
+          <div class="bounce3"></div>
+      </div>`;
+        r.Status = 'Cancelled';
+        r.UpdatedBy = r.Name;
+        const cancelled = await fetchReservation(r);
+        console.log(cancelled);
+        localStorage.removeItem('upcoming-reservation');
+        $confirmation.classList.add('collapsed');
+        window.location.hash = '';
+      });
+      localStorage.setItem('upcoming-reservation', JSON.stringify({ ID: r.ID, Date: r.Date }));
+    }
   } else {
     const humanPhone = config.Location['Phone Number'];
     const phone = config.Location['Phone Number'].replace(/\D/g, '');
