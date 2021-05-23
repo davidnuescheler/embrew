@@ -32,8 +32,8 @@ async function fetchReservation(reservation) {
 }
 
 async function getReservations() {
-  const currentHour = new Date().getHours();
-  const resp = await fetch(`/reservations.json?ck=${currentHour}`);
+  const now = new Date();
+  const resp = await fetch(`/reservations.json?limit=${now.getMonth()}${now.getDate()}${now.getHours()}`);
   const json = await resp.json();
   if (json.data) {
     return (json.data);
