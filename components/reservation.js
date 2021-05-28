@@ -163,7 +163,7 @@ async function initReservationForm() {
     const $option = createTag('option', { value: `${day.toDateString()}` });
     $option.innerHTML = `${prefix} ${weekdays[day.getDay()].substr(0, 3)} ${day.toLocaleDateString()}`;
     // eslint-disable-next-line no-await-in-loop
-    if (!await areWeClosed(day)) $date.appendChild($option);
+    if (!await areWeClosed(day, 'Reservations')) $date.appendChild($option);
   }
   $date.addEventListener('change', () => {
     setReservationTimes($date.value);

@@ -81,11 +81,11 @@ function isSameDate(date1, date2) {
 
 // eslint-disable-next-line no-unused-vars
 function timeToHours(time) {
-  const timeSegs = time.split(' ');
-  const hoursMins = timeSegs[0].split(':');
+  const trimmed = time.trim();
+  const hoursMins = trimmed.replace(/[A-Za-z]/g, '').trim().split(':');
 
-  const hour = ((+hoursMins[0]) % 12) + (timeSegs[1] === 'PM' ? 12 : 0);
-  const mins = +hoursMins[1];
+  const hour = ((+hoursMins[0]) % 12) + (trimmed.toLowerCase().includes('pm') ? 12 : 0);
+  const mins = hoursMins[1] ? +hoursMins[1] : 0;
   return (hour + mins / 60);
 }
 
@@ -97,7 +97,7 @@ function getDate(date, time) {
     const timeSegs = time.split(' ');
     const hoursMins = timeSegs[0].split(':');
 
-    const hour = ((+hoursMins[0]) % 12) + (timeSegs[1] === 'PM' ? 12 : 0);
+    const hour = ((+hoursMins[0]) % 12) + (timeSegs[1] && timeSegs[1].toLowerCase() === 'pm' ? 12 : 0);
     const mins = +hoursMins[1];
 
     const dateAndTime = new Date(+dateSegs[3], months.indexOf(dateSegs[1]),
@@ -114,11 +114,12 @@ function getDate(date, time) {
   return new Date(dateInfo.getFullYear(), dateInfo.getMonth(), dateInfo.getDate());
 }
 
-async function areWeClosed(someDate) {
+async function areWeClosed(someDate, type) {
   const config = await getConfig();
   const closedOn = config['Closed on'];
   const days = Object.keys(closedOn);
-  const stop = config.Stop['Orders and Reservations for Today'];
+
+  const stop = type ? config.Stop[`${type} for Today`] : '';
   if (stop && isSameDate(someDate, new Date())) {
     return ('Today');
   }
@@ -168,11 +169,7 @@ function getOpeningHours(section) {
   const openingHours = weekdays.map((day) => {
     const usTime = section[day];
     const ampms = usTime.split('-');
-    const [from, to] = ampms.map((ampm) => {
-      let plus = 0;
-      if (ampm.includes('pm')) plus = 12;
-      return (+ampm.replace(/\D+/g, '') + plus);
-    });
+    const [from, to] = ampms.map((ampm) => timeToHours(ampm));
     return ({ from, to });
   });
   return openingHours;
