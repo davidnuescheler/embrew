@@ -12,11 +12,11 @@ picture {
   display: block;
 }
 
-.add-to-order {
+main a[href^="https://squareup.com/dashboard/items/library/"] {
   display: none;
 }
 
-body.order .add-to-order {
+body.order main a.add-to-order {
   display: inline-block;
 }
 
