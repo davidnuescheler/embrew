@@ -11,7 +11,7 @@
  */
 
 /* eslint-disable no-console */
-/* global window performance fetch document localStorage */
+/* global PerformanceObserver window performance fetch document localStorage */
 
 function stamp(message) {
   if (window.name.includes('performance')) {
@@ -258,7 +258,7 @@ export async function addBanner() {
  * Loads a CSS file.
  * @param {string} href The path to the CSS file
  */
- export function loadCSS(href) {
+export function loadCSS(href) {
   const link = document.createElement('link');
   link.setAttribute('rel', 'stylesheet');
   link.setAttribute('href', href);
