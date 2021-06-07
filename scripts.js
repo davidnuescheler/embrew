@@ -201,20 +201,6 @@ export function toClassName(name) {
   return (name.toLowerCase().replace(/[^0-9a-z]/gi, '-'));
 }
 
-export function decorateSquareLinks() {
-  document.querySelectorAll('main a[href^="https://squareup.com/dashboard/items/library/"]').forEach(($a) => {
-    const href = $a.getAttribute('href');
-    const splits = href.split('/');
-    const itemId = splits[6];
-    $a.removeAttribute('href');
-    $a.classList.add('add-to-order');
-    $a.addEventListener('click', () => {
-      // eslint-disable-next-line no-undef
-      addToCart(itemId);
-    });
-  });
-}
-
 export function hideTitle() {
   if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
     document.querySelector('main h1').remove();
@@ -290,7 +276,6 @@ function decoratePage() {
   decorateHeroSection();
   // decorateBackgroundSections();
   decorateImageOnlySections();
-  decorateSquareLinks();
   decoratePhoneLinks();
   hideTitle();
   addBanner();

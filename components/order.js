@@ -363,9 +363,10 @@ async function initCart() {
             </div>
         </div>
         `;
-  const c = getCartElems();
 
   document.querySelector('footer').appendChild($cart);
+  const c = getCartElems();
+
   document.querySelector('footer #cart .close').addEventListener('click', () => {
     c.$full.classList.add('hidden');
     c.$compact.classList.remove('hidden');
@@ -657,6 +658,21 @@ window.embrew.cart = {
   },
 };
 
+function decorateSquareLinks() {
+  document.querySelectorAll('main a[href^="https://squareup.com/dashboard/items/library/"]').forEach(($a) => {
+    const href = $a.getAttribute('href');
+    const splits = href.split('/');
+    const itemId = splits[6];
+    $a.removeAttribute('href');
+    $a.classList.add('add-to-order');
+    $a.addEventListener('click', () => {
+      // eslint-disable-next-line no-undef
+      addToCart(itemId);
+    });
+  });
+}
+
 initOrderForm();
 initCart();
+decorateSquareLinks();
 document.body.classList.add('order');
