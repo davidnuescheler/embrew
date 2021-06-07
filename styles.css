@@ -58,7 +58,7 @@ main h1 {
 }
 
 
-main>div.dhero-section h1 {
+main>div.hero-section h1 {
     position: absolute;
     top: calc(50% - 50px);
     margin: 0 20px;

@@ -190,7 +190,7 @@ async function updateThreads() {
       $div.innerHTML = `<div><h4>${t.name ? t.name : formatPhoneNumber(t.number)}</h4><span>${shortTime(t.lastUpdate)}</span></div>
             <p>${t.messages[t.messages.length - 1].Body}</p>`;
       $threads.appendChild($div);
-      $div.addEventListener('click', (e) => {
+      $div.addEventListener('click', () => {
         displayThread(t);
       });
       if (t.number === threadid) {
@@ -214,7 +214,7 @@ document.querySelector('main>div:first-of-type').classList.add('section-wrapper'
 
 const $h1 = document.querySelector('h1');
 document.querySelector('#messages .messages-header').appendChild($h1);
-$h1.addEventListener(('click'), (e) => {
+$h1.addEventListener(('click'), () => {
   document.getElementById('messages').classList.remove('show-thread');
   window.location.hash = '';
   document.getElementById('thread').removeAttribute('data-scrolltop');
