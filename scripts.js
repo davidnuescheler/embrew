@@ -45,7 +45,10 @@ function wrapSections(element) {
 async function getConfig() {
   if (!window.embrew.config) {
     const config = {};
-    const resp = await fetch('/configuration.json');
+    const resp = await fetch('/configuration.json', {
+      credentials: 'include',
+      mode: 'no-cors',
+    });
     let rawJSON = await resp.json();
     if (rawJSON.data) rawJSON = rawJSON.data;
     let waitingForCategory = true;
