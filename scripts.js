@@ -21,7 +21,7 @@ function stamp(message) {
 
 stamp('start');
 
-function createTag(name, attrs) {
+export function createTag(name, attrs) {
   const el = document.createElement(name);
   if (typeof attrs === 'object') {
     // eslint-disable-next-line no-restricted-syntax
@@ -42,7 +42,7 @@ function wrapSections(element) {
   });
 }
 
-async function getConfig() {
+export async function getConfig() {
   if (!window.embrew.config) {
     const config = {};
     const resp = await fetch('/configuration.json', {
@@ -76,7 +76,7 @@ async function getConfig() {
   return (window.embrew.config);
 }
 
-function isSameDate(date1, date2) {
+export function isSameDate(date1, date2) {
   return (date1.getDate() === date2.getDate()
         && date1.getFullYear() === date2.getFullYear()
         && date1.getMonth() === date2.getMonth());
@@ -92,7 +92,7 @@ function timeToHours(time) {
   return (hour + mins / 60);
 }
 
-function getDate(date, time) {
+export function getDate(date, time) {
   // eslint-disable-next-line no-restricted-globals
   if (isNaN(date)) {
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -117,7 +117,7 @@ function getDate(date, time) {
   return new Date(dateInfo.getFullYear(), dateInfo.getMonth(), dateInfo.getDate());
 }
 
-async function areWeClosed(someDate, type) {
+export async function areWeClosed(someDate, type) {
   const config = await getConfig();
   const closedOn = config['Closed on'];
   const days = Object.keys(closedOn);
@@ -159,15 +159,14 @@ function decorateImageOnlySections() {
 }
 
 // eslint-disable-next-line no-unused-vars
-function stashForm(ids) {
+export function stashForm(ids) {
   ids.forEach((id) => {
     const { value } = document.getElementById(id);
     localStorage.setItem(id, value);
   });
 }
 
-// eslint-disable-next-line no-unused-vars
-function getOpeningHours(section) {
+export function getOpeningHours(section) {
   const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const openingHours = weekdays.map((day) => {
     const usTime = section[day];
@@ -178,8 +177,7 @@ function getOpeningHours(section) {
   return openingHours;
 }
 
-// eslint-disable-next-line no-unused-vars
-function generateId() {
+export function generateId() {
   let id = '';
   const chars = '123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   for (let i = 0; i < 5; i += 1) {
@@ -188,8 +186,7 @@ function generateId() {
   return id;
 }
 
-// eslint-disable-next-line no-unused-vars
-function populateForm($form) {
+export function populateForm($form) {
   $form.querySelectorAll('input').forEach(($input) => {
     const { id } = $input;
     if (id) {
@@ -200,11 +197,11 @@ function populateForm($form) {
 }
 
 // eslint-disable-next-line no-unused-vars
-function toClassName(name) {
+export function toClassName(name) {
   return (name.toLowerCase().replace(/[^0-9a-z]/gi, '-'));
 }
 
-function decorateSquareLinks() {
+export function decorateSquareLinks() {
   document.querySelectorAll('main a[href^="https://squareup.com/dashboard/items/library/"]').forEach(($a) => {
     const href = $a.getAttribute('href');
     const splits = href.split('/');
@@ -218,20 +215,20 @@ function decorateSquareLinks() {
   });
 }
 
-function hideTitle() {
+export function hideTitle() {
   if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
     document.querySelector('main h1').remove();
   }
 }
 
-function decoratePhoneLinks() {
+export function decoratePhoneLinks() {
   ['tel', 'sms'].forEach((p) => {
     document.querySelectorAll(`a[href*="/${p}/"]`).forEach(($a) => {
       $a.href = `${p}:${$a.href.split(`/${p}/`)[1]}`;
     });
   });
 }
-async function addBanner() {
+export async function addBanner() {
   const l = window.location.pathname;
   if (l.endsWith('/') || l.endsWith('order') || l.endsWith('reservation')) {
     const config = await getConfig();
@@ -257,23 +254,11 @@ async function addBanner() {
   }
 }
 
-function decoratePictures() {
-  if (!document.querySelector('picture')) {
-    const helixImages = document.querySelectorAll('main>div:nth-of-type(n+2) img[src^="/hlx_"');
-    helixImages.forEach(($img) => {
-      const $pic = createTag('picture');
-      const $parent = $img.parentNode;
-      $pic.appendChild($img);
-      $parent.appendChild($pic);
-    });
-  }
-}
-
 /**
  * Loads a CSS file.
  * @param {string} href The path to the CSS file
  */
-function loadCSS(href) {
+ export function loadCSS(href) {
   const link = document.createElement('link');
   link.setAttribute('rel', 'stylesheet');
   link.setAttribute('href', href);
@@ -291,11 +276,18 @@ function checkLCPProxy() {
   }
 }
 
+function decorateHeroSection() {
+  const $section = document.querySelector('.section-wrapper');
+  if ($section && $section.querySelector('picture') && $section.querySelector('h1')) {
+    $section.className = 'hero-section';
+  }
+}
+
 function decoratePage() {
   checkLCPProxy();
   stamp('decoratePage start');
-  decoratePictures();
-  wrapSections('main>div:nth-of-type(n+2)');
+  wrapSections('main>div');
+  decorateHeroSection();
   // decorateBackgroundSections();
   decorateImageOnlySections();
   decorateSquareLinks();
@@ -308,3 +300,28 @@ function decoratePage() {
 window.embrew = {};
 
 decoratePage();
+
+/* performance instrumentation */
+
+function registerPerformanceLogger() {
+  try {
+    const polcp = new PerformanceObserver((entryList) => {
+      const entries = entryList.getEntries();
+      stamp(JSON.stringify(entries));
+      console.log(entries[0].element);
+    });
+    polcp.observe({ type: 'largest-contentful-paint', buffered: true });
+    const pores = new PerformanceObserver((entryList) => {
+      const entries = entryList.getEntries();
+      entries.forEach((entry) => {
+        stamp(`resource loaded: ${entry.name} - [${Math.round(entry.startTime + entry.duration)}]`);
+      });
+    });
+
+    pores.observe({ type: 'resource', buffered: true });
+  } catch (e) {
+    // no output
+  }
+}
+
+if (window.name.includes('performance')) registerPerformanceLogger();

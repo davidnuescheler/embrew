@@ -22,28 +22,28 @@ body {
     line-height: 2em;
 }
 
-main>div:first-child {
+main>div.hero-section {
     position: relative;
     color: white;
 }
 
-main>div:first-child>p:first-child {
+main>div.hero-section p:first-child {
     margin: 0;
     padding: 0;
 }
 
-main>div:first-child picture {
+main>div.hero-section picture {
     display: block;
 }
 
-main>div:first-child img {
+main>div.hero-section img {
     width: 100vw;
     height: 100vh;
     object-fit: cover;
     object-position: center center;
 }
 
-main>div:first-child del {
+main>div.hero-section del {
     display: none;
 }
 
@@ -53,7 +53,7 @@ main h1 {
 }
 
 
-main>div:first-child h1 {
+main>div.hero-section h1 {
     position: absolute;
     top: calc(50% - 50px);
     margin: 0 20px;
@@ -67,7 +67,7 @@ main>div:first-child h1 {
     font-family: var(--font);
 }
 
-main>div:first-child .icon-embrew {
+main>div.hero-section .icon-embrew {
     position: absolute;
     background-color: rgba(0,0,0,0.6);
     top: calc(50% - 100px);
