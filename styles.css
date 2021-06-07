@@ -22,9 +22,14 @@ body {
     line-height: 2em;
 }
 
+main>div {
+    display: none;
+}
+
 main>div.hero-section {
     position: relative;
     color: white;
+    display: block;
 }
 
 main>div.hero-section p:first-child {

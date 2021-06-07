@@ -57,6 +57,10 @@ a, button {
 
 }
 
+main>div.section-wrapper {
+  display: block;
+}
+
 main div.section-wrapper .icon {
   stroke: currentColor;
   fill: currentColor;
