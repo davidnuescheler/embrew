@@ -151,56 +151,6 @@ async function setReservationTimes(date) {
 
   await checkReservationTimesAvailability(date, $time, $party.value, $seating.value);
 }
-async function initReservationForm() {
-  const $form = document.getElementById('reservation-form');
-  populateForm($form);
-
-  wrapSections('main>div:first-of-type');
-
-  // init reservation days
-  const $party = document.getElementById('party');
-  const $date = document.getElementById('date');
-  const $time = document.getElementById('time');
-  // eslint-disable-next-line no-unused-vars
-  const $seating = document.getElementById('seating');
-  const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
-  for (let daysOut = 0; daysOut < 30; daysOut += 1) {
-    const day = new Date();
-    day.setDate(day.getDate() + daysOut);
-    let prefix = '';
-    if (daysOut === 0) prefix = 'Today';
-    if (daysOut === 1) prefix = 'Tomorrow';
-    const $option = createTag('option', { value: `${day.toDateString()}` });
-    $option.innerHTML = `${prefix} ${weekdays[day.getDay()].substr(0, 3)} ${day.toLocaleDateString()}`;
-    // eslint-disable-next-line no-await-in-loop
-    if (!await areWeClosed(day, 'Reservations')) $date.appendChild($option);
-  }
-  $date.addEventListener('change', () => {
-    setReservationTimes($date.value);
-  });
-
-  const config = await getConfig();
-  const minParty = +config.Reservations['Minimum Party Size'];
-  const maxParty = +config.Reservations['Maximum Party Size'];
-  const defaultParty = +config.Reservations['Default Party Size'];
-
-  let html = '';
-  for (let i = minParty; i <= maxParty; i += 1) {
-    html += `<option value="${i}" ${i === defaultParty ? 'selected' : ''}>Party of ${i}</option>`;
-  }
-  $party.innerHTML = html;
-  $party.addEventListener('change', () => {
-    setReservationTimes($date.value);
-  });
-
-  await setReservationTimes($date.value);
-  console.log(`options: ${[...$time.options].length}`);
-  if ($time.options.length === 0) {
-    $date.firstElementChild.remove();
-    setReservationTimes($date.value);
-  }
-}
 
 async function displayReservation(reservation) {
   const config = await getConfig();
@@ -259,7 +209,6 @@ async function displayReservation(reservation) {
   }
 }
 
-// eslint-disable-next-line no-unused-vars
 async function submitReservation() {
   const reservation = {};
   reservation.Time = document.getElementById('time').value;
@@ -279,6 +228,62 @@ async function submitReservation() {
   stashForm(['name', 'cell']);
 
   displayReservation(reservation);
+}
+
+async function initReservationForm() {
+  const $form = document.getElementById('reservation-form');
+  populateForm($form);
+
+  const $reserve = document.getElementById('reserve');
+  $reserve.addEventListener('click', () => {
+    submitReservation();
+  });
+
+  wrapSections('main>div:first-of-type');
+
+  // init reservation days
+  const $party = document.getElementById('party');
+  const $date = document.getElementById('date');
+  const $time = document.getElementById('time');
+  // eslint-disable-next-line no-unused-vars
+  const $seating = document.getElementById('seating');
+  const weekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+  for (let daysOut = 0; daysOut < 30; daysOut += 1) {
+    const day = new Date();
+    day.setDate(day.getDate() + daysOut);
+    let prefix = '';
+    if (daysOut === 0) prefix = 'Today';
+    if (daysOut === 1) prefix = 'Tomorrow';
+    const $option = createTag('option', { value: `${day.toDateString()}` });
+    $option.innerHTML = `${prefix} ${weekdays[day.getDay()].substr(0, 3)} ${day.toLocaleDateString()}`;
+    // eslint-disable-next-line no-await-in-loop
+    if (!await areWeClosed(day, 'Reservations')) $date.appendChild($option);
+  }
+  $date.addEventListener('change', () => {
+    setReservationTimes($date.value);
+  });
+
+  const config = await getConfig();
+  const minParty = +config.Reservations['Minimum Party Size'];
+  const maxParty = +config.Reservations['Maximum Party Size'];
+  const defaultParty = +config.Reservations['Default Party Size'];
+
+  let html = '';
+  for (let i = minParty; i <= maxParty; i += 1) {
+    html += `<option value="${i}" ${i === defaultParty ? 'selected' : ''}>Party of ${i}</option>`;
+  }
+  $party.innerHTML = html;
+  $party.addEventListener('change', () => {
+    setReservationTimes($date.value);
+  });
+
+  await setReservationTimes($date.value);
+  console.log(`options: ${[...$time.options].length}`);
+  if ($time.options.length === 0) {
+    $date.firstElementChild.remove();
+    setReservationTimes($date.value);
+  }
 }
 
 function moveConfirmationToTop() {
