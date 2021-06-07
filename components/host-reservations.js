@@ -11,9 +11,16 @@
  */
 
 /* eslint-disable no-console */
-/* global window fetch document wrapSections getConfig getDate createTag */
+/* global window fetch document */
 
-const $section = document.currentScript.closest('div');
+import {
+  wrapSections,
+  getConfig,
+  getDate,
+  createTag,
+} from '../scripts.js';
+
+const $section = document.querySelector('script[src="/components/host-reservations.js"').closest('div');
 const $endpoint = $section.querySelector('a');
 const endpoint = $endpoint.href;
 
@@ -60,8 +67,16 @@ async function fetchReservations() {
   data.actions.sort((a, b) => {
     if (!a.Time) return (-1);
     if (!b.Time) return (1);
-    return getDate(a.Date, a.Time) - getDate(b.Date, b.Time);
+    const aDate = getDate(a.Date, a.Time);
+    const bDate = getDate(b.Date, b.Time);
+    return aDate - bDate;
   });
+
+  /*
+  data.actions.forEach((d) => {
+    console.log(d.Date, d.Time);
+  });
+  */
   return (data.actions);
 }
 
@@ -199,18 +214,20 @@ async function editReservation(res) {
   const $update = $details.querySelector('.update');
   $update.innerHTML = '<button>Update Reservation</button>';
   $update.firstElementChild.addEventListener('click', async () => {
-    hide('#reservation-details .details');
-    show('#reservation-details .spinner');
-
-    const conf = await updateReservation($form);
-    const resNames = Object.keys(conf.reservation);
-    resNames.forEach((name) => {
-      res[name] = conf.reservation[name];
-    });
-
-    $details.classList.add('hidden');
-    document.body.classList.remove('noscroll');
-    displayReservations();
+    if ($form.checkValidity()) {
+      hide('#reservation-details .details');
+      show('#reservation-details .spinner');
+      const conf = await updateReservation($form);
+      const resNames = Object.keys(conf.reservation);
+      resNames.forEach((name) => {
+        res[name] = conf.reservation[name];
+      });
+      $details.classList.add('hidden');
+      document.body.classList.remove('noscroll');
+      displayReservations();
+    } else {
+      $form.reportValidity();
+    }
   });
 
   const $cancel = $details.querySelector('.cancel');
@@ -253,10 +270,12 @@ async function initReservations() {
   $party.innerHTML = html;
 }
 
-// eslint-disable-next-line no-unused-vars
-async function signedIn() {
+// eslint-disable-next-line import/prefer-default-export
+export async function signedIn() {
   window.embrew.reservations = await fetchReservations();
   displayReservations();
 }
+
+window.signedIn = signedIn;
 
 initReservations();
