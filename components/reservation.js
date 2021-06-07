@@ -10,9 +10,20 @@
  * governing permissions and limitations under the License.
  */
 /* eslint-disable no-console */
-/* global alert, document, fetch, populateForm, wrapSections, getDate,
-areWeClosed, createTag, isSameDate, getConfig, getOpeningHours, window,
-localStorage, stashForm, timeToHours  */
+/* global alert, document, fetch, window, localStorage  */
+
+import {
+  populateForm,
+  wrapSections,
+  getDate,
+  areWeClosed,
+  createTag,
+  isSameDate,
+  getConfig,
+  getOpeningHours,
+  stashForm,
+  timeToHours,
+} from '../scripts.js';
 
 async function fetchReservation(reservation) {
   let qs = '?';

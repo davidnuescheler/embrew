@@ -32,7 +32,7 @@ export function createTag(name, attrs) {
   return el;
 }
 
-function wrapSections(element) {
+export function wrapSections(element) {
   document.querySelectorAll(element).forEach(($div) => {
     if (!$div.id) {
       const $wrapper = createTag('div', { class: 'section-wrapper' });
@@ -83,7 +83,7 @@ export function isSameDate(date1, date2) {
 }
 
 // eslint-disable-next-line no-unused-vars
-function timeToHours(time) {
+export function timeToHours(time) {
   const trimmed = time.trim();
   const hoursMins = trimmed.replace(/[A-Za-z]/g, '').trim().split(':');
 
