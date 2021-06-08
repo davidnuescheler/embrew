@@ -13,6 +13,12 @@ body, main, html , main div.section-wrapper {
     line-height: 1.2em;
     align-items: center;
     border: 5px solid rgb(var(--background-color));
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#reservations .row:hover, #reservations .row:focus {
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.6);
 }
 
 #reservations .row.seated, #reservations .row.cancelled {
