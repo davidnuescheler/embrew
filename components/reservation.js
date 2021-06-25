@@ -88,9 +88,13 @@ async function checkReservationTimesAvailability(date, $time, partySize) {
     const seats = slot[weekday];
     if (seats) {
       slots[index].seats = seats;
+      slots[index].maxSeats = seats;
       if (window.name.includes('debug')) {
         console.log(`slots ${hours}:${index}:${seats}`);
       }
+    } else {
+      slots[index].seats = 0;
+      slots[index].maxSeats = 0;
     }
   });
 
@@ -110,6 +114,7 @@ async function checkReservationTimesAvailability(date, $time, partySize) {
     console.log(slots);
   }
 
+  let slotsAvailable = 0;
   [...$time.options].forEach(($o) => {
     // eslint-disable-next-line no-console
     const index = Math.floor(+$o.getAttribute('data-hours') * 2);
@@ -120,7 +125,15 @@ async function checkReservationTimesAvailability(date, $time, partySize) {
       if (window.name.includes('debug')) {
         console.log(`removing ${$o.value}`);
       }
-      $o.remove();
+      if ((slots[index].maxSeats === 0) || (slots[index + 1].maxSeats === 0)) {
+        $o.remove();
+      } else {
+        $o.setAttribute('disabled', '');
+        $o.innerHTML += ' (Fully Booked)';
+      }
+    } else {
+      if (!slotsAvailable) $o.setAttribute('selected', '');
+      slotsAvailable += 1;
     }
   });
 }
