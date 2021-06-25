@@ -136,6 +136,7 @@ async function checkReservationTimesAvailability(date, $time, partySize) {
       slotsAvailable += 1;
     }
   });
+  return (slotsAvailable);
 }
 
 async function setReservationTimes(date) {
@@ -162,7 +163,8 @@ async function setReservationTimes(date) {
   const $party = document.getElementById('party');
   const $seating = document.getElementById('seating');
 
-  await checkReservationTimesAvailability(date, $time, $party.value, $seating.value);
+  const avail = await checkReservationTimesAvailability(date, $time, $party.value, $seating.value);
+  return (avail);
 }
 
 async function displayReservation(reservation) {
@@ -224,7 +226,9 @@ async function displayReservation(reservation) {
 
 async function submitReservation() {
   const reservation = {};
-  reservation.Time = document.getElementById('time').value;
+  const $time = document.getElementById('time');
+  reservation.Time = $time.value;
+  const resTimeDisabled = $time.options[$time.selectedIndex].hasAttribute('disabled');
   reservation.Date = document.getElementById('date').value;
   reservation.Name = document.getElementById('name').value;
   reservation.Cell = document.getElementById('cell').value;
@@ -232,9 +236,9 @@ async function submitReservation() {
   reservation.Message = document.getElementById('message').value;
   reservation.Seating = document.getElementById('seating').value;
 
-  if (!reservation.Time) {
+  if (!reservation.Time || resTimeDisabled) {
     // eslint-disable-next-line no-alert
-    alert("Something went wrong. We are sorry but we couldn't find a timeslot on that day. Please call or text us");
+    alert("Something went wrong. We are sorry but we couldn't find an available timeslot on that day.");
     return;
   }
 
