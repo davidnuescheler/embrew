@@ -280,6 +280,27 @@ function decoratePage() {
   hideTitle();
   addBanner();
   stamp('decoratePage end');
+  if (window.location.href.includes('/host-messages')) {
+    document.querySelectorAll('main div > p').forEach(async (p) => {
+      if (p.textContent.startsWith('/')) {
+        const path = p.textContent.split('.').join('.embed.');
+        console.log(path);
+        const resp = await fetch(path);
+        const text = await resp.text();
+        const parent = p;
+        parent.innerHTML = text;
+        parent.querySelectorAll('script').forEach((script) => {
+          const newScript = document.createElement("script");
+          newScript.src = script.src;
+          newScript.type = script.type;
+          newScript.async = script.async;
+          newScript.defer = script.defer;
+          parent.appendChild(newScript);
+          console.log(script);
+        })
+      }
+    });
+  }
 }
 
 window.embrew = {};

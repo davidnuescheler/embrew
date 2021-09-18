@@ -19,7 +19,8 @@ import {
   createTag,
 } from '../scripts.js';
 
-const $section = document.querySelector('script[src="/components/host-messages.js"').closest('div');
+const $section = document.querySelector('script[src="/components/host-messages.js"').closest('div.section-wrapper');
+console.log($section);
 const $endpoint = $section.querySelector('a');
 const endpoint = $endpoint.href;
 
