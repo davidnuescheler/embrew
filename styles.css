@@ -98,6 +98,7 @@ main .menu-switcher {
 main .menu-switcher select {
     max-width: 350px;
     margin: 10px auto;
+    color: black;
 }
 
 img {
