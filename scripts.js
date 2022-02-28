@@ -269,6 +269,33 @@ function decorateHeroSection() {
   }
 }
 
+function addQuickNav() {
+  const h3s = [...document.querySelectorAll('main h3')];
+  const h4 = document.querySelector('main h4');
+  if (h4 && h3s.length) {
+    const div = document.createElement('div');
+    div.className = 'menu-switcher';
+    const select = document.createElement('select');
+    const pl = document.createElement('option');
+    pl.textContent = 'Browse the menu ...';
+    pl.selected = true;
+    pl.disabled = true;
+    select.append(pl);
+    h3s.forEach((h3) => {
+      const option = document.createElement('option');
+      option.textContent = h3.textContent;
+      option.value = h3.id;
+      select.append(option);
+    });
+    div.append(select);
+    h3s[0].parentNode.insertBefore(div, h3s[0]);
+    select.addEventListener('change', () => {
+      window.location.hash = `#${select.value}`;
+    });
+
+  }
+}
+
 function decoratePage() {
   checkLCPProxy();
   stamp('decoratePage start');
@@ -279,6 +306,7 @@ function decoratePage() {
   decoratePhoneLinks();
   hideTitle();
   addBanner();
+  addQuickNav();
   stamp('decoratePage end');
   if (window.location.href.includes('/host-messages')) {
     document.querySelectorAll('main div > p').forEach(async (p) => {
