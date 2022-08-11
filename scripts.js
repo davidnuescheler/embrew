@@ -42,6 +42,32 @@ export function wrapSections(element) {
   });
 }
 
+/**
+ * Replace icons with inline SVG and prefix with codeBasePath.
+ * @param {Element} element
+ */
+ export function decorateIcons(element = document) {
+  element.querySelectorAll('span.icon').forEach(async (span) => {
+    if (span.classList.length < 2 || !span.classList[1].startsWith('icon-')) {
+      return;
+    }
+    const icon = span.classList[1].substring(5);
+    // eslint-disable-next-line no-use-before-define
+    const resp = await fetch(`${window.hlx.codeBasePath}${ICON_ROOT}/${icon}.svg`);
+    if (resp.ok) {
+      const iconHTML = await resp.text();
+      if (iconHTML.match(/<style/i)) {
+        const img = document.createElement('img');
+        img.src = `data:image/svg+xml,${encodeURIComponent(iconHTML)}`;
+        span.appendChild(img);
+      } else {
+        span.innerHTML = iconHTML;
+      }
+    }
+  });
+}
+
+
 export async function getConfig() {
   if (!window.embrew.config) {
     const config = {};
@@ -307,6 +333,8 @@ function decoratePage() {
   hideTitle();
   addBanner();
   addQuickNav();
+  const main = document.querySelector('main');
+  decorateIcons(main);
   stamp('decoratePage end');
   if (window.location.href.includes('/host-messages')) {
     document.querySelectorAll('main div > p').forEach(async (p) => {
