@@ -10,6 +10,11 @@ picture {
     display: none;
 }
 
+img {
+    height: auto;
+    width: auto;
+}
+
 
 body {
     text-align: center;
