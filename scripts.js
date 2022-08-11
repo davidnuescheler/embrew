@@ -322,6 +322,12 @@ function addQuickNav() {
   }
 }
 
+window.hlx = {
+  codeBasePath: '',
+}
+
+const ICON_ROOT = '/icons';
+
 function decoratePage() {
   checkLCPProxy();
   stamp('decoratePage start');

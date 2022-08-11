@@ -92,6 +92,10 @@ main>div.hero-section .icon-embrew {
     padding: 0px 30px;
 }
 
+main>div.hero-section .icon-embrew svg {
+    max-height: 100px;
+}
+
 main .menu-switcher {
     position: fixed;
     bottom: 0;
