@@ -64,6 +64,7 @@ body {
   color: var(--text-color);
   background-color: var(--background-color);
   display: none;
+  text-align: center;
 }
 
 body.appear {
@@ -226,11 +227,27 @@ del {
   display: none;
 }
 
+input, select, textarea {
+  font-family: var(--font);
+  padding: 16px;
+  display: block;
+  font-size: 1.2rem;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 16px 0;
+  border: 0;
+  border-bottom: 1px dashed var(--highlight-background-color);
+  background-color: var(--background-color);
+
+  --webkit-appearance: none;
+}
+
 /* icons */
 .icon svg {
-  fill: currentColor;
+  fill: currentcolor;
   height: 1em;
 }
+
 
 @media (min-width: 600px) {
   main .section {
@@ -262,4 +279,32 @@ main .section[data-section-status='initialized'] {
 
 main .section.highlight {
   background-color: var(--highlight-background-color);
+}
+
+main .section.image-only {
+  padding: 32px 0;
+}
+
+main .section.image-only > div {
+  max-width: unset;
+}
+
+main .section.image-only img {
+  width: 100%;
+  max-height: 800px;
+  object-fit: contain;
+}
+
+main .menu-switcher {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--highlight-background-color);
+}
+
+main .menu-switcher select {
+  max-width: 350px;
+  margin: 10px auto;
+  color: black;
 }

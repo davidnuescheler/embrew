@@ -604,6 +604,32 @@ window.addEventListener('error', (event) => {
 
 loadPage(document);
 
+function addQuickNav() {
+  const h3s = [...document.querySelectorAll('main h3')];
+  const h4 = document.querySelector('main h4');
+  if (h4 && h3s.length) {
+    const div = document.createElement('div');
+    div.className = 'menu-switcher';
+    const select = document.createElement('select');
+    const pl = document.createElement('option');
+    pl.textContent = 'Browse the menu ...';
+    pl.selected = true;
+    pl.disabled = true;
+    select.append(pl);
+    h3s.forEach((h3) => {
+      const option = document.createElement('option');
+      option.textContent = h3.textContent;
+      option.value = h3.id;
+      select.append(option);
+    });
+    div.append(select);
+    h3s[0].parentNode.insertBefore(div, h3s[0]);
+    select.addEventListener('change', () => {
+      window.location.hash = `#${select.value}`;
+    });
+  }
+}
+
 function buildHeroBlock(main) {
   const h1 = main.querySelector('h1');
   const picture = main.querySelector('picture');
@@ -639,6 +665,15 @@ function loadFooter(footer) {
 function buildAutoBlocks(main) {
   try {
     buildHeroBlock(main);
+    document.querySelectorAll('picture').forEach((picture) => {
+      const section = picture.closest('main > div');
+      if (!section.textContent.trim()) {
+        section.classList.add('image-only');
+      }
+    });
+    document.querySelectorAll('a[href^="https://squareup"]').forEach((a) => {
+      a.remove();
+    });
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
@@ -689,6 +724,7 @@ async function loadLazy(doc) {
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   addFavIcon(`${window.hlx.codeBasePath}/styles/favicon.svg`);
   sampleRUM('lazy');
+  addQuickNav();
 }
 
 /**

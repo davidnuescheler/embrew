@@ -9,7 +9,7 @@ main .hero-container {
   
 main .hero {
     padding: 32px;
-    min-height: 300px;
+    min-height: 500px;
     color: white;
     max-width: 1200px;
     margin: auto;
@@ -26,6 +26,7 @@ main .hero h1 {
 }
 
 main .hero .icon {
+    margin-top: 150px;
     display: inline-block;
     padding: 32px;
     background-color: var(--overlay-background-color);
