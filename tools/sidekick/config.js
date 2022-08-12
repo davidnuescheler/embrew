@@ -1,4 +1,4 @@
 window.hlx.initSidekick({
   project: 'embrew',
-  host: 'https://emigrationbrewing.com/',
+  host: 'emigrationbrewing.com',
 });
