@@ -16,12 +16,11 @@ const loadScript = (url, callback, type) => {
 // Core Web Vitals RUM collection
 sampleRUM('cwv');
 
-loadScript('https://www.googletagmanager.com/gtag/js?id=UA-137014746-1');
-
-// add more delayed functionality here
-window.dataLayer = window.dataLayer || [];
-function gtag(...args) {
-  window.dataLayer.push(args);
-}
-gtag('js', new Date());
-gtag('config', 'UA-137014746-1');
+loadScript('https://www.googletagmanager.com/gtag/js?id=UA-137014746-1', () => {
+  window.dataLayer = window.dataLayer || [];
+  function gtag(...args) {
+    window.dataLayer.push(args);
+  }
+  gtag('js', new Date());
+  gtag('config', 'UA-137014746-1');
+});
