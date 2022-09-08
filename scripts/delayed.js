@@ -16,11 +16,11 @@ const loadScript = (url, callback, type) => {
 // Core Web Vitals RUM collection
 sampleRUM('cwv');
 
-loadScript('https://www.googletagmanager.com/gtag/js?id=UA-137014746-1', () => {
+loadScript('https://www.googletagmanager.com/gtag/js?id=G-NCCQJ1BZ66', () => {
   window.dataLayer = window.dataLayer || [];
-  function gtag(...args) {
-    window.dataLayer.push(args);
-  }
+  // eslint-disable-next-line prefer-rest-params
+  function gtag() { window.dataLayer.push(arguments); }
   gtag('js', new Date());
-  gtag('config', 'UA-137014746-1');
+
+  gtag('config', 'G-NCCQJ1BZ66');
 });
