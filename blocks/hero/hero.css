@@ -1,0 +1,50 @@
+main .hero-wrapper {
+    max-width: unset;
+    position: relative;
+}
+  
+main .hero-container {
+    padding: 0;
+}
+  
+main .hero {
+    padding: 32px;
+    min-height: 500px;
+    color: white;
+    max-width: 1200px;
+    margin: auto;
+    text-align: center;
+}
+
+main .hero svg {
+    height: 100px;
+}
+
+main .hero h1 {
+    padding: 8px;
+    background-color: var(--overlay-background-color);
+}
+
+main .hero .icon {
+    margin-top: 150px;
+    display: inline-block;
+    padding: 32px;
+    background-color: var(--overlay-background-color);
+}
+
+main .hero picture {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    object-fit: cover;
+    box-sizing: border-box;
+}
+
+main .hero img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
