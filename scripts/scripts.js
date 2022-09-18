@@ -637,8 +637,10 @@ function buildHeroBlock(main) {
   if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
     const section = document.createElement('div');
     const existingSection = h1.closest('div');
-    const icon = existingSection.querySelector('.icon');
-    section.append(buildBlock('hero', { elems: [picture, h1, icon] }));
+    const overlay = document.createElement('div');
+    overlay.classList.add('hero-overlay');
+    [...existingSection.children].forEach((e) => overlay.append(e));
+    section.append(buildBlock('hero', { elems: [picture, overlay] }));
     main.prepend(section);
     existingSection.remove();
   }
