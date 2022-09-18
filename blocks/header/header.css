@@ -21,8 +21,8 @@ header nav a:any-link {
 }
 
 header nav[aria-expanded='true'] {
-  grid-template: 'hamburger brand' 'sections sections' 'tools tools';
-  grid-template-columns:  50px 1fr;
+  grid-template: 'hamburger brand tools' 'sections sections sections';
+  grid-template-columns:  50px 1fr 32px;
   grid-template-rows: 64px 1fr;
   overflow-y: scroll;
   min-height: 100vh;
