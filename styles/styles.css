@@ -251,6 +251,13 @@ select, textarea {
   height: 1em;
 }
 
+.icon.icon-logo-lockup svg {
+  max-width: 100%;
+  height: 200px;
+  display: block;
+  margin: auto;
+}
+
 
 @media (min-width: 600px) {
   main .section {
