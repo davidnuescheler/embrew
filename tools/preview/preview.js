@@ -22,7 +22,7 @@ async function adminService(action, currentURL) {
   if (orr[0] === 'localhost') orr = ['main', 'embrew', 'davidnuescheler'];
   const method = action === 'status' ? 'GET' : 'POST';
   const suffix = action === 'status' ? '?editUrl=auto' : '';
-  const adminURL = `http://admin.hlx.page/${action}/${orr[2]}/${orr[1]}/${orr[0]}${url.pathname}${suffix}`;
+  const adminURL = `https://admin.hlx.page/${action}/${orr[2]}/${orr[1]}/${orr[0]}${url.pathname}${suffix}`;
   const resp = await fetch(adminURL, { method });
   const json = await resp.json();
   return (json);
