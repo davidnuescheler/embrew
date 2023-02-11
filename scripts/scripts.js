@@ -159,10 +159,8 @@ export function decorateIcons(element = document) {
         span.appendChild(img);
       } else {
         span.innerHTML = iconHTML;
-        const svg = span.querySelector('svg');
-        const title = document.createElement('title');
-        title.textContent = icon;
-        svg.append(title);
+        const a = span.closest('a');
+        if (a) a.title = icon;
       }
     }
   });
