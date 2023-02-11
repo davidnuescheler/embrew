@@ -159,6 +159,10 @@ export function decorateIcons(element = document) {
         span.appendChild(img);
       } else {
         span.innerHTML = iconHTML;
+        const svg = span.querySelector('svg');
+        const title = document.createElement('title');
+        title.textContent = icon;
+        svg.append(title);
       }
     }
   });
@@ -731,6 +735,9 @@ async function loadLazy(doc) {
   if (window.location.hostname.endsWith('hlx.page') || window.location.hostname === ('localhost')) {
     import('../tools/preview/preview.js');
   }
+  
+  document.documentElement.lang = 'en';
+  
 }
 
 /**
