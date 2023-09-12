@@ -1,4 +1,4 @@
-import { decorateIcons, getMetadata } from '../../scripts/scripts.js';
+import { decorateIcons, getMetadata } from '../../scripts/lib-franklin.js';
 
 /**
  * collapses all open nav sections

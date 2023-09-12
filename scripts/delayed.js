@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-cycle
-import { sampleRUM } from './scripts.js';
+import { sampleRUM } from './lib-franklin.js';
 
 const loadScript = (url, callback, type) => {
   const head = document.querySelector('head');
