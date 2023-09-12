@@ -158,11 +158,12 @@ export function toCamelCase(name) {
 }
 
 const ICONS_CACHE = {};
+
 /**
- * Replace icons with inline SVG and prefix with codeBasePath.
- * @param {Element} [element] Element containing icons
+ * Attempt to replace <img> with <svg><use> to allow styling based on use of current color
+ * @param {icon} icon <img> element
  */
-export async function decorateIcons(element) {
+export async function spriteIcon(icon) {
   // Prepare the inline sprite
   let svgSprite = document.getElementById('franklin-svg-sprite');
   if (!svgSprite) {
@@ -172,64 +173,71 @@ export async function decorateIcons(element) {
     document.body.append(div.firstElementChild);
   }
 
-  // Download all new icons
-  const icons = [...element.querySelectorAll('span.icon')];
-  await Promise.all(icons.map(async (span) => {
-    const iconName = Array.from(span.classList).find((c) => c.startsWith('icon-')).substring(5);
-    if (!ICONS_CACHE[iconName]) {
-      ICONS_CACHE[iconName] = true;
-      try {
-        const response = await fetch(`${window.hlx.codeBasePath}/icons/${iconName}.svg`);
-        if (!response.ok) {
-          ICONS_CACHE[iconName] = false;
-          return;
-        }
-        // Styled icons don't play nice with the sprite approach because of shadow dom isolation
-        // and same for internal references
-        const svg = await response.text();
-        if (svg.match(/(<style | class=|url\(#| xlink:href="#)/)) {
-          ICONS_CACHE[iconName] = {
-            styled: true,
-            html: svg
-              // rescope ids and references to avoid clashes across icons;
-              .replaceAll(/ id="([^"]+)"/g, (_, id) => ` id="${iconName}-${id}"`)
-              .replaceAll(/="url\(#([^)]+)\)"/g, (_, id) => `="url(#${iconName}-${id})"`)
-              .replaceAll(/ xlink:href="#([^"]+)"/g, (_, id) => ` xlink:href="#${iconName}-${id}"`),
-          };
-        } else {
-          ICONS_CACHE[iconName] = {
-            html: svg
-              .replace('<svg', `<symbol id="icons-sprite-${iconName}"`)
-              .replace(/ width=".*?"/, '')
-              .replace(/ height=".*?"/, '')
-              .replace('</svg>', '</symbol>'),
-          };
-        }
-      } catch (error) {
-        ICONS_CACHE[iconName] = false;
-        // eslint-disable-next-line no-console
-        console.error(error);
+  const { iconName } = icon.dataset;
+  if (!ICONS_CACHE[iconName]) {
+    try {
+      const response = await fetch(icon.src);
+      // cowardly refusing to load large icons
+      if (response.contentLength > 10240) {
+        ICONS_CACHE[iconName] = { };
+        return;
       }
+      if (!response.ok) {
+        return;
+      }
+
+      // only sprite icons that use currentColor
+      const svg = await response.text();
+      if (svg.toLowerCase().includes('currentcolor')) {
+        const symbol = svg
+          .replace('<svg', `<symbol id="icons-sprite-${iconName}"`)
+          .replace(/ width=".*?"/, '')
+          .replace(/ height=".*?"/, '')
+          .replace('</svg>', '</symbol>');
+        ICONS_CACHE[iconName] = {
+          html: symbol,
+        };
+        svgSprite.innerHTML += symbol;
+      } else {
+        ICONS_CACHE[iconName] = { };
+      }
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
     }
-  }));
+  }
 
-  const symbols = Object
-    .keys(ICONS_CACHE).filter((k) => !svgSprite.querySelector(`#icons-sprite-${k}`))
-    .map((k) => ICONS_CACHE[k])
-    .filter((v) => !v.styled)
-    .map((v) => v.html)
-    .join('\n');
-  svgSprite.innerHTML += symbols;
+  if (document.getElementById(`icons-sprite-${iconName}`)) {
+    const span = icon.closest('span.icon');
+    span.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg"><use href="#icons-sprite-${iconName}"/></svg>`;
+  }
+}
 
+/**
+ * Add <img> for icons, prefixed with codeBasePath and optional prefix.
+ * @param {Element} [element] Element containing icons
+ * @param {string} [prefix] prefix to be added to icon the src
+ */
+
+export async function decorateIcons(element, prefix = '') {
+  const icons = [...element.querySelectorAll('span.icon')];
   icons.forEach((span) => {
     const iconName = Array.from(span.classList).find((c) => c.startsWith('icon-')).substring(5);
-    const parent = span.firstElementChild?.tagName === 'A' ? span.firstElementChild : span;
-    // Styled icons need to be inlined as-is, while unstyled ones can leverage the sprite
-    if (ICONS_CACHE[iconName].styled) {
-      parent.innerHTML = ICONS_CACHE[iconName].html;
-    } else {
-      parent.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg"><use href="#icons-sprite-${iconName}"/></svg>`;
-    }
+    const img = document.createElement('img');
+    img.dataset.iconName = iconName;
+    img.src = `${prefix}/icons/${iconName}.svg`;
+    img.loading = 'lazy';
+
+    span.append(img);
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          spriteIcon(img);
+          io.disconnect();
+        }
+      });
+    });
+    io.observe(img);
   });
 }
 
