@@ -136,13 +136,17 @@ header nav[aria-expanded='true'] .nav-sections {
 /* tools */
 header nav .nav-tools {
   grid-area: tools;
-  flex: 0 0 auto;
+  flex: 0 0 32px;
 }
 
 header nav .nav-tools p {
   margin: 0;
   padding-top: 2px;
   padding-left: 12px;
+}
+
+header nav .nav-tools .icon svg {
+  width: 32px;
 }
 
 header nav[aria-expanded='true'] .nav-tools img {
