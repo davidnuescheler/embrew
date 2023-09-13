@@ -157,60 +157,19 @@ export function toCamelCase(name) {
   return toClassName(name).replace(/-([a-z])/g, (g) => g[1].toUpperCase());
 }
 
-const ICONS_CACHE = {};
-
 /**
- * Attempt to replace <img> with <svg><use> to allow styling based on use of current color
- * @param {icon} icon <img> element
+ * Add <img> for icon, prefixed with codeBasePath and optional prefix.
+ * @param {span} [element] span element with icon classes
+ * @param {string} [prefix] prefix to be added to icon the src
  */
-export async function spriteIcon(icon) {
-  // Prepare the inline sprite
-  let svgSprite = document.getElementById('franklin-svg-sprite');
-  if (!svgSprite) {
-    const div = document.createElement('div');
-    div.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" id="franklin-svg-sprite" style="display: none"></svg>';
-    svgSprite = div.firstElementChild;
-    document.body.append(div.firstElementChild);
-  }
+export function decorateIcon(span, prefix = '') {
+  const iconName = Array.from(span.classList).find((c) => c.startsWith('icon-')).substring(5);
+  const img = document.createElement('img');
+  img.dataset.iconName = iconName;
+  img.src = `${prefix}/icons/${iconName}.svg`;
+  img.loading = 'lazy';
 
-  const { iconName } = icon.dataset;
-  if (!ICONS_CACHE[iconName]) {
-    try {
-      const response = await fetch(icon.src);
-      // cowardly refusing to load large icons
-      if (response.contentLength > 10240) {
-        ICONS_CACHE[iconName] = { };
-        return;
-      }
-      if (!response.ok) {
-        return;
-      }
-
-      // only sprite icons that use currentColor
-      const svg = await response.text();
-      if (svg.toLowerCase().includes('currentcolor')) {
-        const symbol = svg
-          .replace('<svg', `<symbol id="icons-sprite-${iconName}"`)
-          .replace(/ width=".*?"/, '')
-          .replace(/ height=".*?"/, '')
-          .replace('</svg>', '</symbol>');
-        ICONS_CACHE[iconName] = {
-          html: symbol,
-        };
-        svgSprite.innerHTML += symbol;
-      } else {
-        ICONS_CACHE[iconName] = { };
-      }
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
-    }
-  }
-
-  if (document.getElementById(`icons-sprite-${iconName}`)) {
-    const span = icon.closest('span.icon');
-    span.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg"><use href="#icons-sprite-${iconName}"/></svg>`;
-  }
+  span.append(img);
 }
 
 /**
@@ -219,25 +178,10 @@ export async function spriteIcon(icon) {
  * @param {string} [prefix] prefix to be added to icon the src
  */
 
-export async function decorateIcons(element, prefix = '') {
+export function decorateIcons(element, prefix = '') {
   const icons = [...element.querySelectorAll('span.icon')];
   icons.forEach((span) => {
-    const iconName = Array.from(span.classList).find((c) => c.startsWith('icon-')).substring(5);
-    const img = document.createElement('img');
-    img.dataset.iconName = iconName;
-    img.src = `${prefix}/icons/${iconName}.svg`;
-    img.loading = 'lazy';
-
-    span.append(img);
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          spriteIcon(img);
-          io.disconnect();
-        }
-      });
-    });
-    io.observe(img);
+    decorateIcon(span, prefix);
   });
 }
 
