@@ -1,4 +1,5 @@
-import { decorateIcons, getMetadata } from '../../scripts/lib-franklin.js';
+import { getMetadata } from '../../scripts/lib-franklin.js';
+import { spriteIcons } from '../../scripts/scripts.js';
 
 /**
  * collapses all open nav sections
@@ -28,7 +29,6 @@ export default async function decorate(block) {
     // decorate nav DOM
     const nav = document.createElement('nav');
     nav.innerHTML = html;
-    decorateIcons(nav);
 
     const classes = ['brand', 'sections', 'tools'];
     classes.forEach((e, j) => {
@@ -63,7 +63,7 @@ export default async function decorate(block) {
     });
     nav.prepend(hamburger);
     nav.setAttribute('aria-expanded', 'false');
-    decorateIcons(nav);
+    spriteIcons(nav);
     block.append(nav);
 
     navSections.addEventListener('click', () => {
