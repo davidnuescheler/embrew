@@ -62,6 +62,14 @@ a.edit::before {
     background-color: #222;
 }
 
+.images #media {
+  display: grid;
+}
+
+.images #results {
+  display: none;
+}
+
 input {
     padding: 5px 10px;
     border: #222 2px solid;
@@ -82,6 +90,45 @@ button {
     font: 1.3rem Inconsolata, monospace;
 }
 
+#media {
+  display: none;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 16px;
+}
+
+#media div {
+  position: relative;
+}
+
+#media img {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+}
+
+#media .badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  background: red;
+  padding: 5px;
+  min-height: 32px;
+  min-width: 32px;
+  border-radius: 20px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+dialog {
+  background-color: black;
+  color: white;
+}
+
 </style>
     </head>
     <body>
@@ -91,6 +138,7 @@ button {
             <option value="link">link</option>
             <option value="meta">meta</option>
             <option value="alt">alt</option>
+            <option value="images">images</option>
           </select>
           <input id="input" type="text" placeholder="class=&quot;card">
           <button id="run">run</button>
@@ -103,5 +151,12 @@ button {
 
         </div>
         </pre>
+        <div id="media">
+
+        </div>
+        <dialog id="media-details">
+          <div id="media-details-content"></div>
+          <button id="media-details-close">close</button>
+        </dialog>    
     </body>
 </html>

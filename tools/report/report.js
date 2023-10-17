@@ -81,6 +81,12 @@ function altMatch(pattern, text) {
   return { found: matches.length > 0, matches };
 }
 
+function imagesMatch(pattern, text) {
+  const dom = new DOMParser().parseFromString(text, 'text/html');
+  const matches = [...dom.querySelectorAll('img')].filter((img) => img.getAttribute('alt').indexOf(pattern) >= 0).map((img) => `${img.getAttribute('src').split('?')[0]}: ${img.getAttribute('alt')}`);
+  return { found: matches.length > 0, matches };
+}
+
 function linkMatch(pattern, text) {
   const dom = new DOMParser().parseFromString(text, 'text/html');
   const matches = [...dom.querySelectorAll('a[href]')].filter((a) => a.getAttribute('href').indexOf(pattern) >= 0).map((a) => `${a.textContent}: ${a.getAttribute('href')}`);
@@ -94,6 +100,7 @@ function matchFile(pattern, text, type) {
   if (type === 'link') return linkMatch(pattern, text);
   if (type === 'meta') return metaMatch(pattern, text);
   if (type === 'alt') return altMatch(pattern, text);
+  if (type === 'images') return imagesMatch(pattern, text);
 
   return simpleMatch(pattern, text);
 }
@@ -116,7 +123,7 @@ async function fgrep(pathname, pattern, type) {
 
 async function edit(path, y) {
   try {
-    const statusRes = await fetch(`https://admin.hlx.page/status/pfizer/cibinqocom/main${path}?editUrl=auto`);
+    const statusRes = await fetch(`https://admin.hlx.page/status/davidnuescheler/embrew/main${path}?editUrl=auto`);
     const status = await statusRes.json();
     const editUrl = status.edit && status.edit.url;
     if (y) {
@@ -136,8 +143,25 @@ async function edit(path, y) {
   }
 }
 
+function showMediaDetails(mediaHash) {
+  const dialog = document.getElementById('media-details');
+  const dialogContent = document.getElementById('media-details-content');
+  dialogContent.textContent = '';
+
+  const resultDisplay = document.getElementById('results');
+  const results = resultDisplay.querySelectorAll(`img[src*="${mediaHash}"`);
+  results.forEach((res) => {
+    const href = res.closest('p').querySelector('a').getAttribute('href');
+    const p = document.createElement('p');
+    p.innerHTML = `<a href="${href}">${href}</a> [<a href="#${href}">edit</a>]`;
+    dialogContent.append(p);
+  });
+  dialog.showModal();
+}
+
 function displayResult(result) {
   const resultDisplay = document.getElementById('results');
+  const mediaDisplay = document.getElementById('media');
   totalSize += result.size;
   totalFilesMatched += result.found ? 1 : 0;
   if (result.found) {
@@ -155,6 +179,24 @@ function displayResult(result) {
         const imgURL = new URL(src, new URL(result.pathname, window.location.origin));
         img.src = `${imgURL.href}?width=750&format=webply&optimize=medium`;
         p.append('\n', ''.padStart(10, ' '), img, `:${alt}`);
+
+        const [mediaHash] = match.substr(8).split('.');
+        const existing = mediaDisplay.querySelector(`img[src*="${mediaHash}"]`);
+        if (existing) {
+          const count = existing.querySelector('span.badge');
+          count.textContent = +count.textContent + 1;
+        } else {
+          const mediaDiv = document.createElement('div');
+          mediaDiv.append(img.cloneNode(true));
+          const badge = document.createElement('span');
+          badge.className = 'badge';
+          badge.textContent = 1;
+          badge.addEventListener('click', () => {
+            showMediaDetails(mediaHash);
+          });
+          mediaDiv.append(badge);
+          mediaDisplay.append(mediaDiv);
+        }
       } else p.append('\n', ''.padStart(10, ' '), match);
     });
     if (result.matches.length) p.append('\n');
@@ -177,6 +219,23 @@ function createMetaExport() {
 }
 
 function createAltExport() {
+  const table = [['URL', 'Image', 'Alt Text']];
+  const pars = [...document.querySelectorAll('#results > p')];
+  pars.forEach((p) => {
+    const a = p.querySelector('a:first-of-type');
+    const url = a.href;
+    const matches = p.innerHTML.split('\n').slice(1);
+    matches.forEach((match) => {
+      if (match.trim()) {
+        const imgSrc = match.split('src="')[1].split('"')[0];
+        table.push([url, imgSrc, match.split(': ')[1]]);
+      }
+    });
+  });
+  return table.map((row) => row.join('\t')).join('\n');
+}
+
+function createImagesExport() {
   const table = [['URL', 'Image', 'Alt Text']];
   const pars = [...document.querySelectorAll('#results > p')];
   pars.forEach((p) => {
@@ -217,6 +276,7 @@ function createExport(type) {
   if (type === 'meta') return createMetaExport();
   if (type === 'link') return createLinkExport();
   if (type === 'alt') return createAltExport();
+  if (type === 'images') return createImagesExport();
   return createSimpleExport();
 }
 
@@ -261,9 +321,11 @@ export async function run() {
   startTime = new Date();
   endTime = new Date();
   document.getElementById('results').textContent = '';
+  document.getElementById('media').textContent = '';
 
   await loadSitemap('/sitemap.xml');
   const type = document.getElementById('type').value;
+  document.body.classList.add(type);
   const sitemap = sitemapURLs;
   let pattern = document.getElementById('input').value;
   let connections = 10;
@@ -290,6 +352,12 @@ input.addEventListener('keyup', (event) => {
   }
 });
 
+const close = document.getElementById('media-details-close');
+close.addEventListener('click', () => {
+  const dialog = document.getElementById('media-details');
+  dialog.close();
+});
+
 // only run on .hlx.live
 /*
 if (window.location.hostname.endsWith('.hlx.page')) {
@@ -299,5 +367,12 @@ if (window.location.hostname.endsWith('.hlx.page')) {
 
 const type = document.getElementById('type');
 type.value = localStorage.getItem('content-report-type') || '';
+
+const typeParam = window.location.searchParams.get('type');
+
+if (typeParam) {
+  const select = document.getElementById('type');
+  select.value = typeParam;
+}
 
 document.getElementById('export').addEventListener('click', exportResults);
