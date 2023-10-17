@@ -123,7 +123,7 @@ async function fgrep(pathname, pattern, type) {
 
 async function edit(path, y) {
   try {
-    const statusRes = await fetch(`https://admin.hlx.page/status/davidnuescheler/embrew/main${path}?editUrl=auto`);
+    const statusRes = await fetch(`https://admin.hlx.page/status/adobe/helix-website/main${path}?editUrl=auto`);
     const status = await statusRes.json();
     const editUrl = status.edit && status.edit.url;
     if (y) {
@@ -183,8 +183,21 @@ function displayResult(result) {
         const [mediaHash] = match.substr(8).split('.');
         const existing = mediaDisplay.querySelector(`img[src*="${mediaHash}"]`);
         if (existing) {
-          const count = existing.querySelector('span.badge');
+          const parent = existing.closest('div');
+          const count = parent.querySelector('span.badge');
           count.textContent = +count.textContent + 1;
+          let prev = parent.previousElementSibling;
+          while (prev) {
+            if (+prev.querySelector('span.badge').textContent > +count.textContent) {
+              break;
+            }
+            prev = prev.previousElementSibling;
+          }
+          if (!prev) {
+            mediaDisplay.prepend(parent);
+          } else {
+            prev.after(parent);
+          }
         } else {
           const mediaDiv = document.createElement('div');
           mediaDiv.append(img.cloneNode(true));
@@ -325,7 +338,7 @@ export async function run() {
 
   await loadSitemap('/sitemap.xml');
   const type = document.getElementById('type').value;
-  document.body.classList.add(type);
+  document.body.className = type;
   const sitemap = sitemapURLs;
   let pattern = document.getElementById('input').value;
   let connections = 10;
@@ -368,7 +381,8 @@ if (window.location.hostname.endsWith('.hlx.page')) {
 const type = document.getElementById('type');
 type.value = localStorage.getItem('content-report-type') || '';
 
-const typeParam = window.location.searchParams.get('type');
+const params = new URLSearchParams(window.location.search);
+const typeParam = params.get('type');
 
 if (typeParam) {
   const select = document.getElementById('type');
