@@ -164,52 +164,54 @@ const ICONS_CACHE = {};
  * @param {icon} icon <img> element
  */
 export async function spriteIcon(icon) {
+  const span = icon.closest('span.icon');
+  if (span) {
   // Prepare the inline sprite
-  let svgSprite = document.getElementById('franklin-svg-sprite');
-  if (!svgSprite) {
-    const div = document.createElement('div');
-    div.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" id="franklin-svg-sprite" style="display: none"></svg>';
-    svgSprite = div.firstElementChild;
-    document.body.append(div.firstElementChild);
-  }
-
-  const { iconName } = icon.dataset;
-  if (!ICONS_CACHE[iconName]) {
-    try {
-      const response = await fetch(icon.src);
-      // cowardly refusing to load large icons
-      if (response.contentLength > 10240) {
-        ICONS_CACHE[iconName] = { };
-        return;
-      }
-      if (!response.ok) {
-        return;
-      }
-
-      // only sprite icons that use currentColor
-      const svg = await response.text();
-      if (svg.toLowerCase().includes('currentcolor')) {
-        const symbol = svg
-          .replace('<svg', `<symbol id="icons-sprite-${iconName}"`)
-          .replace(/ width=".*?"/, '')
-          .replace(/ height=".*?"/, '')
-          .replace('</svg>', '</symbol>');
-        ICONS_CACHE[iconName] = {
-          html: symbol,
-        };
-        svgSprite.innerHTML += symbol;
-      } else {
-        ICONS_CACHE[iconName] = { };
-      }
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
+    let svgSprite = document.getElementById('franklin-svg-sprite');
+    if (!svgSprite) {
+      const div = document.createElement('div');
+      div.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" id="franklin-svg-sprite" style="display: none"></svg>';
+      svgSprite = div.firstElementChild;
+      document.body.append(div.firstElementChild);
     }
-  }
 
-  if (document.getElementById(`icons-sprite-${iconName}`)) {
-    const span = icon.closest('span.icon');
-    span.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg"><use href="#icons-sprite-${iconName}"/></svg>`;
+    const { iconName } = icon.dataset;
+    if (!ICONS_CACHE[iconName]) {
+      try {
+        const response = await fetch(icon.src);
+        // cowardly refusing to load large icons
+        if (response.contentLength > 10240) {
+          ICONS_CACHE[iconName] = { };
+          return;
+        }
+        if (!response.ok) {
+          return;
+        }
+
+        // only sprite icons that use currentColor
+        const svg = await response.text();
+        if (svg.toLowerCase().includes('currentcolor')) {
+          const symbol = svg
+            .replace('<svg', `<symbol id="icons-sprite-${iconName}"`)
+            .replace(/ width=".*?"/, '')
+            .replace(/ height=".*?"/, '')
+            .replace('</svg>', '</symbol>');
+          ICONS_CACHE[iconName] = {
+            html: symbol,
+          };
+          svgSprite.innerHTML += symbol;
+        } else {
+          ICONS_CACHE[iconName] = { };
+        }
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error(error);
+      }
+    }
+
+    if (document.getElementById(`icons-sprite-${iconName}`)) {
+      span.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg"><use href="#icons-sprite-${iconName}"/></svg>`;
+    }
   }
 }
 
