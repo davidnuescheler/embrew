@@ -76,12 +76,6 @@ function buildHeroBlock(main) {
 function buildAutoBlocks(main) {
   try {
     buildHeroBlock(main);
-    document.querySelectorAll('picture').forEach((picture) => {
-      const section = picture.closest('main > div');
-      if (!section.textContent.trim()) {
-        section.classList.add('image-only');
-      }
-    });
     document.querySelectorAll('a[href^="https://squareup"]').forEach((a) => {
       a.remove();
     });
@@ -104,6 +98,12 @@ function decorateMain(main) {
   decorateBlocks(main);
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   window.setTimeout(() => sampleRUM.observe(main.querySelectorAll('picture > img')), 1000);
+  document.querySelectorAll('picture').forEach((picture) => {
+    const section = picture.closest('main > div');
+    if (!section.textContent.trim() && !section.querySelector('.block')) {
+      section.classList.add('image-only');
+    }
+  });
 }
 
 /**

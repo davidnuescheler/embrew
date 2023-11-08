@@ -3,12 +3,17 @@
     margin: 0;
     padding: 0;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     grid-gap: 16px;
 }
 
+@media (min-width: 900px) {
+    .cards > ul {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+}
+
 .cards > ul > li {
-    border: 1px solid var(--highlight-background-color);
     background-color: var(--background-color)
 }
 
@@ -26,6 +31,7 @@
 
 .cards > ul > li img {
     width: 100%;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 1 / 1;
     object-fit: cover;
+    border-radius: 16px;
 }
