@@ -1,4 +1,5 @@
-import { readBlockConfig, decorateIcons } from '../../scripts/lib-franklin.js';
+import { readBlockConfig } from '../../scripts/aem.js';
+import { decorateIcons } from '../../scripts/scripts.js';
 
 /**
  * loads and decorates the footer

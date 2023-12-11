@@ -1,4 +1,5 @@
-import { decorateIcons, getMetadata } from '../../scripts/lib-franklin.js';
+import { getMetadata } from '../../scripts/aem.js';
+import { decorateIcons } from '../../scripts/scripts.js';
 
 /**
  * collapses all open nav sections

@@ -4,16 +4,14 @@ import {
   loadHeader,
   loadFooter,
   decorateButtons,
-  decorateIcons,
-  decorateSections,
   decorateBlocks,
+  decorateSections,
   decorateTemplateAndTheme,
-  waitForLCP,
-  loadBlocks,
+  waitForImage,
+  loadSection,
+  loadSections,
   loadCSS,
-} from './lib-franklin.js';
-
-const LCP_BLOCKS = []; // add your LCP blocks to the list
+} from './aem.js';
 
 sampleRUM('top');
 
@@ -85,6 +83,92 @@ function buildAutoBlocks(main) {
   }
 }
 
+const ICONS_CACHE = {};
+
+/**
+ * Attempt to replace <img> with <svg><use> to allow styling based on use of current color
+ * @param {icon} icon <img> element
+ */
+export async function spriteIcon(icon) {
+  const span = icon.closest('span.icon');
+  if (span) {
+  // Prepare the inline sprite
+    let svgSprite = document.getElementById('franklin-svg-sprite');
+    if (!svgSprite) {
+      const div = document.createElement('div');
+      div.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" id="franklin-svg-sprite" style="display: none"></svg>';
+      svgSprite = div.firstElementChild;
+      document.body.append(div.firstElementChild);
+    }
+
+    const { iconName } = icon.dataset;
+    if (!ICONS_CACHE[iconName]) {
+      try {
+        const response = await fetch(icon.src);
+        // cowardly refusing to load large icons
+        if (response.contentLength > 10240) {
+          ICONS_CACHE[iconName] = { };
+          return;
+        }
+        if (!response.ok) {
+          return;
+        }
+
+        // only sprite icons that use currentColor
+        const svg = await response.text();
+        if (svg.toLowerCase().includes('currentcolor')) {
+          const symbol = svg
+            .replace('<svg', `<symbol id="icons-sprite-${iconName}"`)
+            .replace(/ width=".*?"/, '')
+            .replace(/ height=".*?"/, '')
+            .replace('</svg>', '</symbol>');
+          ICONS_CACHE[iconName] = {
+            html: symbol,
+          };
+          svgSprite.innerHTML += symbol;
+        } else {
+          ICONS_CACHE[iconName] = { };
+        }
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error(error);
+      }
+    }
+
+    if (document.getElementById(`icons-sprite-${iconName}`)) {
+      span.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg"><use href="#icons-sprite-${iconName}"/></svg>`;
+    }
+  }
+}
+
+/**
+ * Add <img> for icons, prefixed with codeBasePath and optional prefix.
+ * @param {Element} [element] Element containing icons
+ * @param {string} [prefix] prefix to be added to icon the src
+ */
+
+export async function decorateIcons(element, prefix = '') {
+  const icons = [...element.querySelectorAll('span.icon')];
+  icons.forEach((span) => {
+    const iconName = Array.from(span.classList).find((c) => c.startsWith('icon-')).substring(5);
+    const img = document.createElement('img');
+    img.dataset.iconName = iconName;
+    img.src = `${prefix}/icons/${iconName}.svg`;
+    img.loading = 'lazy';
+
+    span.append(img);
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          spriteIcon(img);
+          io.disconnect();
+        }
+      });
+    });
+    io.observe(img);
+  });
+}
+
 /**
  * Decorates the main element.
  * @param {Element} main The main element
@@ -115,7 +199,7 @@ async function loadEager(doc) {
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
-    await waitForLCP(LCP_BLOCKS);
+    await loadSection(main.querySelector('.section'), waitForImage);
   }
 }
 
@@ -124,7 +208,7 @@ async function loadEager(doc) {
  */
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
-  await loadBlocks(main);
+  await loadSections(main);
 
   const { hash } = window.location;
   const element = hash ? main.querySelector(hash) : false;
