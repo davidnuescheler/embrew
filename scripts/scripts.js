@@ -136,7 +136,9 @@ export async function spriteIcon(icon) {
     }
 
     if (document.getElementById(`icons-sprite-${iconName}`)) {
-      span.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg"><use href="#icons-sprite-${iconName}"/></svg>`;
+      const titleEl = document.querySelector(`#icons-sprite-${iconName} title`);
+      const title = titleEl ? titleEl.textContent : '';
+      span.innerHTML = `<svg title="${title}" xmlns="http://www.w3.org/2000/svg"><use href="#icons-sprite-${iconName}"/></svg>`;
     }
   }
 }
