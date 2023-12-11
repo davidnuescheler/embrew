@@ -12,7 +12,7 @@
 /* eslint-disable no-console */
 
 // eslint-disable-next-line import/no-cycle
-import { loadCSS } from '../../scripts/lib-franklin.js';
+import { loadCSS } from '../../scripts/aem.js';
 
 async function adminService(action, currentURL) {
   const url = new URL(currentURL);
