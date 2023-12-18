@@ -12,10 +12,6 @@ picture {
   display: block;
 }
 
-main a[href^="https://squareup.com/dashboard/items/library/"] {
-  display: none;
-}
-
 body.order main a.add-to-order {
   display: inline-block;
 }

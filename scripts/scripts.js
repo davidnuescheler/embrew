@@ -74,9 +74,6 @@ function buildHeroBlock(main) {
 function buildAutoBlocks(main) {
   try {
     buildHeroBlock(main);
-    document.querySelectorAll('a[href^="https://squareup"]').forEach((a) => {
-      a.remove();
-    });
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
