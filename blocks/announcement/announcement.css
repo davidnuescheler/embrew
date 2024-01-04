@@ -1,4 +1,4 @@
-.announcement-wrapper {
+.announcement-wrapper.announcement-popped {
     position: fixed;
     top: 0;
     bottom: 0;
@@ -9,7 +9,7 @@
     justify-content: center;
 }
 
-.announcement {
+.announcement-wrapper.announcement-popped .announcement {
     margin: 32px;
     padding: 32px;
     background-color: var(--highlight-background-color);
