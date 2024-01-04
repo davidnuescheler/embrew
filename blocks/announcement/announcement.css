@@ -1,0 +1,40 @@
+.announcement-wrapper {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.announcement {
+    margin: 32px;
+    padding: 32px;
+    background-color: var(--highlight-background-color);
+    width: 100%;
+    max-width: 600px;
+    border-radius: 32px;
+    position: relative;
+    box-shadow: 0 0 10px 1px var(--text-color);
+    
+} 
+
+.announcement-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 10px;
+    cursor: pointer;
+    background-color: unset;
+    color: var(--text-color);
+    font-size: x-large;
+    border: 2px solid var(--text-color);
+    display: block;
+    padding: 3px 9px 5px 12px;
+}
+
+.announcement-close:hover {
+    color: white;
+}
