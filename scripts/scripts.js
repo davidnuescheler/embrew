@@ -28,7 +28,8 @@ window.addEventListener('error', (event) => {
 function addQuickNav() {
   const h3s = [...document.querySelectorAll('main h3')];
   const h4 = document.querySelector('main h4');
-  if (h4 && h3s.length) {
+  const h1 = document.querySelector('main h1').textContent;
+  if (h4 && h3s.length && h1.includes('menu')) {
     const div = document.createElement('div');
     div.className = 'menu-switcher';
     const select = document.createElement('select');
