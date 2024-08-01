@@ -11,7 +11,7 @@
                 const psiURL = `https://pagespeed.web.dev/report?url=${referrer}`;
                 window.location = psiURL;
             } else {
-                document.append('no referrer passed');
+                document.body.append('no referrer passed');
             }
         </script>
     </body>
