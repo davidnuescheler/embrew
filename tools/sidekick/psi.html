@@ -5,9 +5,14 @@
     </head>
     <body>
         <script>
-            const referrer = document.referrer;
-            const psiURL = `https://pagespeed.web.dev/report?url=${referrer}`;
-            window.location = psiURL;
+            const params = new URLSearchParams(window.location.search);
+            const referrer = usp.get('referrer');
+            if (referrer) {
+                const psiURL = `https://pagespeed.web.dev/report?url=${referrer}`;
+                window.location = psiURL;
+            } else {
+                document.append('no referrer passed');
+            }
         </script>
     </body>
 </html>

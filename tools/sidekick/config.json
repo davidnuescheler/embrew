@@ -8,6 +8,7 @@
           "id": "psi",
           "title": "PageSpeed Insights",
           "url": "/tools/sidekick/psi.html",
+          "passReferrer": true,
           "environments": ["preview", "live", "prod"]
         }
       ]
