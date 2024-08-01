@@ -7,7 +7,8 @@
         {
           "id": "psi",
           "title": "PageSpeed Insights",
-          "url": "/tools/sidekick/psi.html"
+          "url": "/tools/sidekick/psi.html",
+          "environments": ["preview", "live", "prod"]
         }
       ]
   }

@@ -5,7 +5,9 @@
     </head>
     <body>
         <script>
-            console.log(document.referrer);
+            const referrer = document.referrer;
+            const psiURL = `https://pagespeed.web.dev/report?url=${referrer}`;
+            window.location = psiURL;
         </script>
     </body>
 </html>
