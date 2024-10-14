@@ -38,3 +38,9 @@
 .announcement-close:hover {
     color: white;
 }
+
+@media (max-width: 900px) {
+    .announcement-wrapper.announcement-popped:has(.announcement.desktop-only) {
+        display: none;
+    }
+}
