@@ -169,6 +169,23 @@ export async function decorateIcons(element, prefix = '') {
   });
 }
 
+function decoratePhoneLinks(elem) {
+  const isMobile = (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
+  const isMac = (navigator.appVersion.indexOf('Mac') !== -1);
+  elem.querySelectorAll('a[href^="https://sms/"]').forEach((a) => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const body = new URL(a.href).searchParams.get('body');
+      // TODO: Make this configurable
+      if (isMobile || isMac) {
+        window.open(`sms:+13853585605?&body=${body}`);
+      } else {
+        window.open(`mailto:events@emigrationbrewing.com?subject=${body}`);
+      }
+    });
+  });
+}
+
 /**
  * Decorates the main element.
  * @param {Element} main The main element
@@ -180,6 +197,7 @@ function decorateMain(main) {
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
+  decoratePhoneLinks(main);
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
   window.setTimeout(() => sampleRUM.observe(main.querySelectorAll('picture > img')), 1000);
   document.querySelectorAll('picture').forEach((picture) => {

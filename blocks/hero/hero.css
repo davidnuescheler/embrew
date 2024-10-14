@@ -63,6 +63,11 @@ main .hero img {
     height: 100%;
 }
 
+main .hero .hero-overlay .button {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
 @media (min-width: 900px) {
     main .hero .hero-overlay {
         padding: 32px;
