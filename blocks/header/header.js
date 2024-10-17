@@ -1,5 +1,5 @@
 import { getMetadata } from '../../scripts/aem.js';
-import { decorateIcons } from '../../scripts/scripts.js';
+import { decorateIcons, decoratePhoneLinks } from '../../scripts/scripts.js';
 
 /**
  * collapses all open nav sections
@@ -66,6 +66,8 @@ export default async function decorate(block) {
     nav.setAttribute('aria-expanded', 'false');
     decorateIcons(nav);
     block.append(nav);
+
+    decoratePhoneLinks(block);
 
     navSections.addEventListener('click', () => {
       if (window.innerWidth < 1000) toggleExpandedNav();

@@ -169,7 +169,7 @@ export async function decorateIcons(element, prefix = '') {
   });
 }
 
-function decoratePhoneLinks(elem) {
+export function decoratePhoneLinks(elem) {
   const isMobile = (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
   const isMac = (navigator.appVersion.indexOf('Mac') !== -1);
   elem.querySelectorAll('a[href^="https://sms/"]').forEach((a) => {
@@ -232,7 +232,7 @@ async function loadLazy(doc) {
   const element = hash ? main.querySelector(hash) : false;
   if (hash && element) element.scrollIntoView();
 
-  loadHeader(doc.querySelector('header'));
+  await loadHeader(doc.querySelector('header'));
   loadFooter(doc.querySelector('footer'));
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
