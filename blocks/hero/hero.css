@@ -24,6 +24,11 @@ main .hero svg {
     height: 100px;
 }
 
+main .hero .button svg {
+    height: 1em;
+    width: 1em;
+}
+
 main .hero h1 {
     margin: 0;
 }
@@ -44,6 +49,11 @@ main .hero .hero-overlay {
 main .hero .icon {
     display: inline-block;
     padding: 32px;
+}
+
+main .hero .button .icon {
+    padding: 0;
+    padding-left: 16px;
 }
 
 main .hero picture {
