@@ -1,5 +1,4 @@
 import {
-  sampleRUM,
   buildBlock,
   loadHeader,
   loadFooter,
@@ -12,18 +11,6 @@ import {
   loadSections,
   loadCSS,
 } from './aem.js';
-
-sampleRUM('top');
-
-window.addEventListener('load', () => sampleRUM('load'));
-
-window.addEventListener('unhandledrejection', (event) => {
-  sampleRUM('error', { source: event.reason.sourceURL, target: event.reason.line });
-});
-
-window.addEventListener('error', (event) => {
-  sampleRUM('error', { source: event.filename, target: event.lineno });
-});
 
 function addQuickNav() {
   const h3s = [...document.querySelectorAll('main h3')];
@@ -198,8 +185,6 @@ function decorateMain(main) {
   decorateSections(main);
   decorateBlocks(main);
   decoratePhoneLinks(main);
-  sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
-  window.setTimeout(() => sampleRUM.observe(main.querySelectorAll('picture > img')), 1000);
   document.querySelectorAll('picture').forEach((picture) => {
     const section = picture.closest('main > div');
     if (!section.textContent.trim() && !section.querySelector('.block')) {
@@ -236,7 +221,6 @@ async function loadLazy(doc) {
   loadFooter(doc.querySelector('footer'));
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
-  sampleRUM('lazy');
   addQuickNav();
 
   if (window.location.hostname.endsWith('hlx.page') || window.location.hostname === ('localhost')) {

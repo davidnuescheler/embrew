@@ -1,5 +1,4 @@
 // eslint-disable-next-line import/no-cycle
-import { sampleRUM } from './aem.js';
 
 const loadScript = (url, callback, type) => {
   const head = document.querySelector('head');
@@ -12,9 +11,6 @@ const loadScript = (url, callback, type) => {
   head.append(script);
   return script;
 };
-
-// Core Web Vitals RUM collection
-sampleRUM('cwv');
 
 loadScript('https://www.googletagmanager.com/gtag/js?id=G-NCCQJ1BZ66', () => {
   window.dataLayer = window.dataLayer || [];
