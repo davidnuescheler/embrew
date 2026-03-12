@@ -1,5 +1,12 @@
 // eslint-disable-next-line import/no-cycle
 
+
+const initContentScore = async () => {
+  const { init } = await import('../tools/content-score/scripts.js');
+  await init();
+};
+
+
 const loadScript = (url, callback, type) => {
   const head = document.querySelector('head');
   const script = document.createElement('script');
@@ -20,3 +27,7 @@ loadScript('https://www.googletagmanager.com/gtag/js?id=G-NCCQJ1BZ66', () => {
 
   gtag('config', 'G-NCCQJ1BZ66');
 });
+
+if (window.location.hostname.endsWith('hlx.page') || window.location.hostname === ('localhost')) {
+  initContentScore();
+}
