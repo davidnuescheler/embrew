@@ -160,6 +160,7 @@ export function decoratePhoneLinks(elem) {
   const isMobile = (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
   const isMac = (navigator.appVersion.indexOf('Mac') !== -1);
   elem.querySelectorAll('a[href^="https://sms/"]').forEach((a) => {
+    a.title = `text us at 385-358-5605`;
     a.addEventListener('click', (e) => {
       e.preventDefault();
       const body = new URL(a.href).searchParams.get('body');
