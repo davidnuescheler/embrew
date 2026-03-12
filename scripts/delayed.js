@@ -28,6 +28,6 @@ loadScript('https://www.googletagmanager.com/gtag/js?id=G-NCCQJ1BZ66', () => {
   gtag('config', 'G-NCCQJ1BZ66');
 });
 
-if (window.location.hostname.endsWith('hlx.page') || window.location.hostname === ('localhost')) {
+if (window.location.hostname.endsWith('.aem.page') || window.location.hostname === ('localhost')) {
   initContentScore();
 }
