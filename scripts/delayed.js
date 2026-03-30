@@ -2,9 +2,17 @@
 
 
 const initContentScore = async () => {
-  const { init } = await import('../tools/content-score/scripts.js');
+  const CONTENT_SCORE = 'https://tools.aem.live/tools/content-score/src/scripts.js';
+  const { init } = await import(CONTENT_SCORE);
   await init();
 };
+
+const sk = document.querySelector('aem-sidekick');
+
+if (sk) initContentScore();
+else {
+  document.addEventListener('sidekick-ready', initContentScore, { once: true });
+}
 
 
 const loadScript = (url, callback, type) => {
@@ -27,7 +35,3 @@ loadScript('https://www.googletagmanager.com/gtag/js?id=G-NCCQJ1BZ66', () => {
 
   gtag('config', 'G-NCCQJ1BZ66');
 });
-
-if (window.location.hostname.endsWith('.aem.page') || window.location.hostname === ('localhost')) {
-  initContentScore();
-}
