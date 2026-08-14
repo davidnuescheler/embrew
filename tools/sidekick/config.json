@@ -1,8 +1,6 @@
 {
     "project": "Embrew",
     "host": "emigrationbrewing.com",
-    "previewHost": "main--embrew--davidnuescheler.aem.page",
-    "liveHost": "main--embrew--davidnuescheler.aem.live",
     "plugins": [
         {
           "id": "psi",

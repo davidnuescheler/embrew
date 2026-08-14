@@ -1,20 +1,62 @@
-import { readBlockConfig } from '../../scripts/aem.js';
-import { decorateIcons } from '../../scripts/scripts.js';
-
 /**
- * loads and decorates the footer
- * @param {Element} block The header block element
+ * Footer block — site chrome built in code (not content-editable yet).
+ * EDS DOM: <footer><div class="footer block">…</div></footer>
  */
 
-export default async function decorate(block) {
-  const cfg = readBlockConfig(block);
-  block.textContent = '';
+const LOGO_SRC = '/v2/assets/logo-white.png';
 
-  const footerPath = cfg.footer || '/footer';
-  const resp = await fetch(`${footerPath}.plain.html`);
-  const html = await resp.text();
-  const footer = document.createElement('div');
-  footer.innerHTML = html;
-  await decorateIcons(footer);
-  block.append(footer);
+/**
+ * @param {Element} block
+ */
+export default async function decorate(block) {
+  block.innerHTML = `
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="brand">
+          <img src="${LOGO_SRC}" alt="" width="26" height="26">
+          <span>EMIGRATION BREWING CO.</span>
+        </div>
+        <p>Craft canyon dining in Emigration Canyon since 2019. Wood-fired, seasonally driven, locally poured.</p>
+        <div class="socials">
+          <a href="https://www.instagram.com/emigrationbrewing/" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="https://goo.gl/maps/TyKiLTS6rXe1pPtcA" target="_blank" rel="noopener" aria-label="Directions">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </a>
+        </div>
+        <h4>Seasonal Menus &amp; Specials</h4>
+        <p class="foot-note">Four menus a year, monthly specials. No more than one email a month.</p>
+        <form class="signup" name="newsletter" method="POST" data-netlify="true" netlify-honeypot="company">
+          <input type="hidden" name="form-name" value="newsletter">
+          <p class="hp"><label>Skip: <input name="company" tabindex="-1" autocomplete="off"></label></p>
+          <label for="nl-footer" class="hp">Email address</label>
+          <input id="nl-footer" name="email" type="email" required placeholder="you@example.com" autocomplete="email">
+          <button class="btn btn-p" type="submit">Join</button>
+        </form>
+      </div>
+      <div class="foot-explore">
+        <h4>Explore</h4>
+        <a href="/menu">Menu</a>
+        <a href="/gallery">Gallery</a>
+        <a href="/story">Our Story</a>
+        <a href="/private-events">Private Events</a>
+        <a href="/visit">Visit</a>
+        <a href="https://squareup.com/gift/7K7NMVAGPW6BC/order" target="_blank" rel="noopener">Gift Cards</a>
+      </div>
+      <div class="foot-visit">
+        <h4>Visit</h4>
+        <a href="https://goo.gl/maps/TyKiLTS6rXe1pPtcA" target="_blank" rel="noopener">4170 Emigration Canyon Rd<br>Salt Lake City, UT 84108</a>
+        <a href="tel:3853855605">(385) 385-5605</a>
+        <a href="mailto:info@emigrationbrewing.com">info@emigrationbrewing.com</a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <div>&copy; <span class="year"></span> Emigration Brewing Co. All rights reserved.</div>
+      <div>Celebrating the brewing history of Utah since 1865.</div>
+    </div>
+  `;
+
+  const year = block.querySelector('.year');
+  if (year) year.textContent = String(new Date().getFullYear());
 }

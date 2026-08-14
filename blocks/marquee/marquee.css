@@ -1,0 +1,60 @@
+/* Marquee block — selectors scoped under .marquee */
+
+.section.marquee-container {
+  padding: 0;
+}
+
+.section.marquee-container > .marquee-wrapper {
+  max-width: none;
+}
+
+.marquee {
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 24px 0;
+  overflow: hidden;
+  position: relative;
+  z-index: 3;
+}
+
+.marquee .marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+
+.marquee .marquee-content {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  padding-right: 40px;
+  flex-shrink: 0;
+}
+
+.marquee .marquee-content span {
+  font-family: var(--heading-font-family);
+  font-size: clamp(16px, 2.4vw, 30px);
+  font-weight: 700;
+  color: #4e4034;
+  white-space: nowrap;
+}
+
+.marquee .marquee-content span.hl {
+  color: var(--gold);
+}
+
+.marquee .marquee-content i {
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee .marquee-track {
+    transform: none !important;
+  }
+}

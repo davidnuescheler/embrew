@@ -1,0 +1,301 @@
+/* Animation hero — scroll-scrubbed video + optional knockout stage */
+
+.section.animation-hero-container {
+  padding: 0;
+}
+
+.section.animation-hero-container > .animation-hero-wrapper {
+  max-width: none;
+}
+
+.animation-hero {
+  position: relative;
+  z-index: 3;
+}
+
+.animation-hero .ah-hero {
+  height: 300vh;
+  position: relative;
+}
+
+.animation-hero .ah-sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+
+.animation-hero .ah-media {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--bg);
+}
+
+.animation-hero .ah-picture,
+.animation-hero .ah-picture img,
+.animation-hero .ah-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.animation-hero .ah-picture img {
+  object-fit: cover;
+}
+
+.animation-hero .ah-picture {
+  z-index: 2;
+  opacity: 1;
+  margin: 0;
+  transition: opacity 0.55s var(--ease);
+}
+
+.animation-hero .ah-picture.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.animation-hero .ah-canvas {
+  z-index: 1;
+  opacity: 0;
+  object-fit: cover;
+}
+
+.animation-hero.is-ready .ah-canvas {
+  opacity: 1;
+}
+
+.animation-hero .ah-video {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.animation-hero .ah-content {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0;
+  padding: 0 20px;
+  will-change: opacity, transform;
+}
+
+.animation-hero .ah-eyebrow {
+  font-family: var(--fixed-font-family);
+  font-size: 11px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
+  background: rgba(12, 10, 8, 0.7);
+  padding: 5px 14px;
+  display: inline-block;
+  backdrop-filter: blur(4px);
+  margin: 0 0 16px;
+}
+
+.animation-hero .ah-eyebrow::before {
+  display: none;
+}
+
+.animation-hero .ah-content h1,
+.animation-hero .ah-content h2 {
+  font-family: var(--heading-font-family);
+  font-size: clamp(34px, 8.5vw, 104px);
+  line-height: 1.02;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0 0 6px;
+  text-transform: none;
+  text-shadow:
+    0 4px 30px rgba(0, 0, 0, 0.9),
+    0 2px 10px rgba(0, 0, 0, 0.7),
+    0 0 60px rgba(0, 0, 0, 0.5);
+}
+
+.animation-hero .ah-sub {
+  font-size: clamp(13.5px, 2vw, 18px);
+  font-weight: 500;
+  color: #ede4d8;
+  background: rgba(12, 10, 8, 0.7);
+  padding: 5px 14px;
+  display: inline-block;
+  backdrop-filter: blur(4px);
+  margin-bottom: 6px;
+}
+
+.animation-hero .ah-loc {
+  font-family: var(--fixed-font-family);
+  font-size: clamp(9.5px, 1.4vw, 11.5px);
+  letter-spacing: 0.13em;
+  color: #d8cdbe;
+  background: rgba(12, 10, 8, 0.7);
+  padding: 4px 14px;
+  display: inline-block;
+  backdrop-filter: blur(4px);
+  text-transform: uppercase;
+}
+
+.animation-hero .ah-cta-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 22px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.animation-hero .ah-cta-row .button {
+  margin: 0;
+}
+
+.animation-hero .ah-btn-over,
+.animation-hero .ah-cta-row .button.secondary {
+  background: rgba(12, 10, 8, 0.7);
+  color: #fff;
+  border: 1px solid rgba(245, 239, 230, 0.35);
+  backdrop-filter: blur(4px);
+}
+
+.animation-hero .ah-btn-over:hover,
+.animation-hero .ah-cta-row .button.secondary:hover {
+  border-color: var(--text);
+  background: rgba(12, 10, 8, 0.88);
+  color: #fff;
+}
+
+.animation-hero .ah-scroll-hint {
+  margin-top: 24px;
+  font-family: var(--fixed-font-family);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #d8cdbe;
+  background: rgba(12, 10, 8, 0.7);
+  padding: 4px 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  backdrop-filter: blur(4px);
+}
+
+.animation-hero .ah-scroll-hint svg {
+  animation: ah-bob 1.9s infinite var(--ease);
+}
+
+@keyframes ah-bob {
+  0%,
+  100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+/* ---------- knockout / mask stage ---------- */
+.animation-hero .ah-mask {
+  height: 260vh;
+  position: relative;
+  background: var(--bg);
+}
+
+.animation-hero .ah-mask-sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.animation-hero .ah-mask-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  z-index: 1;
+}
+
+.animation-hero .ah-knockout {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  display: block;
+  will-change: opacity;
+}
+
+.animation-hero .ah-ko-text {
+  font-family: var(--heading-font-family);
+  font-weight: 700;
+  font-size: 144px;
+  letter-spacing: 0.02em;
+  transform-box: fill-box;
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+
+.animation-hero .ah-mask-sub {
+  position: absolute;
+  bottom: 12%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  opacity: 0;
+  z-index: 3;
+  padding: 0 20px;
+  will-change: opacity, transform;
+}
+
+.animation-hero .ah-mask-sub p {
+  font-family: var(--fixed-font-family);
+  font-size: clamp(9px, 1.5vw, 13px);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #c8bcaa;
+  font-weight: 600;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.9);
+  margin: 0;
+}
+
+@media (max-width: 680px) {
+  .animation-hero .ah-cta-row {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0 8px;
+  }
+
+  .animation-hero .ah-cta-row .button {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .animation-hero .ah-mask {
+    height: 210vh;
+  }
+
+  .animation-hero .ah-ko-text {
+    font-size: 112px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animation-hero .ah-scroll-hint svg {
+    animation: none;
+  }
+
+  .animation-hero .ah-picture {
+    opacity: 1 !important;
+  }
+
+  .animation-hero .ah-canvas {
+    display: none;
+  }
+}

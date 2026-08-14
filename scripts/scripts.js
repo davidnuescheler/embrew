@@ -1,5 +1,4 @@
 import {
-  buildBlock,
   loadHeader,
   loadFooter,
   decorateButtons,
@@ -36,35 +35,6 @@ function addQuickNav() {
     select.addEventListener('change', () => {
       window.location.hash = `#${select.value}`;
     });
-  }
-}
-
-function buildHeroBlock(main) {
-  const h1 = main.querySelector('h1');
-  const picture = main.querySelector('picture');
-  // eslint-disable-next-line no-bitwise
-  if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
-    const section = document.createElement('div');
-    const existingSection = h1.closest('div');
-    const overlay = document.createElement('div');
-    overlay.classList.add('hero-overlay');
-    [...existingSection.children].forEach((e) => overlay.append(e));
-    section.append(buildBlock('hero', { elems: [picture, overlay] }));
-    main.prepend(section);
-    existingSection.remove();
-  }
-}
-
-/**
- * Builds all synthetic blocks in a container element.
- * @param {Element} main The container element
- */
-function buildAutoBlocks(main) {
-  try {
-    buildHeroBlock(main);
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('Auto Blocking failed', error);
   }
 }
 
@@ -175,6 +145,54 @@ export function decoratePhoneLinks(elem) {
 }
 
 /**
+ * Turns a short plain paragraph at the top of a cell, immediately ahead of a
+ * heading, into an eyebrow label.
+ * @param {Element} element
+ */
+export function decorateEyebrows(element) {
+  element.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach((heading) => {
+    const prev = heading.previousElementSibling;
+    if (!prev || prev.tagName !== 'P') return;
+    if (prev !== prev.parentElement?.firstElementChild) return;
+    if (prev.querySelector('a, picture, img, button')) return;
+    if (prev.classList.contains('button-container') || prev.classList.contains('eyebrow')) return;
+    const text = prev.textContent.trim();
+    if (!text || text.length > 80) return;
+    prev.classList.add('eyebrow');
+  });
+}
+
+/**
+ * Applies section metadata backgrounds (data-background → full-bleed image).
+ * Uses only the path (+ query) so the asset resolves on the current origin.
+ * @param {Element} main
+ */
+export function decorateSectionBackgrounds(main) {
+  main.querySelectorAll('[data-background]').forEach((el) => {
+    const raw = el.dataset.background?.trim();
+    if (!raw || el.querySelector(':scope > .section-background')) return;
+
+    let src = raw;
+    try {
+      const url = new URL(raw, window.location.origin);
+      src = `${url.pathname}${url.search}`;
+    } catch (e) {
+      // already a path
+    }
+
+    el.classList.add('has-background');
+    const bg = document.createElement('div');
+    bg.className = 'section-background';
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = '';
+    img.loading = 'lazy';
+    bg.append(img);
+    el.prepend(bg);
+  });
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
@@ -182,8 +200,9 @@ function decorateMain(main) {
   // hopefully forward compatible button decoration
   decorateButtons(main);
   decorateIcons(main);
-  buildAutoBlocks(main);
+  decorateEyebrows(main);
   decorateSections(main);
+  decorateSectionBackgrounds(main);
   decorateBlocks(main);
   decoratePhoneLinks(main);
   document.querySelectorAll('picture').forEach((picture) => {
@@ -195,15 +214,37 @@ function decorateMain(main) {
 }
 
 /**
+ * load fonts.css and set a session storage flag
+ */
+async function loadFonts() {
+  await loadCSS(`${window.hlx.codeBasePath}/styles/fonts.css`);
+  try {
+    if (!window.location.hostname.includes('localhost')) sessionStorage.setItem('fonts-loaded', 'true');
+  } catch (e) {
+    // do nothing
+  }
+}
+
+/**
  * loads everything needed to get to LCP.
  */
 async function loadEager(doc) {
+  document.documentElement.lang = 'en';
   doc.body.classList.add('appear');
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
     await loadSection(main.querySelector('.section'), waitForImage);
+  }
+
+  try {
+    /* if desktop (proxy for fast connection) or fonts already loaded, load fonts.css */
+    if (window.innerWidth >= 900 || sessionStorage.getItem('fonts-loaded')) {
+      loadFonts();
+    }
+  } catch (e) {
+    // do nothing
   }
 }
 
@@ -222,13 +263,13 @@ async function loadLazy(doc) {
   loadFooter(doc.querySelector('footer'));
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
+  loadFonts();
   addQuickNav();
 
   if (window.location.hostname.endsWith('aem.page') || window.location.hostname === ('localhost')) {
     // eslint-disable-next-line import/no-cycle
     import('../tools/preview/preview.js');
   }
-  document.documentElement.lang = 'en';
 }
 
 /**

@@ -1,15 +1,169 @@
-footer {
-  padding: 2rem;
-  background-color: var(--text-color);
+/* Footer block — all selectors scoped under .footer */
+
+.footer {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  padding: 56px 32px 32px;
+  position: relative;
+  z-index: 3;
+  color: var(--text);
   font-size: var(--body-font-size-s);
-  color: white;
 }
 
-footer .footer {
-  max-width: 1200px;
-  margin: auto;
+.footer .foot-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 44px;
+  max-width: var(--content-width);
+  margin: 0 auto 38px;
 }
 
-footer .footer p {
+.footer .foot-grid h4 {
+  font-family: var(--fixed-font-family);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 16px;
+  font-weight: 700;
+}
+
+.footer .foot-brand .brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font-family: var(--heading-font-family);
+  font-size: 14.5px;
+  letter-spacing: 0.09em;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.footer .foot-brand .brand img {
+  width: 26px;
+  height: auto;
+  flex-shrink: 0;
+}
+
+.footer .foot-grid a,
+.footer .foot-grid p {
+  display: block;
+  font-size: 14px;
+  color: var(--body);
+  margin: 0 0 10px;
+  transition: color 0.4s var(--ease);
+  line-height: 1.55;
+}
+
+.footer .foot-grid a:hover {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.footer .foot-note {
+  max-width: 34ch;
+  margin-bottom: 0 !important;
+}
+
+.footer .foot-brand > p:first-of-type {
+  max-width: 34ch;
+}
+
+.footer .foot-brand h4 {
+  margin-top: 26px;
+}
+
+.footer .socials {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.footer .socials a {
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--border);
+  display: grid;
+  place-items: center;
+  color: var(--body);
   margin: 0;
+  transition:
+    border-color 0.4s var(--ease),
+    color 0.4s var(--ease);
+}
+
+.footer .socials a:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.footer .signup {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+.footer .signup input[type='email'] {
+  flex: 1 1 220px;
+  width: auto;
+  max-width: none;
+  margin: 0;
+  background: rgba(12, 10, 8, 0.6);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  color: var(--text);
+  font-family: var(--body-font-family);
+  font-size: 15px;
+  padding: 13px 14px;
+  min-height: 48px;
+}
+
+.footer .signup input[type='email']:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.footer .signup button {
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+.footer .hp {
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  margin: 0;
+}
+
+.footer .foot-bot {
+  max-width: var(--content-width);
+  margin: 0 auto;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+@media (max-width: 900px) {
+  .footer .foot-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 680px) {
+  .footer {
+    padding: 44px 18px 26px;
+  }
+
+  .footer .foot-grid {
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
 }
