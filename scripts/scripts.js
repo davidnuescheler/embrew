@@ -145,14 +145,66 @@ export function decoratePhoneLinks(elem) {
 }
 
 /**
- * Turns a short plain paragraph at the top of a cell, immediately ahead of a
- * heading, into an eyebrow label.
+ * Whether a tab link matches the current page (and hash, when relevant).
+ * Same-document `#hash` links require a hash match; path links match on
+ * pathname, and on hash only when the location already has one.
+ * @param {HTMLAnchorElement} a
+ */
+function isActiveTabLink(a) {
+  const href = a.getAttribute('href') || '';
+  const url = new URL(a.href, window.location.href);
+  const norm = (p) => p.replace(/\/+$/, '') || '/';
+
+  if (href.startsWith('#')) {
+    return window.location.hash === href;
+  }
+
+  if (norm(url.pathname) !== norm(window.location.pathname)) return false;
+  if (!window.location.hash) return true;
+  return !url.hash || url.hash === window.location.hash;
+}
+
+/**
+ * Auto-detects paragraphs that contain only links (menu section switchers)
+ * and styles them as v2-style tabs. Marks the current page/hash with `.on`.
+ * @param {Element} element
+ */
+export function decorateLinkTabs(element) {
+  element.querySelectorAll('p').forEach((p) => {
+    if (p.classList.contains('tabs') || p.classList.contains('button-container')) return;
+    const links = [...p.querySelectorAll(':scope > a')];
+    if (links.length < 2) return;
+    if ([...p.children].some((el) => el.tagName !== 'A')) return;
+
+    const leftover = p.cloneNode(true);
+    leftover.querySelectorAll('a').forEach((a) => a.remove());
+    if (leftover.textContent.trim()) return;
+
+    p.classList.add('tabs');
+    p.setAttribute('role', 'tablist');
+    links.forEach((a) => {
+      a.classList.remove('button', 'primary', 'secondary');
+      a.classList.add('tab');
+      a.setAttribute('role', 'tab');
+      const on = isActiveTabLink(a);
+      a.classList.toggle('on', on);
+      a.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+  });
+}
+
+/**
+ * Turns a short plain paragraph at the top of a content container,
+ * immediately ahead of a heading, into an eyebrow label.
+ * Runs after section decoration so default content after a section break
+ * (and after blocks) sits at the start of its wrapper.
  * @param {Element} element
  */
 export function decorateEyebrows(element) {
   element.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach((heading) => {
     const prev = heading.previousElementSibling;
     if (!prev || prev.tagName !== 'P') return;
+    // Must lead its container (section, block cell, or default-content-wrapper)
     if (prev !== prev.parentElement?.firstElementChild) return;
     if (prev.querySelector('a, picture, img, button')) return;
     if (prev.classList.contains('button-container') || prev.classList.contains('eyebrow')) return;
@@ -200,9 +252,10 @@ function decorateMain(main) {
   // hopefully forward compatible button decoration
   decorateButtons(main);
   decorateIcons(main);
-  decorateEyebrows(main);
   decorateSections(main);
   decorateSectionBackgrounds(main);
+  decorateLinkTabs(main);
+  decorateEyebrows(main);
   decorateBlocks(main);
   decoratePhoneLinks(main);
   document.querySelectorAll('picture').forEach((picture) => {
