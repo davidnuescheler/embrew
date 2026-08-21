@@ -170,6 +170,14 @@ samp {
 }
 
 /* ---------- buttons ---------- */
+.button-container,
+.button-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+}
+
 .btn,
 a.button:any-link,
 button {
@@ -465,7 +473,8 @@ main .section.has-background.center p {
   margin-right: auto;
 }
 
-main .section.has-background .button-container {
+main .section.has-background .button-container,
+main .section.has-background .button-wrapper {
   margin: 0;
 }
 

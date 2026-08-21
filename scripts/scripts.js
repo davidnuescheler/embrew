@@ -1,14 +1,14 @@
 import {
   loadHeader,
   loadFooter,
-  decorateButtons,
   decorateBlocks,
   decorateSections,
   decorateTemplateAndTheme,
-  waitForImage,
+  waitForFirstImage,
   loadSection,
   loadSections,
   loadCSS,
+  buildBlock,
 } from './aem.js';
 
 function addQuickNav() {
@@ -245,18 +245,128 @@ export function decorateSectionBackgrounds(main) {
 }
 
 /**
+ * Turns `/widgets/...` links into widget blocks.
+ * @param {Element} main The container element
+ */
+function buildWidgetAutoBlocks(main) {
+  const widgetLinks = [...main.querySelectorAll('a[href*="/widgets/"]')];
+  widgetLinks.forEach((link) => {
+    if (link.closest('.widget')) return;
+    const newLink = link.cloneNode(true);
+    const widgetBlock = buildBlock('widget', { elems: [newLink] });
+    const p = link.closest('p');
+    if (
+      p
+      && p.querySelectorAll('a').length === 1
+      && p.querySelector('a') === link
+      && p.textContent.trim() === link.textContent.trim()
+    ) {
+      p.replaceWith(widgetBlock);
+    } else {
+      link.replaceWith(widgetBlock);
+    }
+  });
+}
+
+/**
+ * Builds all synthetic blocks in a container element.
+ * @param {Element} main The container element
+ */
+function buildAutoBlocks(main) {
+  try {
+    buildWidgetAutoBlocks(main);
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Auto Blocking failed', error);
+  }
+}
+
+/**
+ * Decorates formatted links as buttons (from aem-boilerplate).
+ * Also supports link-only paragraphs with a bold + italic pair
+ * as primary / secondary buttons side by side.
+ * @param {HTMLElement} main The main container element
+ */
+function decorateButtons(main) {
+  // Multi-link CTA rows: <p><strong><a>…</a></strong> <em><a>…</a></em></p>
+  main.querySelectorAll('p').forEach((p) => {
+    if (p.classList.contains('button-container') || p.classList.contains('tabs')) return;
+    const links = [...p.querySelectorAll('a')].filter((a) => !a.querySelector('img'));
+    if (links.length < 2) return;
+
+    if ([...p.children].some((el) => {
+      if (el.tagName === 'A') return false;
+      if (el.tagName === 'STRONG' || el.tagName === 'EM') {
+        return el.childElementCount !== 1 || el.firstElementChild?.tagName !== 'A';
+      }
+      return true;
+    })) return;
+
+    const leftover = p.cloneNode(true);
+    leftover.querySelectorAll('a').forEach((a) => a.remove());
+    if (leftover.textContent.trim()) return;
+
+    p.className = 'button-container';
+    links.forEach((a) => {
+      a.title = a.title || a.textContent;
+      const strong = a.closest('strong');
+      const em = a.closest('em');
+      a.className = 'button';
+      if (strong && em) a.classList.add('accent');
+      else if (strong) a.classList.add('primary');
+      else if (em) a.classList.add('secondary');
+      const wrap = strong || em;
+      if (wrap) wrap.replaceWith(a);
+    });
+  });
+
+  // Single formatted links (boilerplate)
+  main.querySelectorAll('p a[href]').forEach((a) => {
+    if (a.closest('.button-container') || a.classList.contains('button')) return;
+    a.title = a.title || a.textContent;
+    const p = a.closest('p');
+    if (!p) return;
+    const text = a.textContent.trim();
+
+    if (a.querySelector('img') || p.textContent.trim() !== text) return;
+
+    try {
+      if (new URL(a.href).href === new URL(text, window.location).href) return;
+    } catch { /* continue */ }
+
+    const strong = a.closest('strong');
+    const em = a.closest('em');
+    if (!strong && !em) return;
+
+    p.className = 'button-container';
+    a.className = 'button';
+    if (strong && em) {
+      a.classList.add('accent');
+      const outer = strong.contains(em) ? strong : em;
+      outer.replaceWith(a);
+    } else if (strong) {
+      a.classList.add('primary');
+      strong.replaceWith(a);
+    } else {
+      a.classList.add('secondary');
+      em.replaceWith(a);
+    }
+  });
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
 function decorateMain(main) {
-  // hopefully forward compatible button decoration
-  decorateButtons(main);
+  buildAutoBlocks(main);
   decorateIcons(main);
   decorateSections(main);
   decorateSectionBackgrounds(main);
+  decorateBlocks(main);
+  decorateButtons(main);
   decorateLinkTabs(main);
   decorateEyebrows(main);
-  decorateBlocks(main);
   decoratePhoneLinks(main);
   document.querySelectorAll('picture').forEach((picture) => {
     const section = picture.closest('main > div');
@@ -288,7 +398,7 @@ async function loadEager(doc) {
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
-    await loadSection(main.querySelector('.section'), waitForImage);
+    await loadSection(main.querySelector('.section'), waitForFirstImage);
   }
 
   try {
