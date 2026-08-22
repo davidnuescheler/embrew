@@ -36,7 +36,7 @@
   font-family: var(--heading-font-family);
   font-size: clamp(16px, 2.4vw, 30px);
   font-weight: 700;
-  color: #4e4034;
+  color: var(--muted);
   white-space: nowrap;
 }
 

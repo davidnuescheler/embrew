@@ -25,12 +25,17 @@ export default async function decorate(block) {
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
           </a>
         </div>
-        <h4>Seasonal Menus &amp; Specials</h4>
+        <h2>Seasonal Menus &amp; Specials</h2>
         <p class="foot-note">Four menus a year, monthly specials. No more than one email a month.</p>
-        <form action="https://squareup.com/outreach/MuiIHL/subscribe" method="POST" target="_blank"><input type="email" name="email_address" placeholder="Your Email Address" style="height: 38px; padding: 0 16px; font-size: 14px; border: 1px solid #bec3c8; border-radius: 3px; margin-right: 8px; font-family: 'Helvetica Neue', Helvetica, sans-serif;"><input type="hidden" name="embed" value="true"><button type="submit" style="cursor: pointer; background-color: #997c61; color: white; height: 40px; border: 0; border-radius: 3px; font-size: 14px; padding: 0 16px; font-family: 'Helvetica Neue', Helvetica, sans-serif; font-weight: 500;">Join Now</button></form>
+        <form class="signup" action="https://squareup.com/outreach/MuiIHL/subscribe" method="POST" target="_blank">
+          <label class="hp" for="footer-email">Email address</label>
+          <input id="footer-email" type="email" name="email_address" placeholder="Your Email Address" autocomplete="email" required>
+          <input type="hidden" name="embed" value="true">
+          <button type="submit">Join Now</button>
+        </form>
       </div>
       <div class="foot-explore">
-        <h4>Explore</h4>
+        <h2>Explore</h2>
         <a href="/menu">Menu</a>
         <a href="/gallery">Gallery</a>
         <a href="/story">Our Story</a>
@@ -39,7 +44,7 @@ export default async function decorate(block) {
         <a href="https://squareup.com/gift/7K7NMVAGPW6BC/order" target="_blank" rel="noopener">Gift Cards</a>
       </div>
       <div class="foot-visit">
-        <h4>Visit</h4>
+        <h2>Visit</h2>
         <a href="https://goo.gl/maps/TyKiLTS6rXe1pPtcA" target="_blank" rel="noopener">4170 Emigration Canyon Rd<br>Salt Lake City, UT 84108</a>
         <a href="tel:3853855605">(385) 385-5605</a>
         <a href="mailto:info@emigrationbrewing.com">info@emigrationbrewing.com</a>

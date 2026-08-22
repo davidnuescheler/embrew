@@ -136,7 +136,7 @@ h6 { font-size: var(--heading-font-size-xs); }
   font-size: 11px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: #e2591f;
   font-weight: 700;
   margin: 0 0 16px;
   display: flex;
@@ -148,7 +148,7 @@ h6 { font-size: var(--heading-font-size-xs); }
   content: '';
   width: 26px;
   height: 1px;
-  background: var(--accent);
+  background: #e2591f;
   flex-shrink: 0;
 }
 
