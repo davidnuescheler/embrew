@@ -19,7 +19,7 @@ export default function decorate(widget) {
       <p class="pe-success-eyebrow">Enquiry received</p>
       <h3 class="pe-success-title">Thank you — we can&rsquo;t wait to host you.</h3>
       <p class="pe-success-body">We&rsquo;re looking forward to working with you to make it a special event. Someone from our team will be in touch within one business day.</p>
-      <p class="pe-success-hint">Need us sooner? Call <a href="tel:3853855605">(385) 385-5605</a> or email <a href="mailto:events@emigrationbrewing.com">events@emigrationbrewing.com</a>.</p>
+      <p class="pe-success-hint">Need us sooner? Call <a href="tel:3853585605">(385) 358-5605</a> or email <a href="mailto:events@emigrationbrewing.com">events@emigrationbrewing.com</a>.</p>
     `;
     form.replaceWith(panel);
     panel.focus?.();
@@ -62,7 +62,7 @@ export default function decorate(widget) {
       if (status) {
         status.hidden = false;
         status.classList.add('is-error');
-        status.textContent = 'Something went wrong. Please email events@emigrationbrewing.com or call (385) 385-5605.';
+        status.textContent = 'Something went wrong. Please email events@emigrationbrewing.com or call (385) 358-5605.';
       }
     }
   });

@@ -18,7 +18,8 @@
   margin: 0 auto 38px;
 }
 
-.footer .foot-grid h2 {
+.footer .foot-label {
+  display: block;
   font-family: var(--fixed-font-family);
   font-size: 10.5px;
   letter-spacing: 0.18em;
@@ -69,7 +70,7 @@
   max-width: 34ch;
 }
 
-.footer .foot-brand h2 {
+.footer .foot-brand .foot-label {
   margin-top: 26px;
 }
 

@@ -25,7 +25,7 @@ export default async function decorate(block) {
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
           </a>
         </div>
-        <h2>Seasonal Menus &amp; Specials</h2>
+        <span class="foot-label">Seasonal Menus &amp; Specials</span>
         <p class="foot-note">Four menus a year, monthly specials. No more than one email a month.</p>
         <form class="signup" action="https://squareup.com/outreach/MuiIHL/subscribe" method="POST" target="_blank">
           <label class="hp" for="footer-email">Email address</label>
@@ -35,7 +35,7 @@ export default async function decorate(block) {
         </form>
       </div>
       <div class="foot-explore">
-        <h2>Explore</h2>
+        <span class="foot-label">Explore</span>
         <a href="/menu">Menu</a>
         <a href="/gallery">Gallery</a>
         <a href="/story">Our Story</a>
@@ -44,9 +44,9 @@ export default async function decorate(block) {
         <a href="https://squareup.com/gift/7K7NMVAGPW6BC/order" target="_blank" rel="noopener">Gift Cards</a>
       </div>
       <div class="foot-visit">
-        <h2>Visit</h2>
+        <span class="foot-label">Visit</span>
         <a href="https://goo.gl/maps/TyKiLTS6rXe1pPtcA" target="_blank" rel="noopener">4170 Emigration Canyon Rd<br>Salt Lake City, UT 84108</a>
-        <a href="tel:3853855605">(385) 385-5605</a>
+        <a href="tel:3853585605">(385) 358-5605</a>
         <a href="mailto:info@emigrationbrewing.com">info@emigrationbrewing.com</a>
       </div>
     </div>
