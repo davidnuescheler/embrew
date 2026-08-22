@@ -3,7 +3,7 @@
  * EDS DOM: <footer><div class="footer block">…</div></footer>
  */
 
-const LOGO_SRC = '/v2/assets/logo-white.png';
+const LOGO_SRC = '/assets/logo-white.png';
 
 /**
  * @param {Element} block

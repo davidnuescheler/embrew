@@ -3,7 +3,7 @@
  * EDS DOM: <header><div class="header block">…</div></header>
  */
 
-const LOGO_SRC = '/v2/assets/logo-white.png';
+const LOGO_SRC = '/assets/logo-white.png';
 const RESERVE_URL = 'https://www.opentable.com/r/emigration-brewing-company-reservations-salt-lake-city';
 
 const NAV_LINKS = [
