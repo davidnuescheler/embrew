@@ -288,11 +288,11 @@ function buildAutoBlocks(main) {
  * @param {HTMLElement} main The main container element
  */
 function decorateButtons(main) {
-  // Multi-link CTA rows: <p><strong><a>…</a></strong> <em><a>…</a></em></p>
+  // Two-link CTA rows: <p><strong><a>…</a></strong> <em><a>…</a></em></p>
   main.querySelectorAll('p').forEach((p) => {
     if (p.classList.contains('button-container') || p.classList.contains('tabs')) return;
     const links = [...p.querySelectorAll('a')].filter((a) => !a.querySelector('img'));
-    if (links.length < 2) return;
+    if (links.length !== 2) return;
 
     if ([...p.children].some((el) => {
       if (el.tagName === 'A') return false;

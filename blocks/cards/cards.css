@@ -126,6 +126,27 @@
   margin-top: auto;
 }
 
+.cards .cards-price a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.cards .cards-card-linked {
+  cursor: pointer;
+}
+
+.cards .cards-card-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+}
+
+.cards .cards-card-linked a:not(.cards-card-link) {
+  position: relative;
+  z-index: 5;
+}
+
 @media (max-width: 680px) {
   .cards .cards-card-image {
     aspect-ratio: 16 / 9;
