@@ -1,0 +1,172 @@
+/* Private event form — v2 formwrap look */
+
+.private-event-form {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 34px 30px;
+  text-align: left;
+}
+
+.private-event-form .pe-form {
+  margin: 0;
+}
+
+.private-event-form .pe-hp {
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.private-event-form .pe-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.private-event-form .pe-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.private-event-form .pe-field label {
+  font-family: var(--fixed-font-family);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+  margin-bottom: 7px;
+}
+
+.private-event-form .pe-field input,
+.private-event-form .pe-field select,
+.private-event-form .pe-field textarea {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  color: var(--text);
+  font-family: var(--body-font-family);
+  font-size: 15px;
+  padding: 13px 14px;
+  min-height: 48px;
+  transition: border-color 0.3s var(--ease);
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.private-event-form .pe-field textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.private-event-form .pe-field input:focus,
+.private-event-form .pe-field select:focus,
+.private-event-form .pe-field textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.private-event-form .pe-field input::placeholder,
+.private-event-form .pe-field textarea::placeholder {
+  color: #6e6355;
+}
+
+.private-event-form .pe-field select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5l5 5 5-5' stroke='%239A8F80' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+
+.private-event-form .pe-field input[type="date"] {
+  color-scheme: dark;
+}
+
+.private-event-form button[type="submit"] {
+  margin-top: 4px;
+}
+
+.private-event-form .pe-hint {
+  font-size: 12.5px;
+  color: var(--muted);
+  margin: 14px 0 0;
+  line-height: 1.6;
+}
+
+.private-event-form .pe-hint a {
+  color: var(--accent);
+}
+
+.private-event-form .pe-status {
+  margin: 16px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.private-event-form .pe-status.is-error {
+  color: #e07060;
+}
+
+.private-event-form .pe-success {
+  text-align: center;
+  padding: 28px 12px 12px;
+}
+
+.private-event-form .pe-success-eyebrow {
+  font-family: var(--fixed-font-family);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
+  margin: 0 0 14px;
+}
+
+.private-event-form .pe-success-title {
+  font-family: var(--heading-font-family);
+  font-size: clamp(22px, 3.2vw, 32px);
+  line-height: 1.2;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 14px;
+  text-transform: none;
+}
+
+.private-event-form .pe-success-body {
+  font-size: clamp(15px, 1.6vw, 17px);
+  line-height: 1.65;
+  color: var(--body);
+  max-width: 40ch;
+  margin: 0 auto 18px;
+}
+
+.private-event-form .pe-success-hint {
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.private-event-form .pe-success-hint a {
+  color: var(--accent);
+}
+
+@media (max-width: 680px) {
+  .private-event-form {
+    padding: 26px 20px;
+  }
+
+  .private-event-form .pe-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .private-event-form button[type="submit"] {
+    width: 100%;
+  }
+}

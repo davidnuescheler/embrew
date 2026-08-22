@@ -1,15 +1,14 @@
 import {
-  buildBlock,
   loadHeader,
   loadFooter,
-  decorateButtons,
   decorateBlocks,
   decorateSections,
   decorateTemplateAndTheme,
-  waitForImage,
+  waitForFirstImage,
   loadSection,
   loadSections,
   loadCSS,
+  buildBlock,
 } from './aem.js';
 
 function addQuickNav() {
@@ -36,35 +35,6 @@ function addQuickNav() {
     select.addEventListener('change', () => {
       window.location.hash = `#${select.value}`;
     });
-  }
-}
-
-function buildHeroBlock(main) {
-  const h1 = main.querySelector('h1');
-  const picture = main.querySelector('picture');
-  // eslint-disable-next-line no-bitwise
-  if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
-    const section = document.createElement('div');
-    const existingSection = h1.closest('div');
-    const overlay = document.createElement('div');
-    overlay.classList.add('hero-overlay');
-    [...existingSection.children].forEach((e) => overlay.append(e));
-    section.append(buildBlock('hero', { elems: [picture, overlay] }));
-    main.prepend(section);
-    existingSection.remove();
-  }
-}
-
-/**
- * Builds all synthetic blocks in a container element.
- * @param {Element} main The container element
- */
-function buildAutoBlocks(main) {
-  try {
-    buildHeroBlock(main);
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('Auto Blocking failed', error);
   }
 }
 
@@ -175,16 +145,228 @@ export function decoratePhoneLinks(elem) {
 }
 
 /**
+ * Whether a tab link matches the current page (and hash, when relevant).
+ * Same-document `#hash` links require a hash match; path links match on
+ * pathname, and on hash only when the location already has one.
+ * @param {HTMLAnchorElement} a
+ */
+function isActiveTabLink(a) {
+  const href = a.getAttribute('href') || '';
+  const url = new URL(a.href, window.location.href);
+  const norm = (p) => p.replace(/\/+$/, '') || '/';
+
+  if (href.startsWith('#')) {
+    return window.location.hash === href;
+  }
+
+  if (norm(url.pathname) !== norm(window.location.pathname)) return false;
+  if (!window.location.hash) return true;
+  return !url.hash || url.hash === window.location.hash;
+}
+
+/**
+ * Auto-detects paragraphs that contain only links (menu section switchers)
+ * and styles them as v2-style tabs. Marks the current page/hash with `.on`.
+ * @param {Element} element
+ */
+export function decorateLinkTabs(element) {
+  element.querySelectorAll('p').forEach((p) => {
+    if (p.classList.contains('tabs') || p.classList.contains('button-container')) return;
+    const links = [...p.querySelectorAll(':scope > a')];
+    if (links.length < 2) return;
+    if ([...p.children].some((el) => el.tagName !== 'A')) return;
+
+    const leftover = p.cloneNode(true);
+    leftover.querySelectorAll('a').forEach((a) => a.remove());
+    if (leftover.textContent.trim()) return;
+
+    p.classList.add('tabs');
+    p.setAttribute('role', 'tablist');
+    links.forEach((a) => {
+      a.classList.remove('button', 'primary', 'secondary');
+      a.classList.add('tab');
+      a.setAttribute('role', 'tab');
+      const on = isActiveTabLink(a);
+      a.classList.toggle('on', on);
+      a.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+  });
+}
+
+/**
+ * Turns a short plain paragraph at the top of a content container,
+ * immediately ahead of a heading, into an eyebrow label.
+ * Runs after section decoration so default content after a section break
+ * (and after blocks) sits at the start of its wrapper.
+ * @param {Element} element
+ */
+export function decorateEyebrows(element) {
+  element.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach((heading) => {
+    const prev = heading.previousElementSibling;
+    if (!prev || prev.tagName !== 'P') return;
+    // Must lead its container (section, block cell, or default-content-wrapper)
+    if (prev !== prev.parentElement?.firstElementChild) return;
+    if (prev.querySelector('a, picture, img, button')) return;
+    if (prev.classList.contains('button-container') || prev.classList.contains('eyebrow')) return;
+    const text = prev.textContent.trim();
+    if (!text || text.length > 80) return;
+    prev.classList.add('eyebrow');
+  });
+}
+
+/**
+ * Applies section metadata backgrounds (data-background → full-bleed image).
+ * Uses only the path (+ query) so the asset resolves on the current origin.
+ * @param {Element} main
+ */
+export function decorateSectionBackgrounds(main) {
+  main.querySelectorAll('[data-background]').forEach((el) => {
+    const raw = el.dataset.background?.trim();
+    if (!raw || el.querySelector(':scope > .section-background')) return;
+
+    let src = raw;
+    try {
+      const url = new URL(raw, window.location.origin);
+      src = `${url.pathname}${url.search}`;
+    } catch (e) {
+      // already a path
+    }
+
+    el.classList.add('has-background');
+    const bg = document.createElement('div');
+    bg.className = 'section-background';
+    const img = document.createElement('img');
+    img.src = src;
+    img.alt = '';
+    img.loading = 'lazy';
+    bg.append(img);
+    el.prepend(bg);
+  });
+}
+
+/**
+ * Turns `/widgets/...` links into widget blocks.
+ * @param {Element} main The container element
+ */
+function buildWidgetAutoBlocks(main) {
+  const widgetLinks = [...main.querySelectorAll('a[href*="/widgets/"]')];
+  widgetLinks.forEach((link) => {
+    if (link.closest('.widget')) return;
+    const newLink = link.cloneNode(true);
+    const widgetBlock = buildBlock('widget', { elems: [newLink] });
+    const p = link.closest('p');
+    if (
+      p
+      && p.querySelectorAll('a').length === 1
+      && p.querySelector('a') === link
+      && p.textContent.trim() === link.textContent.trim()
+    ) {
+      p.replaceWith(widgetBlock);
+    } else {
+      link.replaceWith(widgetBlock);
+    }
+  });
+}
+
+/**
+ * Builds all synthetic blocks in a container element.
+ * @param {Element} main The container element
+ */
+function buildAutoBlocks(main) {
+  try {
+    buildWidgetAutoBlocks(main);
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error('Auto Blocking failed', error);
+  }
+}
+
+/**
+ * Decorates formatted links as buttons (from aem-boilerplate).
+ * Also supports link-only paragraphs with a bold + italic pair
+ * as primary / secondary buttons side by side.
+ * @param {HTMLElement} main The main container element
+ */
+function decorateButtons(main) {
+  // Multi-link CTA rows: <p><strong><a>…</a></strong> <em><a>…</a></em></p>
+  main.querySelectorAll('p').forEach((p) => {
+    if (p.classList.contains('button-container') || p.classList.contains('tabs')) return;
+    const links = [...p.querySelectorAll('a')].filter((a) => !a.querySelector('img'));
+    if (links.length < 2) return;
+
+    if ([...p.children].some((el) => {
+      if (el.tagName === 'A') return false;
+      if (el.tagName === 'STRONG' || el.tagName === 'EM') {
+        return el.childElementCount !== 1 || el.firstElementChild?.tagName !== 'A';
+      }
+      return true;
+    })) return;
+
+    const leftover = p.cloneNode(true);
+    leftover.querySelectorAll('a').forEach((a) => a.remove());
+    if (leftover.textContent.trim()) return;
+
+    p.className = 'button-container';
+    links.forEach((a) => {
+      a.title = a.title || a.textContent;
+      const strong = a.closest('strong');
+      const em = a.closest('em');
+      a.className = 'button';
+      if (strong && em) a.classList.add('accent');
+      else if (strong) a.classList.add('primary');
+      else if (em) a.classList.add('secondary');
+      const wrap = strong || em;
+      if (wrap) wrap.replaceWith(a);
+    });
+  });
+
+  // Single formatted links (boilerplate)
+  main.querySelectorAll('p a[href]').forEach((a) => {
+    if (a.closest('.button-container') || a.classList.contains('button')) return;
+    a.title = a.title || a.textContent;
+    const p = a.closest('p');
+    if (!p) return;
+    const text = a.textContent.trim();
+
+    if (a.querySelector('img') || p.textContent.trim() !== text) return;
+
+    try {
+      if (new URL(a.href).href === new URL(text, window.location).href) return;
+    } catch { /* continue */ }
+
+    const strong = a.closest('strong');
+    const em = a.closest('em');
+    if (!strong && !em) return;
+
+    p.className = 'button-container';
+    a.className = 'button';
+    if (strong && em) {
+      a.classList.add('accent');
+      const outer = strong.contains(em) ? strong : em;
+      outer.replaceWith(a);
+    } else if (strong) {
+      a.classList.add('primary');
+      strong.replaceWith(a);
+    } else {
+      a.classList.add('secondary');
+      em.replaceWith(a);
+    }
+  });
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
 function decorateMain(main) {
-  // hopefully forward compatible button decoration
-  decorateButtons(main);
-  decorateIcons(main);
   buildAutoBlocks(main);
+  decorateIcons(main);
   decorateSections(main);
+  decorateSectionBackgrounds(main);
   decorateBlocks(main);
+  decorateButtons(main);
+  decorateLinkTabs(main);
+  decorateEyebrows(main);
   decoratePhoneLinks(main);
   document.querySelectorAll('picture').forEach((picture) => {
     const section = picture.closest('main > div');
@@ -195,15 +377,37 @@ function decorateMain(main) {
 }
 
 /**
+ * load fonts.css and set a session storage flag
+ */
+async function loadFonts() {
+  await loadCSS(`${window.hlx.codeBasePath}/styles/fonts.css`);
+  try {
+    if (!window.location.hostname.includes('localhost')) sessionStorage.setItem('fonts-loaded', 'true');
+  } catch (e) {
+    // do nothing
+  }
+}
+
+/**
  * loads everything needed to get to LCP.
  */
 async function loadEager(doc) {
+  document.documentElement.lang = 'en';
   doc.body.classList.add('appear');
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);
-    await loadSection(main.querySelector('.section'), waitForImage);
+    await loadSection(main.querySelector('.section'), waitForFirstImage);
+  }
+
+  try {
+    /* if desktop (proxy for fast connection) or fonts already loaded, load fonts.css */
+    if (window.innerWidth >= 900 || sessionStorage.getItem('fonts-loaded')) {
+      loadFonts();
+    }
+  } catch (e) {
+    // do nothing
   }
 }
 
@@ -222,13 +426,13 @@ async function loadLazy(doc) {
   loadFooter(doc.querySelector('footer'));
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
+  loadFonts();
   addQuickNav();
 
   if (window.location.hostname.endsWith('aem.page') || window.location.hostname === ('localhost')) {
     // eslint-disable-next-line import/no-cycle
     import('../tools/preview/preview.js');
   }
-  document.documentElement.lang = 'en';
 }
 
 /**

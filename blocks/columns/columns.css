@@ -1,25 +1,97 @@
+/* Columns block — v2 split layout, scoped under .columns */
+
 .columns > div {
-    display: flex;
-    flex-direction: column;
+  display: grid;
+  gap: 36px;
+  align-items: center;
 }
 
-.columns img {
-    width: 100%;
+.columns.columns-2-cols > div {
+  grid-template-columns: 1fr;
+}
+
+.columns .columns-copy .big {
+  font-family: var(--heading-font-family);
+  font-size: clamp(26px, 4.6vw, 54px);
+  line-height: 1.12;
+  font-weight: 700;
+  margin: 0 0 20px;
+  letter-spacing: -0.01em;
+  text-transform: none;
+}
+
+.columns .columns-copy .lede {
+  font-size: clamp(15px, 1.6vw, 18px);
+  color: var(--body);
+  max-width: 64ch;
+  line-height: 1.74;
+  margin: 0;
+}
+
+.columns .columns-copy .lede + .lede {
+  margin-top: 18px;
+}
+
+.columns .columns-copy .button-container {
+  margin-top: 26px;
+  margin-bottom: 0;
+}
+
+.columns .columns-copy .button-container .button {
+  margin: 0;
+}
+
+.columns .columns-img {
+  position: relative;
+  border-radius: 3px;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  background: var(--card);
+}
+
+.columns .columns-img picture,
+.columns .columns-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.columns .columns-tag {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  z-index: 1;
+  background: rgba(12, 10, 8, 0.86);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--border);
+  padding: 8px 15px;
+  font-family: var(--fixed-font-family);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
 }
 
 @media (min-width: 900px) {
-    .columns > div {
-        display: flex;
-        align-items: center;
-        flex-direction: unset;
-    }
+  .columns.columns-2-cols > div {
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+  }
 
-    .columns > div > div {
-        flex: 1;
-        margin-left: 32px;
-    }
+  .columns.columns-rev > div > .columns-img {
+    order: -1;
+  }
+}
 
-    .columns > div > div:first-of-type {
-        margin-left: unset;
-    }
+@media (max-width: 899px) {
+  .columns .columns-img {
+    aspect-ratio: 16 / 10;
+    max-height: 460px;
+  }
+
+  .columns.columns-rev > div > .columns-img {
+    order: 0;
+  }
 }

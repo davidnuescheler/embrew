@@ -1,0 +1,109 @@
+/* Hours — schedule table + contact rows (v2 visit) */
+
+.hours .hours-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 52px;
+  align-items: start;
+}
+
+.hours .hours-tbl {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.hours .hours-tbl th {
+  text-align: left;
+  font-family: var(--fixed-font-family);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding: 16px 0 9px;
+  border-bottom: 1px solid var(--border);
+  font-weight: 700;
+}
+
+.hours .hours-tbl tbody:first-child th {
+  padding-top: 0;
+}
+
+.hours .hours-tbl td {
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(42, 35, 28, 0.55);
+  font-size: 14.5px;
+  color: var(--body);
+}
+
+.hours .hours-tbl td:last-child {
+  text-align: right;
+  font-family: var(--fixed-font-family);
+  font-size: 13.5px;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.hours .hours-note {
+  margin: 26px 0 0;
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--muted);
+  max-width: 48ch;
+}
+
+.hours .hours-cx {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 17px 0;
+  border-bottom: 1px solid rgba(42, 35, 28, 0.55);
+  min-height: 44px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.hours a.hours-cx:hover {
+  color: inherit;
+}
+
+.hours .hours-cx svg {
+  color: var(--accent);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.hours .hours-k {
+  font-family: var(--fixed-font-family);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+
+.hours .hours-v {
+  font-size: 15.5px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.45;
+  transition: color 0.4s var(--ease);
+}
+
+.hours a.hours-cx:hover .hours-v {
+  color: var(--accent);
+}
+
+@media (max-width: 900px) {
+  .hours .hours-grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+}
+
+@media (max-width: 600px) {
+  .hours .hours-tbl td:last-child {
+    white-space: normal;
+    padding-left: 12px;
+  }
+}

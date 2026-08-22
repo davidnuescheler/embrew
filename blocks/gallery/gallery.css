@@ -1,0 +1,197 @@
+/* Gallery — flush mosaic (6-col tracks; spans 2 or 4 only) */
+
+.gallery .gallery-mosaic {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-auto-rows: clamp(140px, 18vw, 220px);
+  grid-auto-flow: dense;
+  gap: 6px;
+}
+
+.gallery .gallery-item {
+  position: relative;
+  grid-column: span 2;
+  grid-row: span 1;
+  margin: 0;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 2px;
+  background: var(--card, #16120e);
+  opacity: 0;
+  transform: translateY(18px) scale(0.985);
+  transition:
+    opacity 0.7s var(--ease, cubic-bezier(0.16, 1, 0.3, 1)),
+    transform 0.7s var(--ease, cubic-bezier(0.16, 1, 0.3, 1));
+  transition-delay: var(--delay, 0ms);
+}
+
+.gallery .gallery-item.is-wide {
+  grid-column: span 4;
+}
+
+.gallery .gallery-item.is-tall {
+  grid-row: span 2;
+}
+
+.gallery .gallery-item.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+.gallery .gallery-media {
+  position: absolute;
+  inset: 0;
+}
+
+.gallery .gallery-media picture,
+.gallery .gallery-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gallery .gallery-media img {
+  filter: brightness(0.78) saturate(1.02);
+  transform: scale(1.01);
+  transition:
+    transform 0.75s var(--ease, cubic-bezier(0.16, 1, 0.3, 1)),
+    filter 0.75s var(--ease, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.gallery .gallery-item::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      to top,
+      rgba(12, 10, 8, 0.72) 0%,
+      rgba(12, 10, 8, 0.18) 42%,
+      transparent 70%
+    );
+  opacity: 0.55;
+  pointer-events: none;
+  transition: opacity 0.5s var(--ease, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.gallery .gallery-item.is-featured::before {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  width: 18px;
+  height: 1px;
+  background: var(--gold, #d4a24c);
+  z-index: 2;
+  opacity: 0.7;
+}
+
+.gallery .gallery-item figcaption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  margin: 0;
+  padding: 22px 16px 14px;
+  font-family: var(--fixed-font-family);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #fff;
+  font-weight: 600;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.95);
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 0.5s var(--ease, cubic-bezier(0.16, 1, 0.3, 1)),
+    transform 0.5s var(--ease, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .gallery .gallery-item:hover .gallery-media img {
+    transform: scale(1.06);
+    filter: brightness(1) saturate(1.05);
+  }
+
+  .gallery .gallery-item:hover::after {
+    opacity: 0.85;
+  }
+
+  .gallery .gallery-item:hover figcaption {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .gallery .gallery-item figcaption {
+    opacity: 1;
+    transform: none;
+  }
+
+  .gallery .gallery-item::after {
+    opacity: 0.75;
+  }
+}
+
+@media (max-width: 900px) {
+  .gallery .gallery-mosaic {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-rows: clamp(130px, 28vw, 200px);
+    gap: 5px;
+  }
+
+  .gallery .gallery-item {
+    grid-column: span 2;
+  }
+
+  .gallery .gallery-item.is-wide {
+    grid-column: span 4;
+  }
+}
+
+@media (max-width: 600px) {
+  .gallery .gallery-mosaic {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: clamp(160px, 42vw, 240px);
+    gap: 4px;
+  }
+
+  .gallery .gallery-item {
+    grid-column: span 1;
+  }
+
+  .gallery .gallery-item.is-wide {
+    grid-column: span 2;
+  }
+
+  .gallery .gallery-item.is-tall {
+    grid-row: span 1;
+  }
+
+  .gallery .gallery-item.is-featured.is-tall {
+    grid-row: span 2;
+  }
+
+  .gallery .gallery-item figcaption {
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    padding: 18px 12px 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery .gallery-item,
+  .gallery .gallery-media img,
+  .gallery .gallery-item figcaption,
+  .gallery .gallery-item::after {
+    transition: none;
+  }
+
+  .gallery .gallery-item {
+    opacity: 1;
+    transform: none;
+  }
+}

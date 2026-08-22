@@ -1,0 +1,153 @@
+/* Figures block — beer-fill odometer stats, scoped under .figures */
+
+@property --fill {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 0;
+}
+
+.figures .figures-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 16px;
+}
+
+.figures .figure {
+  padding: 36px 24px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  text-align: center;
+  transition:
+    border-color 0.4s var(--ease),
+    transform 0.4s var(--ease);
+}
+
+.figures .figure:hover {
+  border-color: #4a3b2c;
+  transform: translateY(-4px);
+}
+
+.figures .odometer {
+  --fill: 0;
+  position: relative;
+  height: 1.15em;
+  overflow: hidden;
+  font-family: var(--fixed-font-family);
+  font-size: clamp(30px, 5.4vw, 54px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  transition: --fill 2.1s cubic-bezier(0.16, 1, 0.3, 1) 0.12s;
+}
+
+.figures .odometer.poured {
+  --fill: 1;
+}
+
+.figures .odo-layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.figures .odo-empty {
+  color: rgba(212, 162, 76, 0.3);
+}
+
+.figures .odo-full {
+  color: #efae49;
+  clip-path: inset(calc(100% - var(--fill) * 100%) 0 0 0);
+}
+
+.figures .odo-foam {
+  position: absolute;
+  left: 14%;
+  right: 14%;
+  height: 2px;
+  pointer-events: none;
+  bottom: calc(var(--fill) * 100% - 1px);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 248, 233, 0.9) 22%,
+    rgba(255, 255, 255, 0.95) 50%,
+    rgba(255, 248, 233, 0.9) 78%,
+    transparent
+  );
+  opacity: calc(var(--fill) * (1 - var(--fill)) * 3.4);
+  filter: blur(0.3px);
+}
+
+.figures .odometer .stat-suffix {
+  color: inherit;
+}
+
+.figures .odo-digit {
+  display: inline-block;
+  overflow: hidden;
+  height: 1.15em;
+  position: relative;
+}
+
+.figures .odo-strip {
+  display: flex;
+  flex-direction: column;
+  transition: transform 1.6s var(--ease);
+}
+
+.figures .odo-strip span {
+  display: block;
+  height: 1.15em;
+  line-height: 1.15;
+}
+
+.figures .odo-sep {
+  display: inline-block;
+  height: 1.15em;
+  line-height: 1.15;
+}
+
+.figures .stat-suffix {
+  font-family: var(--fixed-font-family);
+  font-size: clamp(22px, 3.6vw, 38px);
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.figures .figure-label {
+  font-size: 13.5px;
+  color: var(--muted);
+  margin-top: 12px;
+  line-height: 1.5;
+}
+
+@media (max-width: 680px) {
+  .figures .figures-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .figures .figure {
+    padding: 24px 14px;
+  }
+
+  .figures .figure-label {
+    font-size: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .figures .odometer {
+    transition: none;
+  }
+
+  .figures .odo-strip {
+    transition: none;
+  }
+
+  .figures .figure {
+    transition: none;
+  }
+}
