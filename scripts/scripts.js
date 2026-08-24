@@ -155,13 +155,10 @@ function isActiveTabLink(a) {
   const url = new URL(a.href, window.location.href);
   const norm = (p) => p.replace(/\/+$/, '') || '/';
 
-  if (href.startsWith('#')) {
-    return window.location.hash === href;
-  }
-
-  if (norm(url.pathname) !== norm(window.location.pathname)) return false;
-  if (!window.location.hash) return true;
-  return !url.hash || url.hash === window.location.hash;
+  if (href.startsWith('#')) return true;
+  if (url.pathname === window.location.pathname) return true;
+  
+  return false;
 }
 
 /**
