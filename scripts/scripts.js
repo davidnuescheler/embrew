@@ -10,6 +10,7 @@ import {
   loadCSS,
   buildBlock,
 } from './aem.js';
+import decorateSchema from './schema.js';
 
 function addQuickNav() {
   const h3s = [...document.querySelectorAll('main h3')];
@@ -112,6 +113,9 @@ export async function decorateIcons(element, prefix = '') {
     img.dataset.iconName = iconName;
     img.src = `${prefix}/icons/${iconName}.svg`;
     img.loading = 'lazy';
+    // Icons are decorative and always sit beside their own label. An empty
+    // alt marks that intent; omitting the attribute fails image-alt instead.
+    img.alt = '';
 
     span.append(img);
     const io = new IntersectionObserver((entries) => {
@@ -365,6 +369,7 @@ function decorateMain(main) {
   decorateLinkTabs(main);
   decorateEyebrows(main);
   decoratePhoneLinks(main);
+  decorateSchema(main);
   document.querySelectorAll('picture').forEach((picture) => {
     const section = picture.closest('main > div');
     if (!section.textContent.trim() && !section.querySelector('.block')) {
@@ -390,6 +395,17 @@ async function loadFonts() {
  */
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
+
+  // The pipeline ships every image as loading="lazy", so the preload scanner
+  // skips the hero and its fetch only starts after block decoration. Promote
+  // it before anything else touches the DOM.
+  const hero = doc.querySelector('main > div:first-child img');
+  if (hero) {
+    hero.setAttribute('loading', 'eager');
+    hero.setAttribute('fetchpriority', 'high');
+    hero.setAttribute('decoding', 'sync');
+  }
+
   doc.body.classList.add('appear');
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');

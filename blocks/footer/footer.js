@@ -3,7 +3,7 @@
  * EDS DOM: <footer><div class="footer block">…</div></footer>
  */
 
-const LOGO_SRC = '/assets/logo-white.png';
+const LOGO_SRC = '/assets/logo-white-96.png';
 
 /**
  * @param {Element} block
@@ -13,7 +13,7 @@ export default async function decorate(block) {
     <div class="foot-grid">
       <div class="foot-brand">
         <div class="brand">
-          <img src="${LOGO_SRC}" alt="" width="26" height="26">
+          <img src="${LOGO_SRC}" alt="" width="85" height="96">
           <span>EMIGRATION BREWING CO.</span>
         </div>
         <p>Craft canyon dining in Emigration Canyon since 2019. Wood-fired, seasonally driven, locally poured.</p>
@@ -37,10 +37,12 @@ export default async function decorate(block) {
       <div class="foot-explore">
         <span class="foot-label">Explore</span>
         <a href="/menu">Menu</a>
+        <a href="/brunch">Brunch</a>
         <a href="/gallery">Gallery</a>
         <a href="/story">Our Story</a>
         <a href="/private-events">Private Events</a>
         <a href="/visit">Visit</a>
+        <a href="/journal/">Journal</a>
         <a href="https://squareup.com/gift/7K7NMVAGPW6BC/order" target="_blank" rel="noopener">Gift Cards</a>
       </div>
       <div class="foot-visit">
