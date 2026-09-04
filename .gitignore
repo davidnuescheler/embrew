@@ -7,3 +7,7 @@ logs
 deploy.sh
 hlx
 .env
+
+# audit deliverables - EDS serves any repo file publicly, keep these local
+SEO-AUDIT.md
+SEO-AUDIT.pdf

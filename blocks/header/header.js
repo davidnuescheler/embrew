@@ -3,7 +3,7 @@
  * EDS DOM: <header><div class="header block">…</div></header>
  */
 
-const LOGO_SRC = '/assets/logo-white.png';
+const LOGO_SRC = '/assets/logo-white-96.png';
 const RESERVE_URL = 'https://www.opentable.com/r/emigration-brewing-company-reservations-salt-lake-city';
 
 const NAV_LINKS = [
@@ -103,7 +103,7 @@ export default async function decorate(block) {
   block.innerHTML = `
     <nav class="nav" aria-label="Primary">
       <a class="brand" href="/">
-        <img src="${LOGO_SRC}" alt="" width="26" height="26">
+        <img src="${LOGO_SRC}" alt="" width="85" height="96">
         <span>EMIGRATION BREWING CO.</span>
       </a>
       <div class="navlinks">${buildDesktopLinks()}</div>
