@@ -181,36 +181,6 @@ function buildMenu(main) {
 }
 
 /**
- * Any h3 phrased as a question, with prose following it, is an FAQ entry.
- * @param {Element} main The main element
- */
-function buildFaq(main) {
-  const entries = [];
-  main.querySelectorAll('h3').forEach((heading) => {
-    const question = heading.textContent.trim();
-    if (!question.endsWith('?')) return;
-
-    const answer = [];
-    let sibling = heading.nextElementSibling;
-    while (sibling && sibling.tagName === 'P') {
-      const text = sibling.textContent.trim();
-      if (text) answer.push(text);
-      sibling = sibling.nextElementSibling;
-    }
-    if (!answer.length) return;
-
-    entries.push({
-      '@type': 'Question',
-      name: question,
-      acceptedAnswer: { '@type': 'Answer', text: answer.join(' ') },
-    });
-  });
-
-  if (entries.length < 2) return null;
-  return { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: entries };
-}
-
-/**
  * @param {Element} main The main element
  */
 function buildArticle(main) {
@@ -247,11 +217,16 @@ function buildArticle(main) {
 /**
  * Emits every page-level graph that applies. Additive only -- a failure here
  * must never break the page.
+ *
+ * Deliberately no FAQPage: Google retired FAQ rich results on 2026-05-07, and
+ * FAQ markup measures at -5.74% on AI-answer visibility, so it is now a cost
+ * with no upside. Same reason Service schema is absent -- never supported.
+ *
  * @param {Element} main The main element, before block JS has run
  */
 export default function decorateSchema(main) {
   try {
-    [buildBreadcrumb(main), buildMenu(main), buildFaq(main), buildArticle(main)]
+    [buildBreadcrumb(main), buildMenu(main), buildArticle(main)]
       .filter((graph) => graph)
       .forEach(emit);
   } catch (e) {
