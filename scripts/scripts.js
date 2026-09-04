@@ -113,6 +113,9 @@ export async function decorateIcons(element, prefix = '') {
     img.dataset.iconName = iconName;
     img.src = `${prefix}/icons/${iconName}.svg`;
     img.loading = 'lazy';
+    // Icons are decorative and always sit beside their own label. An empty
+    // alt marks that intent; omitting the attribute fails image-alt instead.
+    img.alt = '';
 
     span.append(img);
     const io = new IntersectionObserver((entries) => {
