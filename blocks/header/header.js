@@ -13,7 +13,7 @@ const NAV_LINKS = [
   { href: '/story', label: 'Story' },
   { href: '/private-events', label: 'Private Events' },
   { href: '/visit', label: 'Visit' },
-  { href: '/journal/', label: 'Journal' },
+  { href: '/journal', label: 'Journal' },
 ];
 
 function isCurrentPath(href) {
